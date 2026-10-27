@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How to pick an order</title>
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #fff;
+      color: #111;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #eee;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 10;
+    }
+
+    .topbar a {
+      text-decoration: none;
+      color: inherit;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .topbar-title {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      opacity: 0.7;
+      margin-bottom: 16px;
+    }
+
+    .slide-section {
+      scroll-margin-top: 72px;
+      margin-bottom: 18px;
+    }
+
+    .chapter-header {
+      margin: 26px 0 12px;
+      padding: 14px;
+      background: #f7f7f8;
+      border: 1px solid #e8e8ea;
+      border-radius: 12px;
+    }
+
+    .chapter-title {
+      font-size: 17px;
+      font-weight: 750;
+      margin: 0 0 4px;
+    }
+
+    .chapter-summary {
+      font-size: 13px;
+      line-height: 1.4;
+      opacity: 0.75;
+      margin: 0;
+    }
+
+    .slide-image {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      display: block;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .toc {
+      scroll-margin-top: 72px;
+      margin: 22px 0;
+      padding: 18px;
+      background: #f7f7f8;
+      border: 1px solid #e8e8ea;
+      border-radius: 14px;
+    }
+
+    .toc-header {
+      margin-bottom: 14px;
+    }
+
+    .toc-title {
+      font-size: 18px;
+      font-weight: 750;
+      margin: 0 0 4px;
+    }
+
+    .toc-subtitle {
+      font-size: 13px;
+      opacity: 0.7;
+      margin: 0;
+    }
+
+    .toc-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .toc-link {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px;
+      background: #fff;
+      border: 1px solid #e7e7e8;
+      border-radius: 10px;
+      color: inherit;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .toc-link:active {
+      transform: scale(0.99);
+    }
+
+    .toc-slide-number {
+      flex: 0 0 auto;
+      min-width: 34px;
+      font-weight: 700;
+      opacity: 0.65;
+    }
+
+    .toc-slide-title {
+      flex: 1;
+      font-weight: 600;
+    }
+
+    .toc-chapter-summary {
+      display: block;
+      margin-top: 3px;
+      font-size: 12px;
+      font-weight: 400;
+      opacity: 0.7;
+    }
+
+    .back-to-toc {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      text-decoration: none;
+      opacity: 0.75;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 12px;
+      }
+
+      .topbar {
+        padding: 11px 12px;
+      }
+
+      .toc {
+        padding: 14px;
+      }
+
+      .toc-link {
+        padding: 11px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <a href="index.html">‹ Back</a>
+    <div class="topbar-title">How to pick an order</div>
+  </div>
+
+  <main class="container">
+    <div class="subtitle">From starting an order to handoff</div>
+
+    <div id="slides"></div>
+  </main>
+
+  <script>
+    /*
+      Easy update area:
+      - Image files must be named: Slide1.png, Slide3.png, Slide4.png, etc.
+      - Slide 2 is intentionally skipped.
+      - To add/change chapters, update CHAPTERS below.
+      - Each chapter has a start slide, end slide, title and short summary.
+      - To extend the guide later, update LAST_SLIDE and add/update chapters.
+    */
+
+    const IMAGE_BASE_PATH = "images/Picking/";
+    const FIRST_SLIDE = 1;
+    const LAST_SLIDE = 42;
+    const SKIPPED_SLIDES = [2];
+
+    const CHAPTERS = [
+      {
+        start: 3,
+        end: 9,
+        title: "1. Getting started",
+        summary: "Overview of the Rynly Picking App"
+      },
+      {
+        start: 10,
+        end: 18,
+        title: "2. Substitutions",
+        summary: "Covers substitution types and which channel they come from"
+      },
+      {
+        start: 19,
+        end: 21,
+        //22-24
+        title: "3. Additional picking flows",
+        summary: "Bundled meal deals, unavailable items, multiple quantities of the same item."
+      },
+      {
+        start: 22,
+        end: 25,
+        //22-24
+        title: "4. Batch picking flows",
+        summary: "Bundled meal deals, unavailable items, multiple quantities of the same item."
+      },
+      {
+        start: 26,
+        end: 29,
+        title: "5. Managing orders",
+        summary: "Batch picking multiple orders, viewing order details, undoing picked items, cancellation, complete an order."
+      },
+      {
+        start: 20,
+        end: 31,
+        title: "6. Bag scanning",
+        summary: "How to Pick scan/pack scan."
+      },
+      {
+        start: 32,
+        end: 40,
+        title: "7. Channel-specific issues and actions",
+        summary: "Covers Chop Chop, Just Eat and Uber Eats issues, payment errors, amended orders, Uber Eats busy/offline mode, delivery jobs and extra drivers."
+      },
+      {
+        start: 42,
+        end: 44,
+        title: "8. Order history and settings",
+        summary: "Shows how to use order history access to the app Help Center and settings."
+      }
+    ];
+
+    const slidesContainer = document.getElementById("slides");
+
+    function getChapterForSlide(slideNumber) {
+      return CHAPTERS.find(chapter => chapter.start === slideNumber);
+    }
+
+    function isEndOfChapter(slideNumber) {
+      return CHAPTERS.some(chapter => chapter.end === slideNumber);
+    }
+
+    function createChapterHeader(chapter) {
+      const header = document.createElement("div");
+      header.className = "chapter-header";
+
+      header.innerHTML = `
+        <h2 class="chapter-title">${chapter.title}</h2>
+        <p class="chapter-summary">${chapter.summary}</p>
+      `;
+
+      return header;
+    }
+
+    function createSlide(slideNumber) {
+      const section = document.createElement("section");
+      section.className = "slide-section";
+      section.id = `slide-${slideNumber}`;
+
+      const chapter = getChapterForSlide(slideNumber);
+
+      if (chapter) {
+        section.appendChild(createChapterHeader(chapter));
+      }
+
+      const img = document.createElement("img");
+      img.className = "slide-image";
+      img.src = `${IMAGE_BASE_PATH}Slide${slideNumber}.png`;
+      img.alt = `Picking guide slide ${slideNumber}`;
+      img.loading = slideNumber === FIRST_SLIDE ? "eager" : "lazy";
+
+      section.appendChild(img);
+
+      if (isEndOfChapter(slideNumber)) {
+        const backToToc = document.createElement("a");
+        backToToc.className = "back-to-toc";
+        backToToc.href = "#table-of-contents";
+        backToToc.textContent = "Back to contents ↑";
+        section.appendChild(backToToc);
+      }
+
+      return section;
+    }
+
+    function createTableOfContents() {
+      const toc = document.createElement("section");
+      toc.className = "toc";
+      toc.id = "table-of-contents";
+
+      toc.innerHTML = `
+        <div class="toc-header">
+          <h2 class="toc-title">Sections</h2>
+          <p class="toc-subtitle">Tap a chapter to jump to that part of the guide.</p>
+        </div>
+        <div class="toc-list">
+          ${CHAPTERS.map(chapter => `
+            <a class="toc-link" href="#slide-${chapter.start}">
+              <span class="toc-slide-number">${chapter.start}</span>
+              <span class="toc-slide-title">
+                ${chapter.title}
+                <span class="toc-chapter-summary">${chapter.summary}</span>
+              </span>
+            </a>
+          `).join("")}
+        </div>
+      `;
+
+      return toc;
+    }
+
+    function renderGuide() {
+      // Slide 1 first
+      slidesContainer.appendChild(createSlide(FIRST_SLIDE));
+
+      // Table of contents between Slide 1 and Slide 3
+      slidesContainer.appendChild(createTableOfContents());
+
+      // Slides 3 to 38 in order, skipping Slide 2
+      for (let slideNumber = FIRST_SLIDE + 1; slideNumber <= LAST_SLIDE; slideNumber++) {
+        if (!SKIPPED_SLIDES.includes(slideNumber)) {
+          slidesContainer.appendChild(createSlide(slideNumber));
+        }
+      }
+    }
+
+    renderGuide();
+  </script>
+</body>
+</html>

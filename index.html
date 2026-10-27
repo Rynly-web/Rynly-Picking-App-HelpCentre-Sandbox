@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rynly Help Centre</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #fff;
+      color: #111;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 0 20px;
+    }
+
+    h1 {
+      font-size: 24px;
+      line-height: 1.2;
+      margin: 0;
+      flex: 1;
+    }
+
+    .logo {
+      height: 24px;
+      width: auto;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin: 28px 0 12px;
+    }
+
+    .list {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px;
+      border: 1px solid #e6e6e6;
+      border-radius: 10px;
+      text-decoration: none;
+      color: inherit;
+      background: #fff;
+    }
+
+    .item:active {
+      transform: scale(0.99);
+    }
+
+    .title {
+      font-weight: 600;
+    }
+
+    .meta {
+      font-size: 12px;
+      opacity: 0.7;
+      margin-top: 4px;
+    }
+
+    .arrow {
+      font-size: 18px;
+      opacity: 0.6;
+      margin-left: 12px;
+      flex-shrink: 0;
+    }
+
+    .faq-list {
+      display: grid;
+    }
+
+    details {
+      border-bottom: 1px solid #d9d9d9;
+      padding: 0;
+      margin: 0;
+    }
+
+    summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 14px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-weight: 600;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .summary-text {
+      flex: 1;
+    }
+
+    .dropdown-arrow {
+      font-size: 16px;
+      opacity: 0.65;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .answer {
+      padding: 0 0 14px 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .answer p {
+      margin: 0 0 12px 0;
+    }
+
+    .answer p:last-child {
+      margin-bottom: 0;
+    }
+
+    .answer img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-top: 12px;
+      display: block;
+    }
+
+    .footer {
+      margin-top: 24px;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Help Centre</h1>
+      <img src="images/logo/rynly-logo.png" alt="Rynly logo" class="logo" />
+    </div>
+
+    <h2>Select a guide:</h2>
+    <div class="list">
+      <a class="item" href="picking.html">
+        <div>
+          <div class="title">How to pick an order</div>
+          <div class="meta">From starting an order to handoff</div>
+        </div>
+        <div class="arrow">›</div>
+      </a>
+
+      <a class="item" href="picking.html#slide-11">
+        <div>
+          <div class="title">How to substitute items in an order</div>
+          <div class="meta">Deal with all substitution problems that can occur</div>
+        </div>
+        <div class="arrow">›</div>
+      </a>
+
+      <a class="item" href="picking.html#slide-32">
+        <div>
+          <div class="title">How to manage specific problems</div>
+          <div class="meta">Including problems that occur with Just Eat, Uber Eats and Chop Chop</div>
+        </div>
+        <div class="arrow">›</div>
+      </a>
+    </div>
+
+    <h2>Frequently Asked Questions:</h2>
+    <div class="faq-list">
+      <details>
+        <summary>
+          <span class="summary-text">1. How to identify an order?</span>
+          <span class="dropdown-arrow">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>
+            The image below shows how to identify what type of order has been placed by a customer from the Rynly picking app home page.
+          </p>
+          <p>
+            It is important to note which on-demand channel an order has come from, for example Just Eat or Uber Eats, as each channel has its own compatibilities with substitutes, request extra driver and other workflows.
+          </p>
+          <img src="images/FAQ/FAQ1.png" alt="Example showing how to identify an order in the Rynly app" />
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="summary-text">2. How to keep alerts ringing for new orders?</span>
+          <span class="dropdown-arrow">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>Please follow the troubleshooting steps below to ensure alerts are ringing on devices:</p>
+          <p>- Volume: check the volume on the handset and in the app, and ensure both are set to maximum.</p>
+          <p>- Keep the app active: the Rynly app must remain open or running in the background at all times.</p>
+          <p>- Do not force close: users should not swipe up on the app, as this fully closes the application and prevents notifications from arriving.</p>
+          <p>- Notification modal: if a device is correctly configured to receive alerts, the "Rynly Hub Alerts Enabled" modal will be visible on the sleep screen and will remain visible persistently, as shown below.</p>
+          <img src="images/FAQ/FAQ2.png" alt="Alerts troubleshooting" />
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="summary-text">3. How to request an extra driver for large orders?</span>
+          <span class="dropdown-arrow">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>Requesting an extra driver works differently for each channel.</p>
+          <p> - Just Eat: These orders will automatically call out an extra driver for large orders, Just Eat will call to inform the store.</p>
+          <p>   If no extra driver shows up for the order, please call Just Eat on the line: 0208 736 2000</p>
+
+          <p> - Deliveroo: Please call Deliveroo support on the line 020 3699 9977</p>
+         <!-- <img src="images/FAQ/FAQ3.png" alt="Just Eat extra driver instructions" /> -->
+
+          <p> - Uber Eats: please follow the directions below.</p>
+          <img src="images/FAQ/FAQ4.png" alt="Uber Eats extra driver instructions" />
+
+          <p> - Chop Chop:  A single courier is automatically requested for a Chop Chop order once both the order has been accepted and there are less than 4 items remaining to be picked. Once this happens it is possible to request an extra driver. Please follow the directions below as to how to manage this. </p>
+          <img src="images/FAQ/FAQ5.png" alt="Chop Chop extra driver instructions" />
+
+           <p> - Deliveroo: Please call the support line on: 020 3699 9977</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="summary-text">4. How to clear old hanging/stuck orders?</span>
+          <span class="dropdown-arrow">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>
+          Please select the hanging order (with the correct picking account assigned to that order) and follow the instructions provided. Note, all items must be marked as picked or unavalible or substituted then mark the order as COMPLETED.</p>
+          <p>Most common hanging order type:</p>
+          <img src="images/FAQ/FAQ8.png" alt="JET hanging orders" />
+          <p>If it is not possible to remove the old order by following any of the above instructions, please contact support.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="summary-text">5. What to do if an order receives a Chop Chop payment failure?</span>
+          <span class="dropdown-arrow">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>Please follow the steps below.</p>
+          <img src="images/FAQ/FAQ18.png" alt="CCPAYMENTFAILURE" />
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="summary-text">6. How can I cancel an order?</span>
+          <span class="dropdown-arrow">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>Please follow the steps below.</p>
+          <img src="images/FAQ/FAQ9.png" alt="Cancel an order" />
+          <p>Support lines can be found in the below FAQ.</p>
+        </div>
+      </details>
+
+    <details>
+      <summary>
+        <span class="summary-text">7. How can I close/stop on-demand orders at my store?</span>
+        <span class="dropdown-arrow">⌄</span>
+      </summary>
+    
+      <div class="answer">
+        <p>To close any on-demand services, please follow the guidance listed in the <strong>contingency procedure</strong>.</p>
+    
+        <div style="background: #f5f5f5; border: 1px solid #ddd; border-radius: 8px; padding: 12px 14px; margin: 12px 0;">
+          <p style="margin-top: 0;"><strong>To access the contingency procedure information please go to this link on a seperate device:</strong></p>
+    
+          <p style="font-family: monospace; font-size: 14px; line-height: 1.5; word-break: break-all; margin-bottom: 0;">
+            https://jsainsbury.sharepoint.com/:w:/r/sites/DocCentre/Retail-Procedures/_layouts/15/Doc.aspx?sourcedoc=%7BE4D2EC1A-CB7B-45F6-A1DE-2C70D4E3E12A%7D&file=OnDemand_Contingency%20Procedure.docx&action=default&mobileredirect=true
+          </p>
+        </div>
+        <p> </p>
+        <p>If the contingency procedure cannot be found, please call the Just Eat, Deliveroo support lines individually.</p>
+        <p>For Chop Chop orders please call the JS Tech Service Desk</p>
+        
+        <p>Uber Eats orders on the Rynly app can be closed by selecting the tab shown below and "Take Store Offline".</p>
+    
+        <img 
+          src="images/FAQ/FAQ12.png" 
+          alt="Uber Eats Offline" 
+          style="width: 50%; max-width: 100%; height: auto; display: block; margin: 12px 0;"
+        />
+
+        <p> </p>
+        <p>If the store is running into network issues and cannot access this button, please call the Uber support line too.</p>
+        <p> </p>
+        <p><strong>NOTE:</strong> The Rynly support team <Strong>cannot</Strong> take a store offline from on-demand orders. Please follow the instructions above to do so.</p>
+      </div>
+    </details>
+
+      <details>
+        <summary>
+          <span class="summary-text">8. How to contact support?</span>
+          <span class="dropdown-arrow">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>- Just Eat support: 0208 736 2000</p>
+          <p>- Uber Eats support: 0808 178 5518</p>
+          <p>- Deliveroo Support: 020 3699 9977</p>
+          <p>- Chop Chop support: 0333 070 3602</p>
+          <p>- JS Tech Service Desk (STSD): 0345 603 2638</p>
+          <p>
+            <a href="mailto:support@rynly.com">support@rynly.com</a>
+          <p class="important-note">
+            Please note, for extra drivers or taking a store offline from on demand orders, please call the dedicated Chop Chop/Just Eat/Uber Eats/Deliveroo channel phone lines.
+          </p>
+      </details>
+
+      <details>
+        <summary>
+          <span class="summary-text">9. How to pick multiple orders at the same time? (Batch Picking)</span>
+          <span class="dropdown-arrow">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>Please follow the slides below for efficient picking, making use of the batch picking functionality.</p>
+           <img src="images/FAQ/FAQ14.png" alt="BatchPicking1" />
+           <img src="images/FAQ/FAQ15.png" alt="BatchPicking2" />
+           <img src="images/FAQ/FAQ16.png" alt="BatchPicking3" />
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="summary-text">10. How to use pick scan pack scan for an order?</span>
+          <span class="dropdown-arrow">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>Please note, this question only applies to specific Sainsbury's stores with this functionality enabled.</p>
+           <img src="images/FAQ/FAQ6.png" alt="Chop Chop extra driver instructions" />
+           <img src="images/FAQ/FAQ7.png" alt="Chop Chop extra driver instructions" />
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="summary-text">11. How to locate the account signed in on each device?</span>
+          <span class="dropdown-arrow">⌄</span>
+        </summary>
+        <div class="answer">
+           <img src="images/FAQ/FAQ10.png" alt="Settings page" />
+        </div>
+      </details>
+    </div>
+
+    <div class="footer">
+      Tip: Use the device back button to return here.
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll("details").forEach((detail) => {
+      const arrow = detail.querySelector(".dropdown-arrow");
+
+      if (!arrow) return;
+
+      const updateArrow = () => {
+        arrow.textContent = detail.open ? "⌃" : "⌄";
+      };
+
+      updateArrow();
+      detail.addEventListener("toggle", updateArrow);
+    });
+  </script>
+</body>
+</html>
