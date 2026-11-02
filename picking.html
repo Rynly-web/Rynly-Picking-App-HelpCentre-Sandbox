@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en-GB">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Moved | Rynly Help Centre</title>
+<meta name="robots" content="noindex"></head>
+<body><p>The picking guide has moved. <a id="fallback" href="index.html#/guides/picking-an-order">Open the new guide</a>.</p>
+<script>
+  (function () {
+    // Preserve the most common links from the old site.
+    var hash = window.location.hash;
+    var target = hash === '#slide-11' ? 'index.html#/guides/substitutions'
+      : hash === '#slide-32' ? 'index.html#/faq/managing-issues'
+      : 'index.html#/guides/picking-an-order';
+    document.getElementById('fallback').href = target;
+    window.location.replace(target);
+  })();
+</script>
+</body></html>
