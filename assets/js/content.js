@@ -222,7 +222,7 @@ window.RYNLY_CONTENT = {
 
         {id:"contact-support-faq",slide:{src:""},icon:"headset",category:"delivery-support",title:"How do I contact support?",blocks:[
                 {type:"paragraph",text:"Choose the support team that matches your issue and marketplace. The Contact support page lists the numbers for Just Eat, Uber Eats, Deliveroo, Chop Chop and the JS Tech Service Desk."},
-                {type:"notice",title:"Extra drivers or store availability",text:"For these requests, contact the dedicated marketplace support line rather than assuming Rynly can make the change."}
+                {type:"notice",title:"Extra drivers or store availability",text:"For these requests, contact the dedicated marketplace support line."}
             ],relatedGuides:["requesting-an-extra-courier","cancelling-order-by-marketplace"],supportLink:true}
     ]
 };
