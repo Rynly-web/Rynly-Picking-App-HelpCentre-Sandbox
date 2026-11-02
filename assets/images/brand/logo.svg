@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 138 42" role="img" aria-label="Rynly placeholder logo">
-  <!-- REPLACE THIS SVG with the approved Rynly logo; keep this filename or update index.html. -->
-  <rect x="1" y="6" width="30" height="30" rx="10" fill="#FF663E"/>
-  <path d="M10 27V16h7a5 5 0 0 1 0 10h-7m7-4 6 5" fill="none" stroke="#1C1919" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="40" y="30" font-family="Arial,Helvetica,sans-serif" font-size="27" font-weight="700" letter-spacing="-.9" fill="#1D4146">rynly</text>
-</svg>
