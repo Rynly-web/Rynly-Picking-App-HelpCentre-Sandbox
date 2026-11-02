@@ -1,4 +1,4 @@
-/* RYNLY HELP CENTRE — DESIGN TOKENS
+/* RYNLY HELP CENTRE â€” DESIGN TOKENS
    Official palette provided with project:
    Orange #FF663E | Teal 100 #D7E4E6, 200 #B7D2D7, 300 #729FA6,
    500 #357680, 700 #285960, 800 #1D4146, 900 #13292D
@@ -114,6 +114,9 @@ a:hover { text-decoration-thickness: 2px; }
 .media-title { display:flex; align-items:center; gap:9px; color:var(--teal-900); font-size:18px; font-weight:780; margin:0 0 15px; }
 .video-frame { background:var(--teal-900); width:100%; aspect-ratio:16 / 9; overflow:hidden; border-radius:var(--radius-md); }
 .video-frame video, .video-frame iframe { width:100%; height:100%; display:block; border:0; }
+/* Portrait recordings keep their original phone/Zebra proportions on mobile and desktop. */
+.video-frame.video-frame--portrait { width:min(100%, 350px); aspect-ratio:9 / 16; margin-inline:auto; }
+.video-frame video { object-fit:contain; }
 .video-placeholder { display:flex; flex-direction:column; gap:11px; align-items:center; justify-content:center; padding:24px 16px; min-height: 205px; border: 1px dashed var(--teal-300); border-radius:var(--radius-md); background:linear-gradient(135deg,#D7E4E6,#F4F6F6); text-align:center; }
 .video-placeholder .play-mark { display:grid; place-items:center; width:68px; height:68px; background:var(--teal-800); color:#FFF; border-radius:50%; }
 .video-placeholder strong, .pdf-placeholder strong { color:var(--teal-900); font-size:16px; }
@@ -126,6 +129,11 @@ a:hover { text-decoration-thickness: 2px; }
 .resource-link { display:flex; gap:12px; align-items:center; justify-content:space-between; padding:16px; min-height:63px; border:1px solid var(--line); border-radius:14px; text-decoration:none; color:var(--teal-800); font-weight:710; }
 .resource-link:hover { background:var(--teal-100); }
 .resource-link .icon { color:var(--teal-700); }
+/* Rynly email is displayed as contact information, not a clickable action. */
+.support-email-row { display:flex; align-items:center; gap:12px; padding:16px; min-height:63px; border:1px solid var(--line); border-radius:14px; color:var(--teal-800); font-weight:710; }
+.support-email-row .icon { flex-shrink:0; color:var(--teal-700); }
+.support-email-address { min-width:0; overflow-wrap:anywhere; }
+.support-email-note { margin:10px 0 0; color:var(--muted); font-size:13px; line-height:1.5; }
 .guide-label { display:inline-block; color:var(--teal-700); font-size:13px; font-weight:700; margin-bottom:12px; }
 .support-grid { display:grid; gap:13px; }
 .support-card { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:19px; box-shadow:var(--shadow); }
@@ -169,3 +177,37 @@ a:hover { text-decoration-thickness: 2px; }
 .media-grid > .supporting-resource { margin-top:0; }
 .slide-figure { margin:0; }
 .slide-image { display:block; width:100%; height:auto; border-radius:12px; border:1px solid var(--line); }
+
+/* Video topics from Sainsbury's workshop; compact and readable on Zebra screens. */
+.guide-outline { margin-top: 20px; }
+.guide-outline .media-title { margin-bottom: 8px; }
+.guide-topics { margin: 0; padding-left: 21px; color: var(--text); font-size: 15px; line-height: 1.6; }
+.guide-topics li + li { margin-top: 8px; }
+
+/* V4: images open a full-screen, pinch-zoomable viewer. */
+.zoomable-image { position:relative; display:block; width:100%; margin:0; padding:0; background:transparent; border:0; border-radius:12px; text-align:center; color:var(--teal-800); cursor:zoom-in; }
+.zoomable-image .article-image, .zoomable-image .slide-image { max-width:100%; margin:0 auto; }
+.zoom-indicator { position:absolute; right:10px; bottom:10px; background:rgba(19,41,45,.88); color:#fff; font-size:12px; font-weight:700; padding:7px 10px; border-radius:999px; pointer-events:none; }
+.image-lightbox { position:fixed; inset:0; margin:0; padding:0; width:100%; max-width:none; height:100%; height:100dvh; max-height:none; border:0; background:#101D20; color:#fff; overflow:hidden; }
+.image-lightbox[open] { display:flex; flex-direction:column; }
+.image-lightbox::backdrop { background:rgba(9,20,22,.92); }
+.lightbox-toolbar { display:flex; flex:none; align-items:center; justify-content:flex-end; gap:5px; padding: max(8px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) 8px max(12px, env(safe-area-inset-left)); background:#172B30; min-height:64px; z-index:1; }
+.lightbox-title { color:#fff; flex:1; min-width:0; font-size:14px; font-weight:650; line-height:1.35; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.lightbox-control { display:grid; place-items:center; flex-shrink:0; width:48px; height:48px; padding:0; border:1px solid rgba(255,255,255,.3); border-radius:12px; background:rgba(255,255,255,.12); color:#fff; font-size:30px; line-height:1; }
+.lightbox-control:disabled { opacity:.35; }
+.lightbox-close { background:#fff; color:#13292D; font-size:35px; margin-left:4px; }
+.lightbox-stage { position:relative; flex:1; min-height:0; overflow:hidden; display:flex; justify-content:center; align-items:center; padding:16px 8px max(32px,env(safe-area-inset-bottom)); touch-action:none; cursor:grab; overscroll-behavior:contain; }
+.lightbox-stage:active { cursor:grabbing; }
+.lightbox-image { display:block; max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; transform-origin:center center; user-select:none; -webkit-user-select:none; -webkit-user-drag:none; pointer-events:none; will-change:transform; }
+.lightbox-hint { position:absolute; bottom:max(12px,env(safe-area-inset-bottom)); left:50%; transform:translateX(-50%); white-space:nowrap; max-width:95%; border-radius:999px; color:#fff; background:rgba(10,24,27,.82); padding:7px 12px; font-size:12px; pointer-events:none; }
+@media (max-width:350px) { .lightbox-toolbar { gap:3px; } .lightbox-control { width:44px; height:44px; } .lightbox-title { font-size:12px; } }
+
+
+/* Full 41-slide picking guide, displayed inside the FAQ article. */
+.full-slide-guide { margin-top: 18px; }
+.full-slide-guide-intro { margin: 0 0 16px; color: var(--muted); font-size: 14px; line-height: 1.5; }
+.full-slide-list { display: grid; gap: 14px; }
+.full-slide-item { margin: 0; padding: 10px; border: 1px solid var(--line); border-radius: 16px; background: #fff; min-width: 0; }
+.full-slide-item .slide-image { display: block; max-width: 100%; width: 100%; height: auto; border-radius: 9px; border: 0; }
+.full-slide-caption { color: var(--muted); font-size: 12px; margin-top: 8px; font-weight: 700; }
+.full-slide-unavailable { background: var(--cream, #f9f4ed); color: var(--muted); border: 1px dashed var(--line); border-radius: 10px; padding: 12px; line-height: 1.4; font-size: 13px; overflow-wrap: anywhere; }
