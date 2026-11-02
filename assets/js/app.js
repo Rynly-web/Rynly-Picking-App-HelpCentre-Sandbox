@@ -607,7 +607,9 @@
     const hasArticleImages = (faq.blocks || []).some(block => block.type === "image");
     // Do not show a second 'Supporting slide coming soon' when the article
     // already contains a screenshot/slide. A configured PDF/image still shows.
-    if (!hasArticleImages || faq.slide?.src) app.append(slideMedia(faq, true));
+    if (faq.id !== "contact-support-faq" && (!hasArticleImages || faq.slide?.src)) {
+      app.append(slideMedia(faq, true));
+    }
     const relatedGuides = (faq.relatedGuides || [])
         .map(key => videosById.get(key)).filter(Boolean)
         .map(item => ({route:item.route,title:item.video.title}));
