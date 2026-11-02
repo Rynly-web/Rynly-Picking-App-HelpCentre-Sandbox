@@ -8,11 +8,11 @@ window.RYNLY_CONTENT = {
     // IMPORTANT: Transcribed from the old Help Centre, not independently verified.
     // Confirm all phone numbers, scope and ownership before publishing to production.
     support: [
-        {id:"just-eat",name:"Just Eat",phone:"0208 736 2000",description:"Just Eat order and courier support"},
-        {id:"uber-eats",name:"Uber Eats",phone:"0808 178 5518",description:"Uber Eats orders, couriers and store availability"},
-        {id:"deliveroo",name:"Deliveroo",phone:"020 3699 9977",description:"Deliveroo order and courier support"},
-        {id:"chop-chop",name:"Chop Chop",phone:"0333 070 3602",description:"Chop Chop order support"},
-        {id:"js-tech",name:"JS Tech Service Desk",phone:"0345 603 2638",description:"Store device, network and technical support"}
+        {id:"just-eat",name:"Just Eat",phone:"0208 736 2000"},
+        {id:"uber-eats",name:"Uber Eats",phone:"0808 178 5518"},
+        {id:"deliveroo",name:"Deliveroo",phone:"020 3699 9977"},
+        {id:"chop-chop",name:"Chop Chop",phone:"0333 070 3602"},
+        {id:"js-tech",name:"JS Tech Service Desk",phone:"0345 603 2638"}
     ],
 
     // Seven top-level guide rows, in the order requested by the support team.
