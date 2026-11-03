@@ -7,6 +7,11 @@
   const data = window.RYNLY_CONTENT;
   const config = window.RYNLY_CONFIG;
   const mediaSettings = window.RYNLY_MEDIA_SETTINGS || {};
+  const faqSections = window.RYNLY_FAQ_SECTIONS || [];
+  // Cache resolved FAQ image paths within the session so navigation does not
+  // repeatedly request the same missing URL before finding a legacy asset.
+  const resolvedImagePaths = new Map();
+  const unavailableImagePaths = new Set();
   const app = document.getElementById("app");
   // A top-level guide can be a single video or a selector containing videos.
   // Child videos use stable URLs: #/guides/<section-id>/<video-id>.
@@ -113,7 +118,8 @@
       const card = a(item.route, "feature-card " + item.style);
       append(card,
           append(n("span", "feature-icon"), svg(item.icon, "large")),
-          append(n("span"), n("span", "feature-title", item.title), n("span", "feature-subtitle", item.desc))
+          append(n("span", "feature-copy"), n("span", "feature-title", item.title), n("span", "feature-subtitle", item.desc)),
+          svg("chevron-right", "feature-arrow")
       );
       cards.append(card);
     });
@@ -387,7 +393,12 @@
       img.loading = "lazy";
       img.decoding = "async";
       let attempt = 0;
+      img.addEventListener("load", () => {
+        const match = img.currentSrc.match(/\/([^/]+\.(?:png|jpe?g|webp))$/i);
+        if (match) resolvedImagePaths.set(match[1], imageCandidates[attempt]);
+      });
       img.addEventListener("error", () => {
+        unavailableImagePaths.add(imageCandidates[attempt]);
         attempt++;
         if (attempt < imageCandidates.length) {
           img.src = imageCandidates[attempt];
@@ -454,13 +465,40 @@
     app.append(relatedSection("Related questions", related));
     app.append(append(n("div", "after-content"), homeLink()));
   }
-  // Single-level FAQ index: one icon and one question per row. The old
-  // category route is preserved as a compatibility alias, but no categories are displayed.
+  // FAQ sections are presentation-only; pages keep their stable IDs and links.
+  // Manage section labels and memberships in assets/js/faq-sections.js.
   function renderFaqList() {
     append(app, back("", "Help Centre"), head(null, "Help & FAQs"));
-    const list = rowList();
-    data.faqs.forEach(faq => list.append(row("faq/" + faq.id, faq.title, null, faq.icon || "help", null)));
-    append(app, list, append(n("div", "after-content"), homeLink()));
+    const shown = new Set();
+    const groups = faqSections.length ? faqSections : [
+      {title:"Questions", ids:data.faqs.map(faq => faq.id)}
+    ];
+    groups.forEach(group => {
+      const faqs = (group.ids || []).map(id => byId(data.faqs, id)).filter(Boolean);
+      if (!faqs.length) return;
+      const section = n("section", "faq-group");
+      section.setAttribute("aria-label", group.title);
+      section.append(n("h2", "faq-group-title", group.title));
+      const list = rowList();
+      faqs.forEach(faq => {
+        if (shown.has(faq.id)) return;
+        shown.add(faq.id);
+        list.append(row("faq/" + faq.id, faq.title, null, faq.icon || "help"));
+      });
+      section.append(list);
+      app.append(section);
+    });
+    // Authors can add a FAQ to content.js before choosing a section for it.
+    const ungrouped = data.faqs.filter(faq => !shown.has(faq.id));
+    if (ungrouped.length) {
+      const section = n("section", "faq-group");
+      section.append(n("h2", "faq-group-title", "More questions"));
+      const list = rowList();
+      ungrouped.forEach(faq => list.append(row("faq/" + faq.id, faq.title, null, faq.icon || "help")));
+      section.append(list);
+      app.append(section);
+    }
+    app.append(append(n("div", "after-content"), homeLink()));
   }
   /**
    * Backwards-compatible paths for screenshots from the original Help Centre.
@@ -476,12 +514,15 @@
     if (!match) return [];
     const filename = match[1];
     // Prefer the exact path specified by content.js, then try the legacy folder.
-    return [...new Set([
+    const candidates = [...new Set([
       src,
       "images/FAQ/" + filename,
       "assets/images/faq/" + filename,
       "images/faq/" + filename
     ])];
+    const preferred = resolvedImagePaths.get(filename);
+    if (preferred) return [preferred, ...candidates.filter(path => path !== preferred)];
+    return candidates.filter(path => !unavailableImagePaths.has(path));
   }
   function blockElement(block) {
     switch (block.type) {
@@ -512,7 +553,12 @@
         image.decoding = "async";
         const sources = faqImageCandidates(block.src);
         let candidateIndex = 0;
+        image.addEventListener("load", () => {
+          const match = image.currentSrc.match(/\/([^/]+\.(?:png|jpe?g|webp))$/i);
+          if (match) resolvedImagePaths.set(match[1], sources[candidateIndex]);
+        });
         image.addEventListener("error", () => {
+          unavailableImagePaths.add(sources[candidateIndex]);
           candidateIndex++;
           if (candidateIndex < sources.length) {
             image.src = sources[candidateIndex];
@@ -620,8 +666,11 @@
     append(app,back("", "Help Centre"),head("Not found", "We couldn't find that page",
         "The page may have moved or its link may be incorrect."), homeLink());
   }
+  let lastRenderedHash = null;
   function route() {
     if (activeLightbox?.open) activeLightbox.close();
+    const navigating = lastRenderedHash !== null && lastRenderedHash !== location.hash;
+    lastRenderedHash = location.hash;
     // All navigation is anchored within index.html; GitHub Pages needs no rewrites.
     const parts = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean);
     const safe = parts.length <= 3 && parts.every(part => /^[a-z0-9-]+$/.test(part));
@@ -644,7 +693,13 @@
     const title = app.querySelector("h1");
     document.title = (title ? title.textContent + " | " : "") + "Rynly Help Centre";
     window.scrollTo(0,0);
+    if (navigating && !document.querySelector("dialog[open]")) {
+      app.focus({preventScroll:true});
+    }
   }
   window.addEventListener("hashchange",route);
+  window.addEventListener("pageshow", event => {
+    if (event.persisted) route();
+  });
   route();
 })();

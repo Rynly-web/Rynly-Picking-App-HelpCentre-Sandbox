@@ -6,12 +6,15 @@
   <meta name="theme-color" content="#F9F4ED">
   <meta name="description" content="Help and training for Rynly Picking App users.">
   <title>Help Centre | Rynly</title>
-  <link rel="icon" href="assets/images/brand/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <script src="assets/js/config.js" defer></script>
-  <script src="assets/js/content.js" defer></script>
-  <script src="assets/js/media-settings.js" defer></script>
-  <script src="assets/js/app.js" defer></script>
+  <link rel="icon" href="assets/images/brand/rynly-badge-fullcolor.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/styles.css?v=7">
+  <link rel="stylesheet" href="assets/css/refinements.css?v=7">
+  <script src="assets/js/config.js?v=7" defer></script>
+  <script src="assets/js/content.js?v=7" defer></script>
+  <script src="assets/js/media-settings.js?v=7" defer></script>
+  <script src="assets/js/faq-sections.js?v=7" defer></script>
+  <script src="assets/js/app.js?v=7" defer></script>
+  <script src="assets/js/search.js?v=8" defer></script>
 </head>
 <body>
 <!-- Self-contained SVG icons: no icon-library CDN or internet dependency. -->
@@ -49,14 +52,29 @@
 
 <div class="site-shell">
   <header class="site-header">
-    <a class="site-title" href="#/" aria-label="Rynly Help Centre home">Help Centre</a>
-    <a class="brand-link" href="#/" aria-label="Return to Help Centre home">
-      <img class="brand-logo" src="assets/images/brand/logo.svg" alt="Rynly">
+    <a class="brand-link" href="#/" aria-label="Rynly Help Centre home">
+      <img class="brand-logo" src="assets/images/brand/rynly-wordmark.png" width="2048" height="294" alt="Rynly">
     </a>
+    <a class="site-title" href="#/" aria-label="Help Centre home">Help Centre</a>
   </header>
-  <div id="search-slot" hidden aria-hidden="true"><!-- Reserved for a future search UI. --></div>
+  <section class="search-region" aria-label="Search the Help Centre">
+    <form id="help-search" class="search-form" role="search" autocomplete="off">
+      <label class="sr-only" for="site-search">Search help articles and guides</label>
+      <svg class="icon search-icon" aria-hidden="true"><use href="#i-search"></use></svg>
+      <input id="site-search" type="search" role="combobox" aria-autocomplete="list"
+             aria-controls="search-results" aria-expanded="false" aria-label="Search help articles and guides"
+             enterkeyhint="search" autocapitalize="off" autocomplete="off" spellcheck="false"
+             placeholder="Search help, guides and issues">
+      <button id="search-clear" class="search-clear" type="button" aria-label="Clear search" hidden>×</button>
+    </form>
+    <ul id="search-results" class="search-results" role="listbox" aria-label="Search results" hidden></ul>
+    <p id="search-status" class="sr-only" role="status" aria-live="polite"></p>
+  </section>
   <main id="app" class="main-content" tabindex="-1" aria-live="off"></main>
-  <footer class="site-footer"><span>Rynly Picking App</span><span>Help Centre</span></footer>
+  <footer class="site-footer">
+    <span class="footer-brand"><img src="assets/images/brand/rynly-badge-teal500.svg" width="26" height="26" alt="" aria-hidden="true"><span>Rynly Picking App</span></span>
+    <a href="#/">Help Centre</a>
+  </footer>
 </div>
 
 <noscript><p class="noscript">JavaScript is required to display this Help Centre. Please enable JavaScript in your browser.</p></noscript>
