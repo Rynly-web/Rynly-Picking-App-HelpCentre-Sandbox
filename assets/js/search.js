@@ -15,45 +15,47 @@
   const container = document.querySelector('.search-region');
   if (!data || !searchForm || !input || !resultsEl || !status || !container) return;
 
-  // Searchable, static data only. No network request, cookies or external index.
-  // Page titles are authoritative; descriptions and article text are supporting evidence.
+  // Search stays entirely on-device. No external index or API calls.
+  // Titles > editorial keywords > descriptions > long article body.
+  const extra = window.RYNLY_SEARCH_KEYWORDS || {};
   const normalise = value => String(value ?? '').toLowerCase()
       .normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
       .replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' ');
-
-  // Instructions like "how do I" describe a question, not the topic being searched.
-  // Ignoring them fixes searches such as "How to pick an order" -> "Pick an order".
   const stopWords = new Set([
-    'a','an','and','are','as','at','be','by','can','could','do','does','for',
-    'from','how','i','in','into','is','it','me','my','of','on','or','our','please',
-    'should','the','this','to','us','was','what','when','where','which','who',
-    'why','will','with','would','you','your','not','dont','wont','show','see','find'
+    'a','an','and','are','as','at','be','by','can','could','do','does',
+    'for','from','how','i','in','into','is','it','me','my','of','on','or',
+    'our','please','should','the','this','to','us','was','what','when',
+    'where','which','who','why','will','with','would','you','your',
+    'show','see','find','tell','about'
   ]);
   const variants = {
-    substitutes:'substitution', substitution:'substitution', substitutions:'substitution',
-    substituted:'substitution', substitute:'substitution', subs:'substitution', subbed:'substitution',
-    picking:'pick', picked:'pick', picker:'pick', pickers:'pick', picks:'pick',
-    packing:'pack', packed:'pack', packages:'pack', packaging:'pack',
-    scans:'scan', scanned:'scan', scanner:'scan', scanners:'scan', scanning:'scan',
-    bags:'bag', bagging:'bag',
-    orders:'order', ordering:'order',
-    cancellations:'cancel', cancellation:'cancel', cancelled:'cancel',
-    canceled:'cancel', cancelling:'cancel', canceling:'cancel',
-    completes:'complete', completed:'complete', completing:'complete', completion:'complete',
-    finishing:'complete', finished:'complete', finish:'complete',
-    couriers:'courier', drivers:'driver',
+    picks:'pick', picked:'pick', picking:'pick', picker:'pick', pickers:'pick',
+    packing:'pack', packed:'pack', packaging:'pack', packages:'pack',
+    scans:'scan', scanned:'scan', scanners:'scan', scanning:'scan',
+    substitutes:'substitution', substitute:'substitution', substituted:'substitution',
+    substitutions:'substitution', subs:'substitution', subbed:'substitution',
+    bags:'bag', bagging:'bag', orders:'order', ordering:'order',
+    cancelling:'cancel', canceling:'cancel', cancelled:'cancel', canceled:'cancel',
+    cancellation:'cancel', cancellations:'cancel',
+    completing:'complete', completed:'complete', completion:'complete',
+    finishing:'complete', finish:'complete', finished:'complete',
+    couriers:'courier', drivers:'driver', riders:'rider',
     payments:'payment', paid:'payment',
-    notifications:'alert', notification:'alert', alerts:'alert',
-    alarm:'alert', alarms:'alert',
+    notifications:'alert', notification:'alert', alarms:'alert', alarm:'alert', alerts:'alert',
     issues:'issue', problems:'issue', problem:'issue',
     troubleshooting:'troubleshoot', troubleshoots:'troubleshoot',
-    devices:'device', phone:'device', phones:'device',
-    ringing:'ring', rings:'ring',
+    devices:'device', phones:'device', phone:'device',
+    rings:'ring', ringing:'ring',
     stores:'store', accounts:'account',
-    logging:'login', logged:'login', login:'login', logins:'login', log:'login', signed:'login', sign:'login', signin:'login',
-    videos:'video', tutorials:'guide',
+    login:'login', logins:'login', logging:'login', logged:'login',
+    signin:'login', signed:'login', sign:'login',
+    closes:'closure', close:'closure', closed:'closure', closing:'closure',
+    closure:'closure', closures:'closure', clousure:'closure',
+    clousre:'closure', clossure:'closure',
+    pausing:'pause', paused:'pause', suspending:'suspend', suspended:'suspend',
+    deliveries:'delivery', videos:'video', tutorials:'guide'
   };
-  const canonical = word => {
+  function canonical(word) {
     if (variants[word]) return variants[word];
     if (word.length > 5 && word.endsWith('ies')) return word.slice(0, -3) + 'y';
     if (word.length > 5 && word.endsWith('ing')) {
@@ -66,119 +68,123 @@
     }
     if (word.length > 4 && word.endsWith('s')) return word.slice(0, -1);
     return word;
-  };
+  }
   const tokens = value => normalise(value).split(' ')
-      .filter(word => word && !stopWords.has(word))
-      .map(canonical);
-  const unique = value => [...new Set(value)];
-  const flatten = value => {
+      .filter(word => word && !stopWords.has(word)).map(canonical);
+  const unique = values => [...new Set(values)];
+  function flatten(value) {
     if (value == null) return [];
     if (typeof value === 'string' || typeof value === 'number') return [String(value)];
     if (Array.isArray(value)) return value.flatMap(flatten);
-    // Extract visible authored words, not IDs, image filenames or URLs.
     if (typeof value === 'object') return [
       'title','description','videoText','topics','blocks','text','items',
       'label','alt','name','phone','intro','subtitle'
     ].flatMap(key => flatten(value[key]));
     return [];
-  };
-
+  }
+  const phraseOf = value => tokens(value).join(' ');
+  function field(value) {
+    const parts = tokens(value);
+    return {terms:unique(parts), phrase:parts.join(' ')};
+  }
   const docs = [];
-  const add = (route, title, description, body, weight = 1) => {
-    const titleTokens = tokens(title);
-    const descriptionTokens = tokens(description);
-    const bodyTokens = tokens(body);
+  function add(route, title, description='', body='', weight=1) {
+    const keywords = Array.isArray(extra[route]) ? extra[route].filter(x=>typeof x==='string') : [];
+    const aliases = keywords.map(phraseOf).filter(Boolean);
+    const keywordField = field(keywords.join(' '));
     docs.push({
-      route, title, weight,
-      titlePhrase: titleTokens.join(' '),
-      descriptionPhrase: descriptionTokens.join(' '),
-      bodyPhrase: bodyTokens.join(' '),
-      titleTerms: unique(titleTokens),
-      descriptionTerms: unique(descriptionTokens),
-      bodyTerms: unique(bodyTokens),
+      route, title, weight, aliases,
+      titleField:field(title), keywordField,
+      descriptionField:field(description), bodyField:field(body)
     });
-  };
-  add('', 'Help Centre', 'Help and training for the Rynly picking app', '', .2);
+  }
+  add('', 'Help Centre', 'Help and training for the Rynly picking app', '', .25);
   add('support', 'Contact support', 'Partner telephone numbers and Rynly support email', [
     ...(data.support || []).flatMap(item => [item.name, item.description || '', item.phone || '']),
-    'Rynly support email support@rynly.com please CC ondemand@sainsburys.co.uk',
-    'Order problems extra drivers store availability technical service desk'
-  ].join(' '));
-  add('guides', 'How-to guides', 'Picking app training guides videos and demonstrations', '', .4);
-  add('faq', 'Help & FAQs', 'Answers to picking app questions and troubleshooting', '', .4);
+    'Rynly support email support@rynly.com CC ondemand@sainsburys.co.uk',
+    'Technical service desk, marketplace contact details'
+  ].join(' '), 1.25);
+  add('guides', 'How-to guides', 'Rynly picking app training videos and demonstrations', '', .5);
+  add('faq', 'Help & FAQs', 'Answers to picking app questions and troubleshooting', '', .5);
   (data.guides || []).forEach(guide => {
-    const route = 'guides/' + guide.id;
-    const guideBody = [guide.videoText, guide.topics, guide.videos ? 'Choose a video topic' : '']
-        .flatMap(flatten).join(' ');
+    const route='guides/'+guide.id;
+    const body=[guide.videoText,guide.topics].flatMap(flatten).join(' ');
     if (Array.isArray(guide.videos)) {
-      add(route, guide.title, guide.description, guideBody, .85);
-      guide.videos.forEach(video => add(route + '/' + video.id,
-          video.title, video.description, [video.videoText, video.topics].flatMap(flatten).join(' '), 1.05));
-    } else {
-      add(route, guide.title, guide.description, guideBody, 1.05);
-    }
+      // A group is a real page; index it, but let its specific videos rank higher.
+      add(route,guide.title,guide.description,body,.88);
+      guide.videos.forEach(video => add(route+'/'+video.id, video.title,
+          video.description,[video.videoText,video.topics].flatMap(flatten).join(' '),1.08));
+    } else add(route,guide.title,guide.description,body,1.08);
   });
-  (data.faqs || []).forEach(faq => add('faq/' + faq.id, faq.title, '',
-      [flatten(faq.blocks).join(' '), faq.slideDeck ? 'Full 41 slide picking app guide training reference' : ''].join(' '), 1.07));
+  (data.faqs || []).forEach(faq => add('faq/'+faq.id,faq.title,'',[
+    flatten(faq.blocks).join(' '),
+    faq.slideDeck ? 'Full 41 slide picking app guide training reference' : ''
+  ].join(' '),1.12));
 
-  // One-character typo tolerance for substantial words, without large dependencies.
-  function editDistanceAtMostOne(a, b) {
-    if (a.length < 5 || b.length < 5 || Math.abs(a.length - b.length) > 1) return false;
-    let i = 0, j = 0, changes = 0;
-    while (i < a.length && j < b.length) {
-      if (a[i] === b[j]) { i++; j++; continue; }
-      if (++changes > 1) return false;
-      if (a.length > b.length) i++;
-      else if (b.length > a.length) j++;
-      else { i++; j++; }
+  // Bounded Levenshtein for one- or two-letter errors, NOT entire large bodies.
+  // At most 2 changes for 7+ character terms; short words remain strict.
+  function near(a,b,max) {
+    if (Math.abs(a.length-b.length)>max) return false;
+    let previous=Array.from({length:b.length+1},(_,i)=>i);
+    for(let i=1;i<=a.length;i++) {
+      const next=[i];
+      let rowMin=next[0];
+      for(let j=1;j<=b.length;j++) {
+        const cost=a[i-1]===b[j-1]?0:1;
+        next[j]=Math.min(previous[j]+1,next[j-1]+1,previous[j-1]+cost);
+        rowMin=Math.min(rowMin,next[j]);
+      }
+      if(rowMin>max) return false;
+      previous=next;
     }
-    return changes + Number(i < a.length || j < b.length) <= 1;
+    return previous[b.length]<=max;
   }
-  function matchStrength(term, available) {
-    if (available.includes(term)) return 3;
-    if (term.length >= 3 && available.some(word => word.startsWith(term))) return 2;
-    if (available.some(word => editDistanceAtMostOne(term, word))) return 1;
+  function strength(term, terms, fuzzy) {
+    if (terms.includes(term)) return 3;
+    if (term.length>=3 && terms.some(t=>t.startsWith(term))) return 2;
+    if (fuzzy && term.length>=5) {
+      const distance=term.length>=7 ? 2 : 1;
+      if (terms.some(t=>t.length>=5 && near(term,t,distance))) return 1;
+    }
     return 0;
   }
   function search(query) {
-    if (normalise(query).length < 2) return [];
-    const requested = tokens(query);
-    const terms = unique(requested);
-    if (!terms.length) return []; // e.g. "how do I" is not a useful search.
-    const phrase = requested.join(' ');
-    const minimumMatches = terms.length <= 2 ? terms.length : Math.ceil(terms.length * .7);
-
-    return docs.map(doc => {
-      let score = 0;
-      let matches = 0;
-      let titleMatches = 0;
-      for (const term of terms) {
-        const title = matchStrength(term, doc.titleTerms);
-        const description = matchStrength(term, doc.descriptionTerms);
-        const body = matchStrength(term, doc.bodyTerms);
-        const strength = Math.max(title, description, body);
-        if (!strength) continue;
+    if (normalise(query).length<2) return [];
+    const requested=tokens(query);
+    const terms=unique(requested);
+    if (!terms.length) return [];
+    const phrase=requested.join(' ');
+    // Require both words of a two-term query; allow one missing word in longer sentences.
+    const minimum=terms.length<=2?terms.length:Math.ceil(terms.length*.75);
+    const results=[];
+    for(const doc of docs) {
+      let matches=0, titleMatches=0, keywordMatches=0, score=0;
+      for(const term of terms) {
+        const t=strength(term,doc.titleField.terms,true);
+        const k=strength(term,doc.keywordField.terms,true);
+        const d=strength(term,doc.descriptionField.terms,false);
+        const b=strength(term,doc.bodyField.terms,false);
+        if(!Math.max(t,k,d,b)) continue;
         matches++;
-        if (title) {
-          titleMatches++;
-          score += 19 * title;
-        } else if (description) score += 7 * description;
-        else score += 3 * body;
+        if(t) { titleMatches++; score+=65*t; }
+        else if(k) { keywordMatches++; score+=32*k; }
+        else if(d) score+=12*d;
+        else score+=5*b;
       }
-      if (matches < minimumMatches) return null;
-
-      // Strong preference for a title that is the topic the user has asked for.
-      // Compare after removing question filler ("how to") and normalising words.
-      if (doc.titlePhrase === phrase) score += 260;
-      else if (phrase.length >= 4 && (' ' + doc.titlePhrase + ' ').includes(' ' + phrase + ' ')) score += 115;
-      else if (phrase.length >= 4 && doc.bodyPhrase.includes(phrase)) score += 22;
-      else if (phrase.length >= 4 && doc.descriptionPhrase.includes(phrase)) score += 12;
-      score += 28 * (titleMatches / terms.length);
-      score += 22 * (titleMatches / Math.max(1, doc.titleTerms.length));
-      if (matches < terms.length) score *= Math.pow(matches / terms.length, 2);
-      return { doc, score: score * doc.weight };
-    }).filter(Boolean).sort((a, b) => b.score - a.score || a.doc.title.localeCompare(b.doc.title))
-        .slice(0, 3).map(result => result.doc);
+      if(matches<minimum) continue;
+      if(doc.titleField.phrase===phrase) score+=520;
+      else if (doc.aliases.includes(phrase)) score+=380;
+      else if (phrase.length>=4 && (' '+doc.titleField.phrase+' ').includes(' '+phrase+' ')) score+=160;
+      else if (phrase.length>=4 && doc.aliases.some(alias=>(' '+alias+' ').includes(' '+phrase+' '))) score+=85;
+      else if (phrase.length>=4 && doc.descriptionField.phrase.includes(phrase)) score+=20;
+      else if (phrase.length>=4 && doc.bodyField.phrase.includes(phrase)) score+=10;
+      score+=40*(titleMatches/terms.length);
+      score+=20*(keywordMatches/terms.length);
+      if(matches<terms.length) score*=Math.pow(matches/terms.length,2);
+      results.push({doc,score:score*doc.weight});
+    }
+    return results.sort((a,b)=>b.score-a.score||a.doc.title.localeCompare(b.doc.title))
+        .slice(0,3).map(result=>({route:result.doc.route,title:result.doc.title}));
   }
 
   let visible = [];

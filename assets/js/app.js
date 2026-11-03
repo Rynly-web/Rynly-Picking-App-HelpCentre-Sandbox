@@ -462,7 +462,7 @@
     }
     const related = (video.relatedFaq || []).map(key => byId(data.faqs,key)).filter(Boolean)
         .map(faq => ({route:"faq/"+faq.id,title:faq.title}));
-    app.append(relatedSection("Related questions", related));
+    append(app, relatedSection("Related questions", related));
     app.append(append(n("div", "after-content"), homeLink()));
   }
   // FAQ sections are presentation-only; pages keep their stable IDs and links.
@@ -659,7 +659,7 @@
     const relatedGuides = (faq.relatedGuides || [])
         .map(key => videosById.get(key)).filter(Boolean)
         .map(item => ({route:item.route,title:item.video.title}));
-    app.append(relatedSection("Related how-to guides", relatedGuides));
+    append(app, relatedSection("Related how-to guides", relatedGuides));
     app.append(append(n("div", "after-content"), homeLink()));
   }
   function renderNotFound() {
