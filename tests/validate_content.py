@@ -104,7 +104,11 @@ check("feedback(" not in renderer, "Article feedback removed")
 check("slideMedia(faq, true)" in renderer, "FAQ slide rendering enabled")
 check('relatedSection("Related questions", related)' in renderer, "Guide-to-FAQ related questions enabled")
 check('function renderFaqList()' in renderer and 'renderFaqCategories()' not in renderer, "Single-level FAQs, no category screens")
-check('video.topics.forEach' in renderer, "Individual video topic outlines are rendered")
+check('topics.append(n("li", "", extraInfo));' in renderer and
+      'video.topics.forEach' not in renderer,
+      "Video outline is a single editable information bullet")
+check('Training video coming soon' not in renderer and 'PDF slides coming soon' not in renderer,
+      "Unpublished video/PDF placeholders removed")
 check('function openImageViewer(' in renderer, "Zoomable image viewer enabled")
 check('const hasArticleImages =' in renderer, "Duplicate FAQ slide placeholders suppressed")
 check('const videosById = new Map()' in renderer, "FAQ related guides target individual videos")

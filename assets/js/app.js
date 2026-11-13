@@ -111,8 +111,8 @@
     const cards = n("div", "feature-list");
     const features = [
       {route:"support",style:"feature-contact",icon:"headset",title:"Contact support",desc:"Partner support numbers"},
-      {route:"guides",style:"feature-guides",icon:"book",title:"How-to guides",desc:"Build confidence using the picking app"},
-      {route:"faq",style:"feature-faq",icon:"help",title:"Help & FAQs",desc:"Answers and managing issues"}
+      {route:"guides",style:"feature-guides",icon:"book",title:"Guided videos",desc:"Build confidence using the picking app"},
+      {route:"faq",style:"feature-faq",icon:"help",title:"Help centre and FAQs",desc:"Answers and managing issues"}
     ];
     features.forEach(item => {
       const card = a(item.route, "feature-card " + item.style);
@@ -150,7 +150,7 @@
     app.append(append(n("div", "after-content"), homeLink()));
   }
   function renderGuides() {
-    append(app, back("", "Help Centre"), head(null, "How-to guides"));
+    append(app, back("", "Help Centre"), head(null, "Guided videos"));
     const list = rowList();
     data.guides.forEach(guide => {
       list.append(row("guides/" + guide.id, guide.title, guide.description, guide.icon));
@@ -167,7 +167,6 @@
     return path.indexOf("..") === -1 && allowed.test(path) ? path : "";
   }
   function videoMedia(guide) {
-    const card = n("section", "media-card");
     const media = guide.video || {type:"none"};
     const settings = mediaSettings[guide.id] || {};
     // Explicit video orientation takes precedence over the optional settings file.
@@ -196,6 +195,8 @@
       openUrl = "https://player.vimeo.com/video/" + media.id + hash;
       player = makeFrame(openUrl, guide.title + " video (Vimeo)");
     }
+    if (!player) return null; // Unpublished videos do not render a placeholder.
+    const card = n("section", "media-card");
     if (player) {
       // The remote iframe cannot reliably report its dimensions, so portrait
       // orientation is configured per video (or detected from local MP4 metadata).
@@ -213,13 +214,6 @@
       link.rel = "noopener noreferrer";
       append(fallback, link, ".");
       card.append(fallback);
-    } else {
-      const placeholder = n("div", "video-placeholder");
-      append(placeholder,
-          append(n("div", "play-mark"), svg("play", "large")),
-          n("strong", "", "Training video coming soon"),
-          n("span", "", "An approved video will appear here once it has been uploaded."));
-      card.append(placeholder);
     }
     // This optional guide text is deliberately editable in content.js.
     // Keep it even when an embedded video becomes available.
@@ -377,6 +371,7 @@
         ? faqImageCandidates(referencedImage.src)
         : (slideImage ? [slideImage] : faqImageCandidates(raw));
     const isImage = imageCandidates.length > 0;
+    if (!isFaq && !pdf && !isImage) return null;
     card.setAttribute("aria-label", isFaq || isImage ? "Supporting slide" : "PDF slides");
     if (pdf) {
       const link = n("a", "resource-link");
@@ -402,6 +397,14 @@
         attempt++;
         if (attempt < imageCandidates.length) {
           img.src = imageCandidates[attempt];
+        } else if (!isFaq) {
+          // The referenced slide is missing. Don't show an empty media box
+          // on the public training page; it will return once the image exists.
+          const mediaContainer = card.parentElement;
+          card.remove();
+          if (mediaContainer?.classList.contains("media-grid") && !mediaContainer.childElementCount) {
+            mediaContainer.remove();
+          }
         } else {
           const fallback = n("div", "figure-placeholder");
           append(fallback, svg("file"), n("strong", "", "Supporting slide unavailable"),
@@ -413,16 +416,17 @@
       img.src = imageCandidates[0];
       card.append(figure);
     } else {
-      card.append(resourcePlaceholder(isFaq));
+      card.append(resourcePlaceholder());
     }
     return card;
   }
-  function resourcePlaceholder(isFaq) {
+  // FAQ-only placeholder. Empty video/PDF resources are intentionally hidden.
+  function resourcePlaceholder() {
     const placeholder = n("div", "pdf-placeholder");
     append(placeholder,
         append(n("div", "pdf-symbol"), svg("file", "large")),
-        append(n("div"), n("strong", "", isFaq ? "Supporting slide coming soon" : "PDF slides coming soon"),
-            n("span", "", isFaq ? "An approved slide will appear here once it has been added." : "The accompanying training slides will appear here.")));
+        append(n("div"), n("strong", "", "Supporting slide coming soon"),
+            n("span", "", "An approved slide will appear here once it has been added.")));
     return placeholder;
   }
   function renderGuide(id, videoId = null) {
@@ -431,8 +435,8 @@
     const isGroup = Array.isArray(guide.videos);
     if (isGroup && !videoId) {
       // Video selector: the parent row has no player, only the chosen child does.
-      append(app, back("guides", "All how-to guides"),
-          crumbs([{route:"",label:"Home"},{route:"guides",label:"How-to guides"}]),
+      append(app, back("guides", "All guided videos"),
+          crumbs([{route:"",label:"Home"},{route:"guides",label:"Guided videos"}]),
           head(null, guide.title));
       const list = rowList();
       guide.videos.forEach(video => list.append(row(
@@ -446,20 +450,25 @@
     if (!video) return renderNotFound();
     const backRoute = isGroup ? "guides/" + guide.id : "guides";
     const breadcrumbItems = [
-      {route:"", label:"Home"}, {route:"guides", label:"How-to guides"}
+      {route:"", label:"Home"}, {route:"guides", label:"Guided videos"}
     ];
     if (isGroup) breadcrumbItems.push({route:backRoute,label:guide.title});
-    append(app, back(backRoute, isGroup ? "All " + guide.title.toLowerCase() + " videos" : "All how-to guides"),
+    append(app, back(backRoute, isGroup ? "All " + guide.title.toLowerCase() + " videos" : "All guided videos"),
         crumbs(breadcrumbItems), head("Training guide", video.title));
-    app.append(append(n("div", "media-grid"), videoMedia(video), slideMedia(video)));
-    if (Array.isArray(video.topics) && video.topics.length) {
-      const outline = n("section", "media-card guide-outline");
-      outline.append(n("h2", "media-title", "What this video covers"));
-      const topics = n("ul", "guide-topics");
-      video.topics.forEach(topic => topics.append(n("li", "", topic)));
-      outline.append(topics);
-      app.append(outline);
-    }
+    const mediaItems = [videoMedia(video), slideMedia(video)].filter(Boolean);
+    if (mediaItems.length) app.append(append(n("div", "media-grid"), mediaItems));
+    const outline = n("section", "media-card guide-outline");
+    outline.append(n("h2", "media-title", "What this video covers"));
+    const topics = n("ul", "guide-topics");
+    // Add extraInfo: "..." to this video in content.js when the final
+    // colleague-facing guidance is available. The existing topics stay in
+    // the data for search and can be restored without rewriting the pages.
+    const extraInfo = typeof video.extraInfo === "string" && video.extraInfo.trim()
+        ? video.extraInfo.trim()
+        : "[Place any extra info here to be beside the training video]";
+    topics.append(n("li", "", extraInfo));
+    outline.append(topics);
+    app.append(outline);
     const related = (video.relatedFaq || []).map(key => byId(data.faqs,key)).filter(Boolean)
         .map(faq => ({route:"faq/"+faq.id,title:faq.title}));
     append(app, relatedSection("Related questions", related));
@@ -468,7 +477,7 @@
   // FAQ sections are presentation-only; pages keep their stable IDs and links.
   // Manage section labels and memberships in assets/js/faq-sections.js.
   function renderFaqList() {
-    append(app, back("", "Help Centre"), head(null, "Help & FAQs"));
+    append(app, back("", "Help Centre"), head(null, "Help centre and FAQs"));
     const shown = new Set();
     const groups = faqSections.length ? faqSections : [
       {title:"Questions", ids:data.faqs.map(faq => faq.id)}
@@ -659,7 +668,7 @@
     const relatedGuides = (faq.relatedGuides || [])
         .map(key => videosById.get(key)).filter(Boolean)
         .map(item => ({route:item.route,title:item.video.title}));
-    append(app, relatedSection("Related how-to guides", relatedGuides));
+    append(app, relatedSection("Related videos", relatedGuides));
     app.append(append(n("div", "after-content"), homeLink()));
   }
   function renderNotFound() {

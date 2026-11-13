@@ -104,8 +104,8 @@
     'Rynly support email support@rynly.com CC ondemand@sainsburys.co.uk',
     'Technical service desk, marketplace contact details'
   ].join(' '), 1.25);
-  add('guides', 'How-to guides', 'Rynly picking app training videos and demonstrations', '', .5);
-  add('faq', 'Help & FAQs', 'Answers to picking app questions and troubleshooting', '', .5);
+  add('guides', 'Guided videos', 'Rynly picking app training videos and demonstrations', '', .5);
+  add('faq', 'Help centre and FAQs', 'Answers to picking app questions and troubleshooting', '', .5);
   (data.guides || []).forEach(guide => {
     const route='guides/'+guide.id;
     const body=[guide.videoText,guide.topics].flatMap(flatten).join(' ');
@@ -120,6 +120,16 @@
     flatten(faq.blocks).join(' '),
     faq.slideDeck ? 'Full 41 slide picking app guide training reference' : ''
   ].join(' '),1.12));
+
+  // Match the actual destination, not the words used in the title.
+  // This matters when a FAQ question and a video cover the same workflow.
+  function destinationKind(route) {
+    if (route.startsWith('faq/')) return 'Help centre';
+    if (route.startsWith('guides/')) return 'Video';
+    if (route === 'faq' || route === 'guides') return 'Section';
+    if (route === 'support') return 'Support';
+    return 'Home';
+  }
 
   // Bounded Levenshtein for one- or two-letter errors, NOT entire large bodies.
   // At most 2 changes for 7+ character terms; short words remain strict.
@@ -184,7 +194,11 @@
       results.push({doc,score:score*doc.weight});
     }
     return results.sort((a,b)=>b.score-a.score||a.doc.title.localeCompare(b.doc.title))
-        .slice(0,3).map(result=>({route:result.doc.route,title:result.doc.title}));
+        .slice(0,3).map(result=>({
+          route:result.doc.route,
+          title:result.doc.title,
+          kind:destinationKind(result.doc.route)
+        }));
   }
 
   let visible = [];
@@ -238,7 +252,21 @@
       item.setAttribute('aria-selected','false');
       const link = document.createElement('a');
       link.href='#/'+doc.route;
-      link.textContent=doc.title; // Only the page title appears in results.
+      // A concise, coloured destination label above the title. The title itself
+      // is not modified, so result ranking and route targets remain unchanged.
+      // Keep the complete destination + title available to screen readers.
+      link.setAttribute('aria-label', doc.kind + ': ' + doc.title);
+      const kind = document.createElement('span');
+      kind.className = 'search-result-kind';
+      kind.classList.add('search-result-kind--' + ({
+        'Help centre':'help', 'Video':'video', 'Support':'support',
+        'Section':'section', 'Home':'home'
+      }[doc.kind] || 'other'));
+      kind.textContent = doc.kind;
+      const title = document.createElement('span');
+      title.className = 'search-result-title';
+      title.textContent = doc.title;
+      link.append(kind, title);
       link.addEventListener('click', event => { event.preventDefault(); go(doc.route); });
       item.append(link); resultsEl.append(item);
     });
