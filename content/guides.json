@@ -170,6 +170,13 @@
         "id": "missing-payments"
       }
     ],
+    "slide": {
+      "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/uploads/vertical-copy-of-how-to-manage-issues-in-the-admin-dashboard-retailers-rynly-guide.pdf"
+    },
+    "relatedFaq": [
+      "new-order-alerts",
+      "find-signed-in-account"
+    ],
     "published": true,
     "icon": "alert",
     "searchTerms": [
