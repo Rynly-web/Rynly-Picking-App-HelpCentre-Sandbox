@@ -78,13 +78,14 @@
           "type": "vimeo",
           "id": "1242425189"
         },
-        "extraInfo": "Testing bullet. two",
-        "videoText": "Troubleshooting the alert settings and device behaviour for incoming orders.",
+        "extraInfo": "Test for what this video covers",
+        "videoText": "Description test",
         "pdf": {
           "filename": "new-order-alerts.pdf"
         },
         "slide": {
-          "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/uploads/vertical-copy-of-how-to-manage-issues-in-the-admin-dashboard-retailers-rynly-guide-1.pdf"
+          "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/uploads/vertical-copy-of-how-to-manage-issues-in-the-admin-dashboard-retailers-rynly-guide.png",
+          "alt": "Image description test"
         },
         "relatedFaq": [
           "new-order-alerts",
