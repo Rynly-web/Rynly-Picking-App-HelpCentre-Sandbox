@@ -456,8 +456,11 @@
     if (isGroup) breadcrumbItems.push({route:backRoute,label:guide.title});
     append(app, back(backRoute, isGroup ? "All " + guide.title.toLowerCase() + " videos" : "All guided videos"),
       crumbs(breadcrumbItems), head("Training guide", video.title));
-    const mediaItems = [videoMedia(video), slideMedia(video)].filter(Boolean);
-    if (mediaItems.length) app.append(append(n("div", "media-grid"), mediaItems));
+    // The teaching sequence is video -> explanatory bullet -> supporting slide/PDF.
+    // Keep the slide separate from the video grid so it always appears below
+    // "What this video covers" on both narrow and wide screens.
+    const playerCard = videoMedia(video);
+    if (playerCard) app.append(append(n("div", "media-grid"), playerCard));
     const outline = n("section", "media-card guide-outline");
     outline.append(n("h2", "media-title", "What this video covers"));
     const topics = n("ul", "guide-topics");
@@ -470,6 +473,8 @@
     topics.append(n("li", "", extraInfo));
     outline.append(topics);
     app.append(outline);
+    const supportingCard = slideMedia(video);
+    if (supportingCard) app.append(supportingCard);
     const related = (video.relatedFaq || []).map(key => byId(data.faqs,key)).filter(Boolean)
       .map(faq => ({route:"faq/"+faq.id,title:faq.title}));
     append(app, relatedSection("Related questions", related));
