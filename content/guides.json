@@ -1,26 +1,25 @@
 [
   {
-    "id": "logging-in-getting-started",
     "title": "Logging in & getting started",
     "description": "Navigate the picking dashboard, deliveries, order history and help.",
-    "icon": "device",
-    "published": true,
     "video": {
       "type": "youtube"
     },
+    "extraInfo": "CMS editing test.",
     "pdf": {
       "filename": "logging-in-getting-started.pdf"
     },
-    "extraInfo": "CMS editing test.",
+    "relatedFaq": [
+      "find-signed-in-account",
+      "identify-order"
+    ],
+    "published": true,
+    "icon": "device",
     "topics": [
       "Logging in and getting started",
       "Main dashboard and available orders",
       "Deliveries and order history",
       "Finding Help Centre"
-    ],
-    "relatedFaq": [
-      "find-signed-in-account",
-      "identify-order"
     ],
     "searchTerms": [
       "login",
@@ -31,30 +30,30 @@
       "dashboard",
       "history",
       "new colleague induction"
-    ]
+    ],
+    "id": "logging-in-getting-started"
   },
   {
-    "id": "picking-completing-an-order",
     "title": "Pick an order",
     "description": "Accept an order, pick the items and complete the picking process.",
-    "icon": "bag",
-    "published": true,
     "video": {
       "type": "none"
     },
+    "videoText": "A walkthrough of picking an order, including the steps before completion.",
     "pdf": {
       "filename": "picking-an-order.pdf"
     },
-    "videoText": "A walkthrough of picking an order, including the steps before completion.",
+    "relatedFaq": [
+      "identify-order",
+      "stuck-order"
+    ],
+    "published": true,
+    "icon": "bag",
     "topics": [
       "Accepting an order",
       "Scanning and manual item selection",
       "Unavailable items and substitutions",
       "Reviewing order details and completing the order"
-    ],
-    "relatedFaq": [
-      "identify-order",
-      "stuck-order"
     ],
     "searchTerms": [
       "how to pick an order",
@@ -65,45 +64,35 @@
       "accept order",
       "order picking tutorial",
       "picking process"
-    ]
+    ],
+    "id": "picking-completing-an-order"
   },
   {
-    "id": "troubleshooting-common-issues",
     "title": "Common issues",
     "description": "Choose a problem to watch its troubleshooting video.",
-    "icon": "alert",
-    "published": true,
-    "searchTerms": [
-      "troubleshooting",
-      "problems",
-      "errors",
-      "things not working",
-      "fix problems",
-      "common technical issues"
-    ],
     "videos": [
       {
-        "id": "new-order-alerts-video",
         "title": "How to troubleshoot new order alerts",
         "description": "Check the device and app when new-order notifications are not sounding.",
-        "icon": "bell",
-        "published": true,
         "video": {
           "type": "vimeo",
           "id": "1242425189"
         },
+        "extraInfo": "Testing bullet",
+        "videoText": "Troubleshooting the alert settings and device behaviour for incoming orders.",
         "pdf": {
           "filename": "new-order-alerts.pdf"
         },
-        "videoText": "Troubleshooting the alert settings and device behaviour for incoming orders.",
+        "relatedFaq": [
+          "new-order-alerts",
+          "find-signed-in-account"
+        ],
+        "published": true,
+        "icon": "bell",
         "topics": [
           "Device sound settings",
           "Keeping the picking app active",
           "Checking order alert status"
-        ],
-        "relatedFaq": [
-          "new-order-alerts",
-          "find-signed-in-account"
         ],
         "searchTerms": [
           "notifications not ringing",
@@ -113,30 +102,30 @@
           "ringtone",
           "alarm",
           "notifications troubleshooting"
-        ]
+        ],
+        "id": "new-order-alerts-video"
       },
       {
-        "id": "cancelling-order-by-marketplace",
         "title": "How to cancel an order — by marketplace",
         "description": "Understand different cancellation processes for each marketplace.",
-        "icon": "x-circle",
-        "published": true,
         "video": {
           "type": "none"
         },
+        "videoText": "How order cancellation steps differ across marketplace partners.",
         "pdf": {
           "filename": "cancelling-an-order.pdf"
         },
-        "videoText": "How order cancellation steps differ across marketplace partners.",
-        "topics": [
-          "Identifying the order marketplace",
-          "Marketplace-specific cancellation procedures",
-          "Where to get partner support"
-        ],
         "relatedFaq": [
           "cancel-order",
           "identify-order",
           "contact-support-faq"
+        ],
+        "published": true,
+        "icon": "x-circle",
+        "topics": [
+          "Identifying the order marketplace",
+          "Marketplace-specific cancellation procedures",
+          "Where to get partner support"
         ],
         "searchTerms": [
           "cancel order video",
@@ -145,29 +134,29 @@
           "cancel uber eats order",
           "cancel deliveroo order",
           "cancellation procedure"
-        ]
+        ],
+        "id": "cancelling-order-by-marketplace"
       },
       {
-        "id": "missing-payments",
         "title": "Missing payments",
         "description": "Recognise a missing or failed payment and find the correct support process.",
-        "icon": "credit-card",
-        "published": true,
         "video": {
           "type": "none"
         },
+        "videoText": "The steps to investigate a missing or failed payment during an on-demand order.",
         "pdf": {
           "filename": "missing-payments.pdf"
         },
-        "videoText": "The steps to investigate a missing or failed payment during an on-demand order.",
+        "relatedFaq": [
+          "chop-chop-payment-failure",
+          "contact-support-faq"
+        ],
+        "published": true,
+        "icon": "credit-card",
         "topics": [
           "Identifying a payment problem",
           "Checking the relevant order",
           "When to escalate for support"
-        ],
-        "relatedFaq": [
-          "chop-chop-payment-failure",
-          "contact-support-faq"
         ],
         "searchTerms": [
           "missing payment",
@@ -177,30 +166,41 @@
           "chop chop payment",
           "payment not going through",
           "unpaid order"
-        ]
+        ],
+        "id": "missing-payments"
       }
-    ]
+    ],
+    "published": true,
+    "icon": "alert",
+    "searchTerms": [
+      "troubleshooting",
+      "problems",
+      "errors",
+      "things not working",
+      "fix problems",
+      "common technical issues"
+    ],
+    "id": "troubleshooting-common-issues"
   },
   {
-    "id": "requesting-an-extra-courier",
     "title": "Requesting an extra courier",
     "description": "Learn how to request courier assistance for large orders.",
-    "icon": "truck",
-    "published": true,
     "video": {
       "type": "none"
     },
+    "videoText": "How to request another courier or contact the partner team when required.",
     "pdf": {
       "filename": "requesting-an-extra-courier.pdf"
     },
-    "videoText": "How to request another courier or contact the partner team when required.",
-    "topics": [
-      "Chop Chop and Uber Eats extra-courier requests",
-      "Contacting other marketplace partners"
-    ],
     "relatedFaq": [
       "extra-driver",
       "contact-support-faq"
+    ],
+    "published": true,
+    "icon": "truck",
+    "topics": [
+      "Chop Chop and Uber Eats extra-courier requests",
+      "Contacting other marketplace partners"
     ],
     "searchTerms": [
       "extra driver",
@@ -210,45 +210,34 @@
       "large order courier",
       "two drivers",
       "more than one rider"
-    ]
+    ],
+    "id": "requesting-an-extra-courier"
   },
   {
-    "id": "batch-picking-bag-scanning",
     "title": "Batching + bag scanning",
     "description": "Choose the batch picking or bag scanning video.",
-    "icon": "layers",
-    "published": true,
-    "searchTerms": [
-      "pick multiple orders",
-      "bag barcode",
-      "batching",
-      "scan bags",
-      "pick scan pack scan",
-      "multiple orders training"
-    ],
     "videos": [
       {
-        "id": "bag-scanning-video",
         "title": "Bag scanning",
         "description": "Pick scan / pack scan and keeping bags assigned to the correct order.",
-        "icon": "scan",
-        "published": true,
         "video": {
           "type": "none"
         },
+        "extraInfo": "Learn how to assign bags, scan items into the correct bags and prepare orders for courier collection.",
+        "videoText": "How to use bag scanning when it is enabled at your store.",
         "pdf": {
           "filename": "bag-scanning.pdf"
         },
-        "videoText": "How to use bag scanning when it is enabled at your store.",
-        "extraInfo": "Learn how to assign bags, scan items into the correct bags and prepare orders for courier collection.",
+        "relatedFaq": [
+          "pick-scan-pack-scan",
+          "batch-picking-faq"
+        ],
+        "published": true,
+        "icon": "scan",
         "topics": [
           "Pick scan / pack scan",
           "Assigning bags to the correct order",
           "Locker order staging where available"
-        ],
-        "relatedFaq": [
-          "pick-scan-pack-scan",
-          "batch-picking-faq"
         ],
         "searchTerms": [
           "bag scanning",
@@ -258,29 +247,29 @@
           "pack scan",
           "locker scanning",
           "bag barcode scanning"
-        ]
+        ],
+        "id": "bag-scanning-video"
       },
       {
-        "id": "batch-picking-video",
         "title": "Batch picking",
         "description": "Pick multiple orders together while keeping items separated.",
-        "icon": "layers",
-        "published": true,
         "video": {
           "type": "none"
         },
+        "videoText": "Using the ALL tab to work efficiently across more than one order.",
         "pdf": {
           "filename": "batch-picking.pdf"
         },
-        "videoText": "Using the ALL tab to work efficiently across more than one order.",
+        "relatedFaq": [
+          "batch-picking-faq",
+          "pick-scan-pack-scan"
+        ],
+        "published": true,
+        "icon": "layers",
         "topics": [
           "Finding orders in the ALL tab",
           "Picking multiple orders in one run",
           "Keeping items allocated to their own order"
-        ],
-        "relatedFaq": [
-          "batch-picking-faq",
-          "pick-scan-pack-scan"
         ],
         "searchTerms": [
           "batch pick",
@@ -289,31 +278,42 @@
           "all tab",
           "multiple deliveries at once",
           "combined picking"
-        ]
+        ],
+        "id": "batch-picking-video"
       }
-    ]
+    ],
+    "published": true,
+    "icon": "layers",
+    "searchTerms": [
+      "pick multiple orders",
+      "bag barcode",
+      "batching",
+      "scan bags",
+      "pick scan pack scan",
+      "multiple orders training"
+    ],
+    "id": "batch-picking-bag-scanning"
   },
   {
-    "id": "substitutions-deep-dive",
     "title": "Substitutions",
     "description": "Handle replacements and unavailable items across marketplaces.",
-    "icon": "refresh",
-    "published": true,
     "video": {
       "type": "none"
     },
+    "videoText": "How to handle substitutions and unavailability during picking.",
     "pdf": {
       "filename": "substitutions.pdf"
     },
-    "videoText": "How to handle substitutions and unavailability during picking.",
+    "relatedFaq": [
+      "pick-scan-pack-scan",
+      "identify-order"
+    ],
+    "published": true,
+    "icon": "refresh",
     "topics": [
       "Marketplace-specific substitution processes",
       "Selecting suitable replacements",
       "When items should be marked unavailable"
-    ],
-    "relatedFaq": [
-      "pick-scan-pack-scan",
-      "identify-order"
     ],
     "searchTerms": [
       "substitute item",
@@ -323,29 +323,29 @@
       "replacement",
       "customer substitution",
       "subs training"
-    ]
+    ],
+    "id": "substitutions-deep-dive"
   },
   {
-    "id": "in-store-barcode-scanning",
     "title": "In-store barcode scanning & packing an order",
     "description": "Scan items in store and prepare the completed order for handoff.",
-    "icon": "scan",
-    "published": true,
     "video": {
       "type": "none"
     },
+    "videoText": "A practical demonstration of scanning and packing items at store level.",
     "pdf": {
       "filename": "barcode-scanning-and-packing.pdf"
     },
-    "videoText": "A practical demonstration of scanning and packing items at store level.",
+    "relatedFaq": [
+      "pick-scan-pack-scan",
+      "batch-picking-faq"
+    ],
+    "published": true,
+    "icon": "scan",
     "topics": [
       "Scanning item barcodes",
       "Checking picked items",
       "Packing the order for handoff"
-    ],
-    "relatedFaq": [
-      "pick-scan-pack-scan",
-      "batch-picking-faq"
     ],
     "searchTerms": [
       "barcode",
@@ -355,6 +355,7 @@
       "in store scanning",
       "packing training",
       "barcode scanner"
-    ]
+    ],
+    "id": "in-store-barcode-scanning"
   }
 ]
