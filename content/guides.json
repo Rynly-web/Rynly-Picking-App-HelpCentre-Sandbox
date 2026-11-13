@@ -240,6 +240,7 @@
           "filename": "bag-scanning.pdf"
         },
         "videoText": "How to use bag scanning when it is enabled at your store.",
+        "extraInfo": "Learn how to assign bags, scan items into the correct bags and prepare orders for courier collection.",
         "topics": [
           "Pick scan / pack scan",
           "Assigning bags to the correct order",
