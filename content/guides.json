@@ -11,7 +11,7 @@
     "pdf": {
       "filename": "logging-in-getting-started.pdf"
     },
-    "videoText": "CMS editing test.",
+    "extraInfo": "CMS editing test.",
     "topics": [
       "Logging in and getting started",
       "Main dashboard and available orders",
