@@ -1,11 +1,5 @@
 [
   {
-    "id": "identify-order",
-    "slide": {
-      "src": ""
-    },
-    "icon": "tag",
-    "category": "order-management",
     "title": "How do I identify which marketplace an order came from?",
     "blocks": [
       {
@@ -18,7 +12,7 @@
       },
       {
         "type": "image",
-        "src": "assets/images/faq/FAQ1.png",
+        "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/images/faq/FAQ1.png",
         "alt": "Order identifiers on the Rynly picking app home screen"
       }
     ],
@@ -26,6 +20,9 @@
       "logging-in-getting-started",
       "picking-completing-an-order"
     ],
+    "supportLink": false,
+    "published": true,
+    "icon": "tag",
     "searchTerms": [
       "which marketplace",
       "which platform sent the order",
@@ -35,15 +32,10 @@
       "just eat order",
       "order channel"
     ],
-    "published": true
+    "id": "identify-order",
+    "category": "order-management"
   },
   {
-    "id": "cancel-order",
-    "slide": {
-      "src": ""
-    },
-    "icon": "x-circle",
-    "category": "order-management",
     "title": "How can I cancel an order?",
     "blocks": [
       {
@@ -52,7 +44,7 @@
       },
       {
         "type": "image",
-        "src": "assets/images/faq/FAQ9.png",
+        "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/images/faq/FAQ9.png",
         "alt": "Original Rynly instructions for cancelling an order"
       },
       {
@@ -64,6 +56,9 @@
     "relatedGuides": [
       "cancelling-order-by-marketplace"
     ],
+    "supportLink": false,
+    "published": true,
+    "icon": "x-circle",
     "searchTerms": [
       "cancel an order",
       "stop a single order",
@@ -73,62 +68,55 @@
       "how to cancel",
       "order cancellation"
     ],
-    "published": true
+    "id": "cancel-order",
+    "category": "order-management"
   },
   {
-    "id": "batch-picking-faq",
-    "slide": {
-      "src": ""
-    },
-    "icon": "layers",
-    "category": "substitutions-scanning",
-    "title": "How can I pick multiple orders at the same time?",
+    "title": "How can I batch pick multiple orders?",
     "blocks": [
       {
         "type": "paragraph",
-        "text": "Batch picking lets eligible orders be picked together. The original Help Centre included a three-slide walkthrough; the screenshots can be restored below."
+        "text": "Batch picking lets eligible orders be picked together. Select the first order - Accept Order. Accept additional orders after to batch pick multiple orders and select Add to batch for each additional order.\n"
       },
       {
         "type": "image",
-        "src": "assets/images/faq/FAQ14.png",
+        "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/images/faq/vertical-copy-of-rynly-guide-the-rynly-picking-app-v24-071026pptx.png",
         "alt": "Batch picking instructions - slide 1"
       },
       {
         "type": "image",
-        "src": "assets/images/faq/FAQ15.png",
+        "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/images/faq/vertical-copy-of-rynly-guide-the-rynly-picking-app-v24-071026pptx-1.png",
         "alt": "Batch picking instructions - slide 2"
       },
       {
         "type": "image",
-        "src": "assets/images/faq/FAQ16.png",
+        "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/images/faq/vertical-copy-of-rynly-guide-the-rynly-picking-app-v24-071026pptx.jpg",
         "alt": "Batch picking instructions - slide 3"
       },
       {
-        "type": "notice",
-        "title": "Before publishing",
-        "text": "Review these slides against the latest batch-picking functionality and configuration."
+        "type": "image",
+        "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/images/faq/vertical-copy-of-rynly-guide-the-rynly-picking-app-v24-071026pptx-4.png",
+        "alt": "Batch picking instructions - slide 4"
       }
     ],
     "relatedGuides": [
       "batch-picking-video"
     ],
+    "supportLink": false,
+    "published": true,
+    "icon": "layers",
     "searchTerms": [
       "pick two orders",
       "pick multiple orders",
       "batch picking",
       "multi pick",
-      "all tab",
+      "batch tab",
       "picking together"
     ],
-    "published": true
+    "id": "batch-picking-faq",
+    "category": "substitutions-scanning"
   },
   {
-    "id": "pick-scan-pack-scan",
-    "slide": {
-      "src": ""
-    },
-    "icon": "scan",
-    "category": "substitutions-scanning",
     "title": "How do I use pick scan / pack scan?",
     "blocks": [
       {
@@ -142,12 +130,12 @@
       },
       {
         "type": "image",
-        "src": "assets/images/faq/FAQ6.png",
+        "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/images/faq/FAQ6.png",
         "alt": "Pick scan pack scan instructions - slide 1"
       },
       {
         "type": "image",
-        "src": "assets/images/faq/FAQ7.png",
+        "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/images/faq/FAQ7.png",
         "alt": "Pick scan pack scan instructions - slide 2"
       }
     ],
@@ -155,6 +143,9 @@
       "bag-scanning-video",
       "in-store-barcode-scanning"
     ],
+    "supportLink": false,
+    "published": true,
+    "icon": "scan",
     "searchTerms": [
       "bag scan",
       "scanning bags",
@@ -163,15 +154,10 @@
       "scan a bag",
       "packing barcode"
     ],
-    "published": true
+    "id": "pick-scan-pack-scan",
+    "category": "substitutions-scanning"
   },
   {
-    "id": "stuck-order",
-    "slide": {
-      "src": ""
-    },
-    "icon": "clock",
-    "category": "managing-issues",
     "title": "How do I clear an old or stuck order?",
     "blocks": [
       {
@@ -180,7 +166,7 @@
       },
       {
         "type": "image",
-        "src": "assets/images/faq/FAQ8.png",
+        "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/images/faq/FAQ8.png",
         "alt": "Original example of resolving a hanging order"
       },
       {
@@ -192,6 +178,9 @@
     "relatedGuides": [
       "picking-completing-an-order"
     ],
+    "supportLink": false,
+    "published": true,
+    "icon": "clock",
     "searchTerms": [
       "stuck order",
       "old order",
@@ -201,15 +190,10 @@
       "clear old order",
       "order not finishing"
     ],
-    "published": true
+    "id": "stuck-order",
+    "category": "managing-issues"
   },
   {
-    "id": "chop-chop-payment-failure",
-    "slide": {
-      "src": ""
-    },
-    "icon": "credit-card",
-    "category": "managing-issues",
     "title": "What should I do with a Chop Chop payment failure?",
     "blocks": [
       {
@@ -218,7 +202,7 @@
       },
       {
         "type": "image",
-        "src": "assets/images/faq/FAQ18.png",
+        "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/images/faq/FAQ18.png",
         "alt": "Chop Chop payment failure instructions"
       },
       {
@@ -230,6 +214,9 @@
     "relatedGuides": [
       "missing-payments"
     ],
+    "supportLink": false,
+    "published": true,
+    "icon": "credit-card",
     "searchTerms": [
       "chop chop payment error",
       "card declined",
@@ -238,15 +225,10 @@
       "order not paid",
       "payment processing failure"
     ],
-    "published": true
+    "id": "chop-chop-payment-failure",
+    "category": "managing-issues"
   },
   {
-    "id": "take-store-offline",
-    "slide": {
-      "src": ""
-    },
-    "icon": "power",
-    "category": "managing-issues",
     "title": "How do I stop on-demand orders at my store?",
     "blocks": [
       {
@@ -264,7 +246,7 @@
       },
       {
         "type": "image",
-        "src": "assets/images/faq/FAQ12.png",
+        "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/images/faq/FAQ12.png",
         "alt": "Uber Eats Take Store Offline menu"
       },
       {
@@ -273,7 +255,9 @@
         "text": "The Rynly support team cannot take a store offline from on-demand orders. Contact the appropriate marketplace support line or follow the approved contingency procedure."
       }
     ],
-    "relatedGuides": [],
+    "supportLink": false,
+    "published": true,
+    "icon": "power",
     "searchTerms": [
       "close",
       "closure",
@@ -300,15 +284,10 @@
       "online store closed",
       "on demand contingency"
     ],
-    "published": true
+    "id": "take-store-offline",
+    "category": "managing-issues"
   },
   {
-    "id": "new-order-alerts",
-    "slide": {
-      "src": ""
-    },
-    "icon": "bell",
-    "category": "devices-alerts",
     "title": "How can I keep new-order alerts ringing?",
     "blocks": [
       {
@@ -326,7 +305,7 @@
       },
       {
         "type": "image",
-        "src": "assets/images/faq/FAQ2.png",
+        "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/images/faq/FAQ2.png",
         "alt": "Device alerts enabled example"
       },
       {
@@ -338,6 +317,9 @@
     "relatedGuides": [
       "new-order-alerts-video"
     ],
+    "supportLink": false,
+    "published": true,
+    "icon": "bell",
     "searchTerms": [
       "new order not ringing",
       "silent alerts",
@@ -347,15 +329,10 @@
       "no order notifications",
       "incoming order alerts"
     ],
-    "published": true
+    "id": "new-order-alerts",
+    "category": "devices-alerts"
   },
   {
-    "id": "find-signed-in-account",
-    "slide": {
-      "src": ""
-    },
-    "icon": "user",
-    "category": "accounts-settings",
     "title": "How can I see which account is signed in on a device?",
     "blocks": [
       {
@@ -364,13 +341,16 @@
       },
       {
         "type": "image",
-        "src": "assets/images/faq/FAQ10.png",
+        "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/images/faq/FAQ10.png",
         "alt": "Rynly account settings and signed-in user"
       }
     ],
     "relatedGuides": [
       "logging-in-getting-started"
     ],
+    "supportLink": false,
+    "published": true,
+    "icon": "user",
     "searchTerms": [
       "which account is logged in",
       "logged in as",
@@ -380,15 +360,10 @@
       "check active account",
       "user profile"
     ],
-    "published": true
+    "id": "find-signed-in-account",
+    "category": "accounts-settings"
   },
   {
-    "id": "extra-driver",
-    "slide": {
-      "src": ""
-    },
-    "icon": "truck",
-    "category": "delivery-support",
     "title": "How do I request an extra driver for a large order?",
     "blocks": [
       {
@@ -421,7 +396,7 @@
       },
       {
         "type": "image",
-        "src": "assets/images/faq/FAQ4.png",
+        "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/images/faq/FAQ4.png",
         "alt": "Uber Eats request-extra-driver guidance"
       },
       {
@@ -434,7 +409,7 @@
       },
       {
         "type": "image",
-        "src": "assets/images/faq/FAQ5.png",
+        "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/images/faq/FAQ5.png",
         "alt": "Chop Chop request-extra-driver guidance"
       },
       {
@@ -446,6 +421,9 @@
     "relatedGuides": [
       "requesting-an-extra-courier"
     ],
+    "supportLink": false,
+    "published": true,
+    "icon": "truck",
     "searchTerms": [
       "request more drivers",
       "additional courier",
@@ -454,25 +432,14 @@
       "large delivery",
       "another driver for order"
     ],
-    "published": true
+    "id": "extra-driver",
+    "category": "delivery-support"
   },
   {
-    "id": "complete-picking-guide",
-    "slide": {
-      "src": ""
-    },
-    "icon": "book",
-    "category": "delivery-support",
     "title": "Full picking app guide (41 slides)",
-    "slideDeck": {
-      "first": 1,
-      "last": 42,
-      "skip": [
-        2
-      ]
-    },
-    "blocks": [],
-    "relatedGuides": [],
+    "supportLink": false,
+    "published": true,
+    "icon": "book",
     "searchTerms": [
       "all slides",
       "full manual",
@@ -482,15 +449,17 @@
       "long picking guide",
       "training slides"
     ],
-    "published": true
+    "id": "complete-picking-guide",
+    "category": "delivery-support",
+    "slideDeck": {
+      "first": 1,
+      "last": 42,
+      "skip": [
+        2
+      ]
+    }
   },
   {
-    "id": "contact-support-faq",
-    "slide": {
-      "src": ""
-    },
-    "icon": "headset",
-    "category": "delivery-support",
     "title": "How do I contact support?",
     "blocks": [
       {
@@ -508,6 +477,8 @@
       "cancelling-order-by-marketplace"
     ],
     "supportLink": true,
+    "published": true,
+    "icon": "headset",
     "searchTerms": [
       "how to contact support",
       "support numbers",
@@ -516,6 +487,7 @@
       "technical support",
       "who do I call"
     ],
-    "published": true
+    "id": "contact-support-faq",
+    "category": "delivery-support"
   }
 ]
