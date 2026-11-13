@@ -85,7 +85,8 @@ content:
     - name: video
       label: Video link and orientation
       type: object
-      description: Choose YouTube (Unlisted) or Vimeo and paste the video URL. Use portrait for vertical recordings.
+      description: Choose YouTube (Unlisted) or Vimeo and paste the video URL. Use portrait for vertical 
+        recordings.
       fields:
       - name: type
         label: Video provider
@@ -103,8 +104,8 @@ content:
       - name: id
         label: YouTube/Vimeo link or video ID
         type: string
-        description: Paste the full YouTube/Vimeo link, or just the video ID. An unlisted Vimeo link can include its 
-          private hash.
+        description: Paste the full YouTube/Vimeo link, or just the video ID. An unlisted Vimeo link can 
+          include its private hash.
       - name: hash
         label: Vimeo unlisted hash (optional)
         type: string
@@ -133,7 +134,7 @@ content:
     - name: extraInfo
       label: What this video covers — one bullet
       type: text
-      description: Displays above the supporting slide or PDF. Blank uses the general default text.
+      description: Displays above any supporting image or PDF. Leave blank to use the site-wide default.
     - name: videoText
       label: Description below the video (optional)
       type: text
@@ -151,14 +152,15 @@ content:
       - name: filename
         label: Suggested download filename
         type: string
+      hidden: true
     - name: slide
-      label: Supporting slide or FAQ image (optional)
+      label: Supporting material (image or PDF)
       type: object
       fields:
       - name: src
-        label: Slide image or PDF
+        label: Upload or select image/PDF
         type: file
-        description: Upload one image/PDF, or leave empty to use a FAQ screenshot.
+        description: Choose one image or PDF. This takes priority over an existing FAQ screenshot reference.
         options:
           media: attachments
           extensions:
@@ -168,9 +170,10 @@ content:
           - webp
           - pdf
       - name: faqId
-        label: Reuse screenshot from FAQ
+        label: Or reuse an existing FAQ screenshot
         type: select
-        description: Choose an existing FAQ screenshot instead of uploading the same file twice.
+        description: Choose the FAQ containing the screenshot. No duplicate upload required. Leave blank when 
+          uploading a file above.
         options:
           values:
           - name: ''
@@ -214,6 +217,9 @@ content:
       - name: alt
         label: Image description (optional)
         type: string
+        description: Brief description for screen readers when using an uploaded image.
+      description: 'Choose one: upload/select an image or PDF, OR reuse an existing FAQ screenshot. Leave both empty
+        for no supporting material.'
     - name: relatedFaq
       label: Related FAQ questions
       type: select
@@ -236,7 +242,8 @@ content:
     - name: published
       label: Visible in the Help Centre
       type: boolean
-      description: Turn off to hide from menus/search. JSON and uploaded files remain public in a public repository.
+      description: Turn off to hide from menus/search. JSON and uploaded files remain public in a public 
+        repository.
     - name: icon
       label: Video icon (advanced)
       type: select
@@ -272,13 +279,13 @@ content:
       description: Protected; this ID is used by direct video and related-FAQ links.
       pattern: ^[a-z0-9-]+$
       readonly: true
-    description: Expand the relevant video to add its YouTube link, slides, information and related FAQs. Leave empty 
-      for a single-video guide.
+    description: Expand the relevant video to add its YouTube link, slides, information and related FAQs. 
+      Leave empty for a single-video guide.
   - name: video
     label: Embedded video (single-video guides)
     type: object
-    description: For single-video guides, choose YouTube, Vimeo or local video. For Common issues and Batching, edit the
-      individual videos inside “Videos in this group” instead.
+    description: For single-video guides, choose YouTube, Vimeo or local video. For Common issues and 
+      Batching, edit the individual videos inside “Videos in this group” instead.
     fields:
     - name: type
       label: Video provider
@@ -296,8 +303,8 @@ content:
     - name: id
       label: YouTube/Vimeo link or video ID
       type: string
-      description: Paste the full YouTube/Vimeo link, or just the video ID. An unlisted Vimeo link can include its 
-        private hash.
+      description: Paste the full YouTube/Vimeo link, or just the video ID. An unlisted Vimeo link can include
+        its private hash.
     - name: hash
       label: Vimeo unlisted hash (optional)
       type: string
@@ -326,8 +333,7 @@ content:
   - name: extraInfo
     label: What this video covers — one bullet
     type: text
-    description: Displays above the supporting slide or PDF. If blank, the site displays the default text from Site 
-      settings.
+    description: Displays above any supporting image or PDF. Leave blank to use the site-wide default.
   - name: videoText
     label: Description below the video (optional)
     type: text
@@ -345,14 +351,15 @@ content:
     - name: filename
       label: Suggested download filename
       type: string
+    hidden: true
   - name: slide
-    label: Supporting slide or FAQ image (optional)
+    label: Supporting material (image or PDF)
     type: object
     fields:
     - name: src
-      label: Slide image or PDF
+      label: Upload or select image/PDF
       type: file
-      description: Upload one image/PDF, or leave empty to use a FAQ screenshot.
+      description: Choose one image or PDF. This takes priority over an existing FAQ screenshot reference.
       options:
         media: attachments
         extensions:
@@ -362,9 +369,10 @@ content:
         - webp
         - pdf
     - name: faqId
-      label: Reuse screenshot from FAQ
+      label: Or reuse an existing FAQ screenshot
       type: select
-      description: Choose an existing FAQ screenshot instead of uploading the same file twice.
+      description: Choose the FAQ containing the screenshot. No duplicate upload required. Leave blank when 
+        uploading a file above.
       options:
         values:
         - name: ''
@@ -384,6 +392,9 @@ content:
     - name: alt
       label: Image description (optional)
       type: string
+      description: Brief description for screen readers when using an uploaded image.
+    description: 'Choose one: upload/select an image or PDF, OR reuse an existing FAQ screenshot. Leave both empty
+      for no supporting material.'
   - name: relatedFaq
     label: Related FAQ questions
     type: select
@@ -394,7 +405,8 @@ content:
   - name: published
     label: Visible on the Help Centre
     type: boolean
-    description: Turn off to hide from menus/search. JSON and uploaded files remain public in a public repository.
+    description: Turn off to hide from menus/search. JSON and uploaded files remain public in a public 
+      repository.
   - name: icon
     label: Guide icon (advanced)
     type: select

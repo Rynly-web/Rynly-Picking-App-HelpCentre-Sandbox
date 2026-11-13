@@ -357,14 +357,24 @@
   // file is shared between the article and its related training video.
   function slideMedia(item, isFaq = false) {
     const settings = isFaq ? {} : (mediaSettings[item.id] || {});
-    const faqId = !isFaq && (item.slide?.faqId || settings.supportingFaqImage);
+    // A CMS-selected image/PDF takes precedence over a selected FAQ screenshot;
+    // that in turn takes precedence over legacy PDF settings and hard-coded
+    // FAQ image fallbacks. Existing stored PDFs remain readable even though
+    // the old, duplicate PDF field is no longer shown in Pages CMS.
+    const slideSource = typeof item.slide?.src === "string" ? item.slide.src.trim() : "";
+    const chosenFaqId = typeof item.slide?.faqId === "string" ? item.slide.faqId : "";
+    const legacyPdfSource = typeof item.pdf?.src === "string" ? item.pdf.src.trim() : "";
+    const faqId = !isFaq && !slideSource
+      ? (chosenFaqId || (!legacyPdfSource ? settings.supportingFaqImage : ""))
+      : "";
+    const media = isFaq ? item.slide : slideSource ? item.slide
+      : chosenFaqId ? item.slide : legacyPdfSource ? item.pdf : item.slide;
     const relatedFaq = faqId ? byId(data.faqs, faqId) : null;
     const imageBlocks = relatedFaq?.blocks?.filter(block => block.type === "image") || [];
     const imageIndex = Number.isInteger(settings.supportingFaqImageIndex)
       ? settings.supportingFaqImageIndex : 0;
     const referencedImage = imageBlocks[imageIndex];
     const card = n("section", "media-card supporting-resource");
-    const media = isFaq ? item.slide : (item.slide?.src ? item.slide : item.pdf);
     const raw = media && media.src;
     const pdf = mediaUrl(raw, "pdf");
     const slideImage = mediaUrl(raw, "slide-image");
