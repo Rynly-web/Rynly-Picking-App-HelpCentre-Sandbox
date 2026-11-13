@@ -1,0 +1,34 @@
+[
+  {
+    "title": "Orders & picking",
+    "ids": [
+      "identify-order",
+      "cancel-order",
+      "batch-picking-faq",
+      "pick-scan-pack-scan"
+    ]
+  },
+  {
+    "title": "Managing issues",
+    "ids": [
+      "stuck-order",
+      "chop-chop-payment-failure",
+      "take-store-offline"
+    ]
+  },
+  {
+    "title": "Devices & accounts",
+    "ids": [
+      "new-order-alerts",
+      "find-signed-in-account"
+    ]
+  },
+  {
+    "title": "Support & resources",
+    "ids": [
+      "extra-driver",
+      "complete-picking-guide",
+      "contact-support-faq"
+    ]
+  }
+]

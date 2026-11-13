@@ -1,0 +1,731 @@
+# Pages CMS for Rynly Picking App Help Centre
+# Connect to https://app.pagescms.org after pushing this file to GitHub.
+# All paths target the existing GitHub Pages project repository.
+media:
+- name: faq-images
+  label: FAQ screenshots
+  input: assets/images/faq
+  output: /Rynly-Picking-App-HelpCentre-Sandbox/assets/images/faq
+  rename: safe
+  extensions:
+  - png
+  - jpg
+  - jpeg
+  - webp
+- name: pdfs
+  label: Guide PDFs
+  input: assets/pdf
+  output: /Rynly-Picking-App-HelpCentre-Sandbox/assets/pdf
+  rename: safe
+  extensions:
+  - pdf
+- name: attachments
+  label: Supporting slides/PDFs
+  input: assets/uploads
+  output: /Rynly-Picking-App-HelpCentre-Sandbox/assets/uploads
+  rename: safe
+  extensions:
+  - png
+  - jpg
+  - jpeg
+  - webp
+  - pdf
+- name: videos
+  label: Short local videos (YouTube recommended)
+  input: assets/videos
+  output: /Rynly-Picking-App-HelpCentre-Sandbox/assets/videos
+  rename: safe
+  extensions:
+  - mp4
+  - webm
+- name: posters
+  label: Video preview images
+  input: assets/images/posters
+  output: /Rynly-Picking-App-HelpCentre-Sandbox/assets/images/posters
+  rename: safe
+  extensions:
+  - png
+  - jpg
+  - jpeg
+  - webp
+content:
+- name: videos
+  label: Guided videos
+  type: file
+  path: content/guides.json
+  format: json
+  list: true
+  operations:
+    create: false
+    delete: false
+  fields:
+  - name: id
+    label: Permanent ID (do not change)
+    type: string
+    required: true
+    description: Used by bookmarked links. Lowercase letters, numbers and dashes only.
+    pattern: ^[a-z0-9-]+$
+  - name: title
+    label: Title
+    type: string
+    required: true
+  - name: description
+    label: Row description
+    type: text
+  - name: icon
+    label: Icon
+    type: select
+    options:
+      values:
+      - device
+      - bag
+      - alert
+      - bell
+      - x-circle
+      - credit-card
+      - truck
+      - layers
+      - scan
+      - refresh
+      - book
+      - headset
+      - help
+  - name: published
+    label: Show in Help Centre (not access control)
+    type: boolean
+    description: Turn off to hide from menus/search. JSON and uploaded files remain public in a public repository.
+  - name: video
+    label: Embedded video
+    type: object
+    description: Paste a YouTube/Vimeo ID. For no video, choose none; it will be hidden on the site.
+    fields:
+    - name: type
+      label: Video provider
+      type: select
+      options:
+        values:
+        - name: none
+          label: No video yet
+        - name: youtube
+          label: YouTube (Unlisted)
+        - name: vimeo
+          label: Vimeo
+        - name: local
+          label: Local MP4/WebM
+    - name: id
+      label: YouTube/Vimeo link or video ID
+      type: string
+      description: Paste the full YouTube/Vimeo link, or just the video ID. An unlisted Vimeo link can include
+        its private hash.
+    - name: hash
+      label: Vimeo unlisted hash (optional)
+      type: string
+    - name: orientation
+      label: Player orientation
+      type: select
+      options:
+        values:
+        - name: landscape
+          label: Landscape 16:9
+        - name: portrait
+          label: Portrait 9:16
+    - name: src
+      label: Local video file (optional)
+      type: file
+      options:
+        media: videos
+        extensions:
+        - mp4
+        - webm
+    - name: poster
+      label: Local video poster (optional)
+      type: image
+      options:
+        media: posters
+  - name: pdf
+    label: Supporting PDF
+    type: object
+    fields:
+    - name: src
+      label: PDF file
+      type: file
+      options:
+        media: pdfs
+        extensions:
+        - pdf
+    - name: filename
+      label: Suggested download filename
+      type: string
+  - name: slide
+    label: Supporting slide
+    type: object
+    fields:
+    - name: src
+      label: Slide image or PDF
+      type: file
+      description: Upload one image/PDF, or leave empty to use a FAQ screenshot.
+      options:
+        media: attachments
+        extensions:
+        - png
+        - jpg
+        - jpeg
+        - webp
+        - pdf
+    - name: faqId
+      label: Reuse screenshot from FAQ
+      type: select
+      description: Choose an existing FAQ screenshot instead of uploading the same file twice.
+      options:
+        values:
+        - name: ''
+          label: None
+        - &id001
+          name: identify-order
+          label: How do I identify which marketplace an order came from?
+        - &id002
+          name: cancel-order
+          label: How can I cancel an order?
+        - &id003
+          name: batch-picking-faq
+          label: How can I pick multiple orders at the same time?
+        - &id004
+          name: pick-scan-pack-scan
+          label: How do I use pick scan / pack scan?
+        - &id005
+          name: stuck-order
+          label: How do I clear an old or stuck order?
+        - &id006
+          name: chop-chop-payment-failure
+          label: What should I do with a Chop Chop payment failure?
+        - &id007
+          name: take-store-offline
+          label: How do I stop on-demand orders at my store?
+        - &id008
+          name: new-order-alerts
+          label: How can I keep new-order alerts ringing?
+        - &id009
+          name: find-signed-in-account
+          label: How can I see which account is signed in on a device?
+        - &id010
+          name: extra-driver
+          label: How do I request an extra driver for a large order?
+        - &id011
+          name: complete-picking-guide
+          label: Full picking app guide (41 slides)
+        - &id012
+          name: contact-support-faq
+          label: How do I contact support?
+    - name: alt
+      label: Image description (optional)
+      type: string
+  - name: videoText
+    label: Text beneath the video
+    type: text
+  - name: extraInfo
+    label: One bullet beneath What this video covers
+    type: text
+  - name: topics
+    label: Searchable topic phrases (not shown)
+    type: string
+    list: true
+  - name: relatedFaq
+    label: Related FAQ questions
+    type: select
+    description: Select the questions linked beneath this training page.
+    options:
+      values: &id013
+      - *id001
+      - *id002
+      - *id003
+      - *id004
+      - *id005
+      - *id006
+      - *id007
+      - *id008
+      - *id009
+      - *id010
+      - *id011
+      - *id012
+      multiple: true
+  - name: searchTerms
+    label: Additional search words
+    type: string
+    list: true
+    description: Optional synonyms such as close shop, closure, stuck order; the website already searches all
+      visible content.
+  - name: videos
+    label: Videos within this group (for Common issues / Batching)
+    type: object
+    list:
+      collapsible:
+        collapsed: true
+        summary: '{title}'
+    fields:
+    - name: id
+      label: Permanent ID (do not change)
+      type: string
+      required: true
+      description: Used by bookmarked links. Lowercase letters, numbers and dashes only.
+      pattern: ^[a-z0-9-]+$
+    - name: title
+      label: Title
+      type: string
+      required: true
+    - name: description
+      label: Row description
+      type: text
+    - name: icon
+      label: Icon
+      type: select
+      options:
+        values:
+        - device
+        - bag
+        - alert
+        - bell
+        - x-circle
+        - credit-card
+        - truck
+        - layers
+        - scan
+        - refresh
+        - book
+        - headset
+        - help
+    - name: published
+      label: Show in Help Centre (not access control)
+      type: boolean
+      description: Turn off to hide from menus/search. JSON and uploaded files remain public in a public repository.
+    - name: video
+      label: Embedded video
+      type: object
+      description: Paste a YouTube/Vimeo ID. For no video, choose none; it will be hidden on the site.
+      fields:
+      - name: type
+        label: Video provider
+        type: select
+        options:
+          values:
+          - name: none
+            label: No video yet
+          - name: youtube
+            label: YouTube (Unlisted)
+          - name: vimeo
+            label: Vimeo
+          - name: local
+            label: Local MP4/WebM
+      - name: id
+        label: YouTube/Vimeo link or video ID
+        type: string
+        description: Paste the full YouTube/Vimeo link, or just the video ID. An unlisted Vimeo link can include
+          its private hash.
+      - name: hash
+        label: Vimeo unlisted hash (optional)
+        type: string
+      - name: orientation
+        label: Player orientation
+        type: select
+        options:
+          values:
+          - name: landscape
+            label: Landscape 16:9
+          - name: portrait
+            label: Portrait 9:16
+      - name: src
+        label: Local video file (optional)
+        type: file
+        options:
+          media: videos
+          extensions:
+          - mp4
+          - webm
+      - name: poster
+        label: Local video poster (optional)
+        type: image
+        options:
+          media: posters
+    - name: pdf
+      label: Supporting PDF
+      type: object
+      fields:
+      - name: src
+        label: PDF file
+        type: file
+        options:
+          media: pdfs
+          extensions:
+          - pdf
+      - name: filename
+        label: Suggested download filename
+        type: string
+    - name: slide
+      label: Supporting slide
+      type: object
+      fields:
+      - name: src
+        label: Slide image or PDF
+        type: file
+        description: Upload one image/PDF, or leave empty to use a FAQ screenshot.
+        options:
+          media: attachments
+          extensions:
+          - png
+          - jpg
+          - jpeg
+          - webp
+          - pdf
+      - name: faqId
+        label: Reuse screenshot from FAQ
+        type: select
+        description: Choose an existing FAQ screenshot instead of uploading the same file twice.
+        options:
+          values:
+          - name: ''
+            label: None
+          - *id001
+          - *id002
+          - *id003
+          - *id004
+          - *id005
+          - *id006
+          - *id007
+          - *id008
+          - *id009
+          - *id010
+          - *id011
+          - *id012
+      - name: alt
+        label: Image description (optional)
+        type: string
+    - name: videoText
+      label: Text beneath the video
+      type: text
+    - name: extraInfo
+      label: One bullet beneath What this video covers
+      type: text
+    - name: topics
+      label: Searchable topic phrases (not shown)
+      type: string
+      list: true
+    - name: relatedFaq
+      label: Related FAQ questions
+      type: select
+      description: Select the questions linked beneath this training page.
+      options:
+        values: *id013
+        multiple: true
+    - name: searchTerms
+      label: Additional search words
+      type: string
+      list: true
+      description: Optional synonyms such as close shop, closure, stuck order; the website already searches
+        all visible content.
+- name: faqs
+  label: Help centre articles
+  type: file
+  path: content/faqs.json
+  format: json
+  list: true
+  operations:
+    create: false
+    delete: false
+  fields:
+  - name: id
+    label: Permanent FAQ ID (do not change)
+    type: string
+    required: true
+    description: Changing this breaks existing article links. Use lowercase letters, numbers and hyphens.
+    pattern: ^[a-z0-9-]+$
+  - name: title
+    label: Question
+    type: string
+    required: true
+  - name: published
+    label: Show this FAQ on the website
+    type: boolean
+    description: Hides this FAQ from menus/search, not from public GitHub history.
+  - name: icon
+    label: FAQ icon
+    type: select
+    options:
+      values:
+      - tag
+      - x-circle
+      - layers
+      - scan
+      - clock
+      - credit-card
+      - power
+      - bell
+      - user
+      - truck
+      - book
+      - headset
+      - help
+  - name: category
+    label: Old bookmark category (do not change)
+    type: string
+    readonly: true
+  - name: blocks
+    label: Article content (add/reorder paragraphs and images)
+    type: block
+    list:
+      collapsible:
+        collapsed: true
+    blockKey: type
+    blocks:
+    - name: paragraph
+      label: Paragraph
+      fields:
+      - name: text
+        label: Paragraph text
+        type: text
+    - name: heading
+      label: Subheading
+      fields:
+      - name: text
+        label: Heading text
+        type: string
+    - name: list
+      label: Bullet list
+      fields:
+      - name: items
+        label: Bullet points
+        type: string
+        list: true
+    - name: notice
+      label: Important note
+      fields:
+      - name: title
+        label: Note heading
+        type: string
+      - name: text
+        label: Note text
+        type: text
+    - name: image
+      label: FAQ screenshot / slide
+      fields:
+      - name: src
+        label: Screenshot
+        type: image
+        options:
+          media: faq-images
+      - name: alt
+        label: Accessible description
+        type: string
+    - name: link
+      label: External website link
+      fields:
+      - name: label
+        label: Link text
+        type: string
+      - name: url
+        label: HTTPS URL
+        type: string
+  - name: slide
+    label: Supporting slide
+    type: object
+    fields:
+    - name: src
+      label: Slide image or PDF
+      type: file
+      description: Upload one image/PDF, or leave empty to use a FAQ screenshot.
+      options:
+        media: attachments
+        extensions:
+        - png
+        - jpg
+        - jpeg
+        - webp
+        - pdf
+    - name: faqId
+      label: Reuse screenshot from FAQ
+      type: select
+      description: Choose an existing FAQ screenshot instead of uploading the same file twice.
+      options:
+        values:
+        - name: ''
+          label: None
+        - *id001
+        - *id002
+        - *id003
+        - *id004
+        - *id005
+        - *id006
+        - *id007
+        - *id008
+        - *id009
+        - *id010
+        - *id011
+        - *id012
+    - name: alt
+      label: Image description (optional)
+      type: string
+  - name: slideDeck
+    label: Full picking app slide deck (technical)
+    type: object
+    readonly: true
+    fields:
+    - name: first
+      label: First slide
+      type: number
+    - name: last
+      label: Last slide
+      type: number
+    - name: skip
+      label: Skipped slide numbers
+      type: number
+      list: true
+  - name: relatedGuides
+    label: Related videos
+    type: select
+    description: Choose video pages to show below this FAQ.
+    options:
+      values:
+      - name: logging-in-getting-started
+        label: Logging in & getting started
+      - name: picking-completing-an-order
+        label: Pick an order
+      - name: new-order-alerts-video
+        label: How to troubleshoot new order alerts
+      - name: cancelling-order-by-marketplace
+        label: How to cancel an order — by marketplace
+      - name: missing-payments
+        label: Missing payments
+      - name: requesting-an-extra-courier
+        label: Requesting an extra courier
+      - name: bag-scanning-video
+        label: Bag scanning
+      - name: batch-picking-video
+        label: Batch picking
+      - name: substitutions-deep-dive
+        label: Substitutions
+      - name: in-store-barcode-scanning
+        label: In-store barcode scanning & packing an order
+      multiple: true
+  - name: supportLink
+    label: Show link to contact numbers
+    type: boolean
+  - name: searchTerms
+    label: Extra search phrases
+    type: string
+    list: true
+    description: 'Examples: close, closure, clousure, suspend orders'
+- name: support
+  label: Partner contact numbers
+  type: file
+  path: content/support.json
+  format: json
+  list: true
+  operations:
+    create: false
+    delete: false
+  fields:
+  - name: id
+    label: Permanent contact ID
+    type: string
+    required: true
+  - name: name
+    label: Partner/team name
+    type: string
+    required: true
+  - name: phone
+    label: Telephone number
+    type: string
+  - name: description
+    label: When to contact this team
+    type: text
+- name: site
+  label: Home page and support email
+  type: file
+  path: content/site.json
+  format: json
+  operations:
+    create: false
+    delete: false
+  fields:
+  - name: siteName
+    label: Site name
+    type: string
+  - name: supportEmail
+    label: Rynly support email
+    type: string
+  - name: supportEmailNote
+    label: Email CC instruction
+    type: text
+  - name: operationalReminderTitle
+    label: Support reminder heading
+    type: string
+  - name: operationalReminderText
+    label: Support reminder text
+    type: text
+  - name: home
+    label: Home cards
+    type: object
+    fields:
+    - name: contactTitle
+      label: Contact support heading
+      type: string
+    - name: contactSubtitle
+      label: Contact support subtitle
+      type: string
+    - name: guidesTitle
+      label: Videos heading
+      type: string
+    - name: guidesSubtitle
+      label: Videos subtitle
+      type: string
+    - name: faqTitle
+      label: FAQ heading
+      type: string
+    - name: faqSubtitle
+      label: FAQ subtitle
+      type: string
+  - name: videoInfoPlaceholder
+    label: Default video information bullet
+    type: text
+  - name: searchTermsHome
+    label: Homepage search phrases
+    type: string
+    list: true
+  - name: searchTermsSupport
+    label: Support page search phrases
+    type: string
+    list: true
+  - name: searchTermsGuides
+    label: Videos index search phrases
+    type: string
+    list: true
+  - name: searchTermsFaq
+    label: FAQ index search phrases
+    type: string
+    list: true
+- name: faq-sections
+  label: FAQ section headings and order
+  type: file
+  path: content/sections.json
+  format: json
+  list: true
+  operations:
+    create: false
+    delete: false
+  fields:
+  - name: title
+    label: Section heading
+    type: string
+    required: true
+  - name: ids
+    label: Questions in this section
+    type: select
+    description: Arrange FAQ IDs in order. New FAQs not in any section appear under More questions.
+    options:
+      values: *id013
+      multiple: true
+settings:
+  hide: true
+  content:
+    merge: true
+  commit:
+    templates:
+      update: Update {path} via Rynly content editor

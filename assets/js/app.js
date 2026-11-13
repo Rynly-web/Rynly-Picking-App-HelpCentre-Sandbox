@@ -6,6 +6,7 @@
   "use strict";
   const data = window.RYNLY_CONTENT;
   const config = window.RYNLY_CONFIG;
+  const site = data.site || {};
   const mediaSettings = window.RYNLY_MEDIA_SETTINGS || {};
   const faqSections = window.RYNLY_FAQ_SECTIONS || [];
   // Cache resolved FAQ image paths within the session so navigation does not
@@ -110,16 +111,16 @@
     app.append(n("h1", "sr-only", "Help Centre"));
     const cards = n("div", "feature-list");
     const features = [
-      {route:"support",style:"feature-contact",icon:"headset",title:"Contact support",desc:"Partner support numbers"},
-      {route:"guides",style:"feature-guides",icon:"book",title:"Guided videos",desc:"Build confidence using the picking app"},
-      {route:"faq",style:"feature-faq",icon:"help",title:"Help centre and FAQs",desc:"Answers and managing issues"}
+      {route:"support",style:"feature-contact",icon:"headset",title:site.home?.contactTitle || "Contact support",desc:site.home?.contactSubtitle || "Partner support numbers"},
+      {route:"guides",style:"feature-guides",icon:"book",title:site.home?.guidesTitle || "Guided videos",desc:site.home?.guidesSubtitle || "Build confidence using the picking app"},
+      {route:"faq",style:"feature-faq",icon:"help",title:site.home?.faqTitle || "Help centre and FAQs",desc:site.home?.faqSubtitle || "Answers and managing issues"}
     ];
     features.forEach(item => {
       const card = a(item.route, "feature-card " + item.style);
       append(card,
-          append(n("span", "feature-icon"), svg(item.icon, "large")),
-          append(n("span", "feature-copy"), n("span", "feature-title", item.title), n("span", "feature-subtitle", item.desc)),
-          svg("chevron-right", "feature-arrow")
+        append(n("span", "feature-icon"), svg(item.icon, "large")),
+        append(n("span", "feature-copy"), n("span", "feature-title", item.title), n("span", "feature-subtitle", item.desc)),
+        svg("chevron-right", "feature-arrow")
       );
       cards.append(card);
     });
@@ -131,9 +132,9 @@
     data.support.forEach(item => {
       const card = n("section", "support-card");
       append(card,
-          n("h2", "support-name", item.name),
-          n("p", "support-description", item.description),
-          append(n("div", "support-actions"), n("span", "support-phone", item.phone)));
+        n("h2", "support-name", item.name),
+        n("p", "support-description", item.description),
+        append(n("div", "support-actions"), n("span", "support-phone", item.phone)));
       grid.append(card);
     });
     app.append(grid);
@@ -143,14 +144,14 @@
     const emailRow = n("div", "support-email-row");
     append(emailRow, svg("mail"), n("span", "support-email-address", config.supportEmail));
     append(email,
-        emailRow,
-        n("p", "support-email-note", "Please CC ondemand@sainsburys.co.uk when contacting support."));
+      emailRow,
+      n("p", "support-email-note", site.supportEmailNote || "Please CC ondemand@sainsburys.co.uk when contacting support."));
     app.append(email);
-    append(app, notice("Operational reminder", "For extra drivers or taking a store offline, use the dedicated marketplace support contacts and approved procedures; Rynly support cannot take the store offline."));
+    append(app, notice(site.operationalReminderTitle || "Operational reminder", site.operationalReminderText || "For extra drivers or taking a store offline, use the dedicated marketplace support contacts and approved procedures; Rynly support cannot take the store offline."));
     app.append(append(n("div", "after-content"), homeLink()));
   }
   function renderGuides() {
-    append(app, back("", "Help Centre"), head(null, "Guided videos"));
+    append(app, back("", "Help Centre"), head(null, site.home?.guidesTitle || "Guided videos"));
     const list = rowList();
     data.guides.forEach(guide => {
       list.append(row("guides/" + guide.id, guide.title, guide.description, guide.icon));
@@ -160,10 +161,10 @@
   function mediaUrl(path, kind) {
     if (typeof path !== "string") return "";
     const allowed = kind === "pdf"
-        ? /^assets\/pdf\/[a-zA-Z0-9_./-]+\.pdf(?:#page=\d+)?$/i
-        : kind === "slide-image"
-            ? /^assets\/images\/slides\/[a-zA-Z0-9_./-]+\.(?:png|jpg|jpeg|webp)$/i
-            : /^assets\/(?:videos|images\/posters)\/[a-zA-Z0-9_./-]+\.(?:mp4|webm|jpg|jpeg|png|webp)$/i;
+      ? /^assets\/(?:pdf|uploads)\/[a-zA-Z0-9_./-]+\.pdf(?:#page=\d+)?$/i
+      : kind === "slide-image"
+      ? /^assets\/(?:images\/slides|uploads)\/[a-zA-Z0-9_./-]+\.(?:png|jpg|jpeg|webp)$/i
+      : /^assets\/(?:videos|images\/posters|uploads)\/[a-zA-Z0-9_./-]+\.(?:mp4|webm|jpg|jpeg|png|webp)$/i;
     return path.indexOf("..") === -1 && allowed.test(path) ? path : "";
   }
   function videoMedia(guide) {
@@ -360,7 +361,7 @@
     const relatedFaq = faqId ? byId(data.faqs, faqId) : null;
     const imageBlocks = relatedFaq?.blocks?.filter(block => block.type === "image") || [];
     const imageIndex = Number.isInteger(settings.supportingFaqImageIndex)
-        ? settings.supportingFaqImageIndex : 0;
+      ? settings.supportingFaqImageIndex : 0;
     const referencedImage = imageBlocks[imageIndex];
     const card = n("section", "media-card supporting-resource");
     const media = isFaq ? item.slide : (item.slide?.src ? item.slide : item.pdf);
@@ -368,8 +369,8 @@
     const pdf = mediaUrl(raw, "pdf");
     const slideImage = mediaUrl(raw, "slide-image");
     const imageCandidates = referencedImage
-        ? faqImageCandidates(referencedImage.src)
-        : (slideImage ? [slideImage] : faqImageCandidates(raw));
+      ? faqImageCandidates(referencedImage.src)
+      : (slideImage ? [slideImage] : faqImageCandidates(raw));
     const isImage = imageCandidates.length > 0;
     if (!isFaq && !pdf && !isImage) return null;
     card.setAttribute("aria-label", isFaq || isImage ? "Supporting slide" : "PDF slides");
@@ -408,7 +409,7 @@
         } else {
           const fallback = n("div", "figure-placeholder");
           append(fallback, svg("file"), n("strong", "", "Supporting slide unavailable"),
-              n("span", "", "Restore " + imageCandidates[0] + " or use the FAQ image folder."));
+            n("span", "", "Restore " + imageCandidates[0] + " or use the FAQ image folder."));
           figure.replaceChildren(fallback);
         }
       });
@@ -424,9 +425,9 @@
   function resourcePlaceholder() {
     const placeholder = n("div", "pdf-placeholder");
     append(placeholder,
-        append(n("div", "pdf-symbol"), svg("file", "large")),
-        append(n("div"), n("strong", "", "Supporting slide coming soon"),
-            n("span", "", "An approved slide will appear here once it has been added.")));
+      append(n("div", "pdf-symbol"), svg("file", "large")),
+      append(n("div"), n("strong", "", "Supporting slide coming soon"),
+        n("span", "", "An approved slide will appear here once it has been added.")));
     return placeholder;
   }
   function renderGuide(id, videoId = null) {
@@ -436,12 +437,12 @@
     if (isGroup && !videoId) {
       // Video selector: the parent row has no player, only the chosen child does.
       append(app, back("guides", "All guided videos"),
-          crumbs([{route:"",label:"Home"},{route:"guides",label:"Guided videos"}]),
-          head(null, guide.title));
+        crumbs([{route:"",label:"Home"},{route:"guides",label:"Guided videos"}]),
+        head(null, guide.title));
       const list = rowList();
       guide.videos.forEach(video => list.append(row(
-          "guides/" + guide.id + "/" + video.id, video.title, video.description,
-          video.icon || guide.icon
+        "guides/" + guide.id + "/" + video.id, video.title, video.description,
+        video.icon || guide.icon
       )));
       append(app, list, append(n("div", "after-content"), homeLink()));
       return;
@@ -454,7 +455,7 @@
     ];
     if (isGroup) breadcrumbItems.push({route:backRoute,label:guide.title});
     append(app, back(backRoute, isGroup ? "All " + guide.title.toLowerCase() + " videos" : "All guided videos"),
-        crumbs(breadcrumbItems), head("Training guide", video.title));
+      crumbs(breadcrumbItems), head("Training guide", video.title));
     const mediaItems = [videoMedia(video), slideMedia(video)].filter(Boolean);
     if (mediaItems.length) app.append(append(n("div", "media-grid"), mediaItems));
     const outline = n("section", "media-card guide-outline");
@@ -464,20 +465,20 @@
     // colleague-facing guidance is available. The existing topics stay in
     // the data for search and can be restored without rewriting the pages.
     const extraInfo = typeof video.extraInfo === "string" && video.extraInfo.trim()
-        ? video.extraInfo.trim()
-        : "[Place any extra info here to be beside the training video]";
+      ? video.extraInfo.trim()
+      : (site.videoInfoPlaceholder || "[Place any extra info here to be beside the training video]");
     topics.append(n("li", "", extraInfo));
     outline.append(topics);
     app.append(outline);
     const related = (video.relatedFaq || []).map(key => byId(data.faqs,key)).filter(Boolean)
-        .map(faq => ({route:"faq/"+faq.id,title:faq.title}));
+      .map(faq => ({route:"faq/"+faq.id,title:faq.title}));
     append(app, relatedSection("Related questions", related));
     app.append(append(n("div", "after-content"), homeLink()));
   }
   // FAQ sections are presentation-only; pages keep their stable IDs and links.
   // Manage section labels and memberships in assets/js/faq-sections.js.
   function renderFaqList() {
-    append(app, back("", "Help Centre"), head(null, "Help centre and FAQs"));
+    append(app, back("", "Help Centre"), head(null, site.home?.faqTitle || "Help centre and FAQs"));
     const shown = new Set();
     const groups = faqSections.length ? faqSections : [
       {title:"Questions", ids:data.faqs.map(faq => faq.id)}
@@ -519,7 +520,7 @@
    */
   function faqImageCandidates(src) {
     if (typeof src !== "string") return [];
-    const match = src.match(/^(?:assets\/images\/faq|images\/FAQ|images\/faq)\/([a-zA-Z0-9_-]+\.(?:png|jpe?g|webp))$/i);
+    const match = src.match(/^(?:assets\/images\/faq|assets\/images\/slides|assets\/uploads|images\/FAQ|images\/faq)\/([a-zA-Z0-9_-]+\.(?:png|jpe?g|webp))$/i);
     if (!match) return [];
     const filename = match[1];
     // Prefer the exact path specified by content.js, then try the legacy folder.
@@ -577,8 +578,8 @@
           // file explicit rather than displaying a broken-image icon.
           const fallback = n("div", "figure-placeholder");
           append(fallback, svg("file"),
-              n("strong", "", "Screenshot unavailable"),
-              n("span", "", "Restore " + (sources[0] || String(block.src)) + " to the repository."));
+            n("strong", "", "Screenshot unavailable"),
+            n("span", "", "Restore " + (sources[0] || String(block.src)) + " to the repository."));
           figure.replaceChildren(fallback);
         });
         if (sources.length) {
@@ -610,7 +611,7 @@
       if (!skip.has(slide)) numbers.push(slide);
     }
     page.append(n("p", "full-slide-guide-intro", numbers.length +
-        " slides. Tap an image to enlarge it, then pinch to zoom."));
+      " slides. Tap an image to enlarge it, then pinch to zoom."));
     const list = n("div", "full-slide-list");
     numbers.forEach(slide => {
       const figure = n("figure", "full-slide-item");
@@ -624,8 +625,8 @@
       const caption = n("figcaption", "full-slide-caption", "Slide " + slide);
       img.addEventListener("error", () => {
         const unavailable = n("div", "full-slide-unavailable",
-            "Slide " + slide + " image not available — add Slide" + slide +
-            ".png to images/Picking/.");
+          "Slide " + slide + " image not available — add Slide" + slide +
+          ".png to images/Picking/.");
         figure.replaceChildren(unavailable);
       }, {once:true});
       append(figure, zoomableImage(img, img.alt), caption);
@@ -641,8 +642,8 @@
     const faq = byId(data.faqs, id);
     if (!faq || (legacyCategoryId && faq.category !== legacyCategoryId)) return renderNotFound();
     append(app, back("faq", "All FAQs"),
-        crumbs([{route:"",label:"Home"},{route:"faq",label:"FAQs"}]),
-        head("Help article", faq.title));
+      crumbs([{route:"",label:"Home"},{route:"faq",label:"FAQs"}]),
+      head("Help article", faq.title));
     if (faq.slideDeck) {
       app.append(renderFullSlideDeck(faq.slideDeck));
       app.append(append(n("div", "after-content"), homeLink()));
@@ -666,14 +667,14 @@
       app.append(slideMedia(faq, true));
     }
     const relatedGuides = (faq.relatedGuides || [])
-        .map(key => videosById.get(key)).filter(Boolean)
-        .map(item => ({route:item.route,title:item.video.title}));
+      .map(key => videosById.get(key)).filter(Boolean)
+      .map(item => ({route:item.route,title:item.video.title}));
     append(app, relatedSection("Related videos", relatedGuides));
     app.append(append(n("div", "after-content"), homeLink()));
   }
   function renderNotFound() {
     append(app,back("", "Help Centre"),head("Not found", "We couldn't find that page",
-        "The page may have moved or its link may be incorrect."), homeLink());
+      "The page may have moved or its link may be incorrect."), homeLink());
   }
   let lastRenderedHash = null;
   function route() {

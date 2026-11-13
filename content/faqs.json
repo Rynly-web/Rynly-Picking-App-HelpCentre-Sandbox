@@ -1,0 +1,521 @@
+[
+  {
+    "id": "identify-order",
+    "slide": {
+      "src": ""
+    },
+    "icon": "tag",
+    "category": "order-management",
+    "title": "How do I identify which marketplace an order came from?",
+    "blocks": [
+      {
+        "type": "paragraph",
+        "text": "The order channel is shown on the Rynly Picking App home screen. Check whether the order is from Just Eat, Uber Eats, Deliveroo or Chop Chop before taking further action."
+      },
+      {
+        "type": "paragraph",
+        "text": "This matters because substitutions, extra-driver requests and other order actions can work differently for each channel."
+      },
+      {
+        "type": "image",
+        "src": "assets/images/faq/FAQ1.png",
+        "alt": "Order identifiers on the Rynly picking app home screen"
+      }
+    ],
+    "relatedGuides": [
+      "logging-in-getting-started",
+      "picking-completing-an-order"
+    ],
+    "searchTerms": [
+      "which marketplace",
+      "which platform sent the order",
+      "order origin",
+      "recognise deliveroo",
+      "identify uber eats",
+      "just eat order",
+      "order channel"
+    ],
+    "published": true
+  },
+  {
+    "id": "cancel-order",
+    "slide": {
+      "src": ""
+    },
+    "icon": "x-circle",
+    "category": "order-management",
+    "title": "How can I cancel an order?",
+    "blocks": [
+      {
+        "type": "paragraph",
+        "text": "Cancellation steps vary by marketplace and order state. Follow the current approved procedure for the channel shown on the order."
+      },
+      {
+        "type": "image",
+        "src": "assets/images/faq/FAQ9.png",
+        "alt": "Original Rynly instructions for cancelling an order"
+      },
+      {
+        "type": "notice",
+        "title": "Need assistance?",
+        "text": "Use Contact support to find the relevant marketplace support line. Do not assume the same cancellation workflow applies to every channel."
+      }
+    ],
+    "relatedGuides": [
+      "cancelling-order-by-marketplace"
+    ],
+    "searchTerms": [
+      "cancel an order",
+      "stop a single order",
+      "customer cancellation",
+      "order cancelled",
+      "refund cancel",
+      "how to cancel",
+      "order cancellation"
+    ],
+    "published": true
+  },
+  {
+    "id": "batch-picking-faq",
+    "slide": {
+      "src": ""
+    },
+    "icon": "layers",
+    "category": "substitutions-scanning",
+    "title": "How can I pick multiple orders at the same time?",
+    "blocks": [
+      {
+        "type": "paragraph",
+        "text": "Batch picking lets eligible orders be picked together. The original Help Centre included a three-slide walkthrough; the screenshots can be restored below."
+      },
+      {
+        "type": "image",
+        "src": "assets/images/faq/FAQ14.png",
+        "alt": "Batch picking instructions - slide 1"
+      },
+      {
+        "type": "image",
+        "src": "assets/images/faq/FAQ15.png",
+        "alt": "Batch picking instructions - slide 2"
+      },
+      {
+        "type": "image",
+        "src": "assets/images/faq/FAQ16.png",
+        "alt": "Batch picking instructions - slide 3"
+      },
+      {
+        "type": "notice",
+        "title": "Before publishing",
+        "text": "Review these slides against the latest batch-picking functionality and configuration."
+      }
+    ],
+    "relatedGuides": [
+      "batch-picking-video"
+    ],
+    "searchTerms": [
+      "pick two orders",
+      "pick multiple orders",
+      "batch picking",
+      "multi pick",
+      "all tab",
+      "picking together"
+    ],
+    "published": true
+  },
+  {
+    "id": "pick-scan-pack-scan",
+    "slide": {
+      "src": ""
+    },
+    "icon": "scan",
+    "category": "substitutions-scanning",
+    "title": "How do I use pick scan / pack scan?",
+    "blocks": [
+      {
+        "type": "notice",
+        "title": "Selected stores only",
+        "text": "This functionality only applies to stores where pick scan / pack scan has been enabled."
+      },
+      {
+        "type": "paragraph",
+        "text": "The original Help Centre explains this process through the following slides. Restore and review the latest versions before production release."
+      },
+      {
+        "type": "image",
+        "src": "assets/images/faq/FAQ6.png",
+        "alt": "Pick scan pack scan instructions - slide 1"
+      },
+      {
+        "type": "image",
+        "src": "assets/images/faq/FAQ7.png",
+        "alt": "Pick scan pack scan instructions - slide 2"
+      }
+    ],
+    "relatedGuides": [
+      "bag-scanning-video",
+      "in-store-barcode-scanning"
+    ],
+    "searchTerms": [
+      "bag scan",
+      "scanning bags",
+      "pick scan pack scan",
+      "scan at packing",
+      "scan a bag",
+      "packing barcode"
+    ],
+    "published": true
+  },
+  {
+    "id": "stuck-order",
+    "slide": {
+      "src": ""
+    },
+    "icon": "clock",
+    "category": "managing-issues",
+    "title": "How do I clear an old or stuck order?",
+    "blocks": [
+      {
+        "type": "paragraph",
+        "text": "Select the affected order using the picking account assigned to it. Follow the on-screen guidance; all items should have an appropriate picked, unavailable or substituted state before the order is completed."
+      },
+      {
+        "type": "image",
+        "src": "assets/images/faq/FAQ8.png",
+        "alt": "Original example of resolving a hanging order"
+      },
+      {
+        "type": "notice",
+        "title": "If the order remains stuck",
+        "text": "Contact the relevant support team rather than repeatedly changing the order status without guidance."
+      }
+    ],
+    "relatedGuides": [
+      "picking-completing-an-order"
+    ],
+    "searchTerms": [
+      "stuck order",
+      "old order",
+      "hanging order",
+      "pending order",
+      "order won't disappear",
+      "clear old order",
+      "order not finishing"
+    ],
+    "published": true
+  },
+  {
+    "id": "chop-chop-payment-failure",
+    "slide": {
+      "src": ""
+    },
+    "icon": "credit-card",
+    "category": "managing-issues",
+    "title": "What should I do with a Chop Chop payment failure?",
+    "blocks": [
+      {
+        "type": "paragraph",
+        "text": "Follow the payment-failure procedure for Chop Chop orders. The illustrated process from the previous Help Centre is reserved below."
+      },
+      {
+        "type": "image",
+        "src": "assets/images/faq/FAQ18.png",
+        "alt": "Chop Chop payment failure instructions"
+      },
+      {
+        "type": "notice",
+        "title": "Procedure review required",
+        "text": "Confirm the current payment failure handling process with the responsible operational team before relying on this guide."
+      }
+    ],
+    "relatedGuides": [
+      "missing-payments"
+    ],
+    "searchTerms": [
+      "chop chop payment error",
+      "card declined",
+      "payment unsuccessful",
+      "chop chop checkout",
+      "order not paid",
+      "payment processing failure"
+    ],
+    "published": true
+  },
+  {
+    "id": "take-store-offline",
+    "slide": {
+      "src": ""
+    },
+    "icon": "power",
+    "category": "managing-issues",
+    "title": "How do I stop on-demand orders at my store?",
+    "blocks": [
+      {
+        "type": "paragraph",
+        "text": "Follow your store's approved on-demand contingency procedure for the affected services."
+      },
+      {
+        "type": "link",
+        "label": "Open Sainsbury's on-demand contingency procedure (requires access)",
+        "url": "https://jsainsbury.sharepoint.com/:w:/r/sites/DocCentre/Retail-Procedures/_layouts/15/Doc.aspx?sourcedoc=%7BE4D2EC1A-CB7B-45F6-A1DE-2C70D4E3E12A%7D&file=OnDemand_Contingency%20Procedure.docx&action=default&mobileredirect=true"
+      },
+      {
+        "type": "paragraph",
+        "text": "The previous Help Centre directs stores to the Just Eat and Deliveroo support lines where required, and to the JS Tech Service Desk for Chop Chop. For Uber Eats, it describes using the 'Take Store Offline' option in the Rynly app."
+      },
+      {
+        "type": "image",
+        "src": "assets/images/faq/FAQ12.png",
+        "alt": "Uber Eats Take Store Offline menu"
+      },
+      {
+        "type": "notice",
+        "title": "Important",
+        "text": "The Rynly support team cannot take a store offline from on-demand orders. Contact the appropriate marketplace support line or follow the approved contingency procedure."
+      }
+    ],
+    "relatedGuides": [],
+    "searchTerms": [
+      "close",
+      "closure",
+      "clousure",
+      "close store",
+      "closing the shop",
+      "temporarily close store",
+      "store closure",
+      "shut store",
+      "shut shop",
+      "pause orders",
+      "stop receiving orders",
+      "stop online orders",
+      "disable orders",
+      "suspend deliveries",
+      "switch off deliveries",
+      "turn off on demand",
+      "take store offline",
+      "store unavailable",
+      "stop taking orders",
+      "pause just eat",
+      "pause uber eats",
+      "pause deliveroo",
+      "online store closed",
+      "on demand contingency"
+    ],
+    "published": true
+  },
+  {
+    "id": "new-order-alerts",
+    "slide": {
+      "src": ""
+    },
+    "icon": "bell",
+    "category": "devices-alerts",
+    "title": "How can I keep new-order alerts ringing?",
+    "blocks": [
+      {
+        "type": "paragraph",
+        "text": "The previous Help Centre recommends the following checks when device alerts are not ringing:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Check that both the handset and app volumes are set appropriately.",
+          "Keep the Rynly app open or running as required by the device configuration.",
+          "Do not force-close the app by swiping it away.",
+          "Check that the 'Rynly Hub Alerts Enabled' indication appears as expected on the device."
+        ]
+      },
+      {
+        "type": "image",
+        "src": "assets/images/faq/FAQ2.png",
+        "alt": "Device alerts enabled example"
+      },
+      {
+        "type": "notice",
+        "title": "Still not receiving alerts?",
+        "text": "Report the device and store details to the JS Tech Service Desk using the Contact support page."
+      }
+    ],
+    "relatedGuides": [
+      "new-order-alerts-video"
+    ],
+    "searchTerms": [
+      "new order not ringing",
+      "silent alerts",
+      "notification not sounding",
+      "device sound",
+      "alarm off",
+      "no order notifications",
+      "incoming order alerts"
+    ],
+    "published": true
+  },
+  {
+    "id": "find-signed-in-account",
+    "slide": {
+      "src": ""
+    },
+    "icon": "user",
+    "category": "accounts-settings",
+    "title": "How can I see which account is signed in on a device?",
+    "blocks": [
+      {
+        "type": "paragraph",
+        "text": "Open the account or settings area of the Rynly Picking App to check which picker account is active on the device."
+      },
+      {
+        "type": "image",
+        "src": "assets/images/faq/FAQ10.png",
+        "alt": "Rynly account settings and signed-in user"
+      }
+    ],
+    "relatedGuides": [
+      "logging-in-getting-started"
+    ],
+    "searchTerms": [
+      "which account is logged in",
+      "logged in as",
+      "account email",
+      "picker login",
+      "user signed in",
+      "check active account",
+      "user profile"
+    ],
+    "published": true
+  },
+  {
+    "id": "extra-driver",
+    "slide": {
+      "src": ""
+    },
+    "icon": "truck",
+    "category": "delivery-support",
+    "title": "How do I request an extra driver for a large order?",
+    "blocks": [
+      {
+        "type": "paragraph",
+        "text": "The previous Help Centre states that the process differs by marketplace. Confirm the current policy before requesting additional courier capacity."
+      },
+      {
+        "type": "heading",
+        "text": "Just Eat"
+      },
+      {
+        "type": "paragraph",
+        "text": "For large orders, an extra courier may be requested automatically, with Just Eat contacting the store. If a second courier does not arrive, contact Just Eat support."
+      },
+      {
+        "type": "heading",
+        "text": "Deliveroo"
+      },
+      {
+        "type": "paragraph",
+        "text": "Contact Deliveroo support for assistance."
+      },
+      {
+        "type": "heading",
+        "text": "Uber Eats"
+      },
+      {
+        "type": "paragraph",
+        "text": "Follow the marketplace-specific workflow illustrated in the original guidance."
+      },
+      {
+        "type": "image",
+        "src": "assets/images/faq/FAQ4.png",
+        "alt": "Uber Eats request-extra-driver guidance"
+      },
+      {
+        "type": "heading",
+        "text": "Chop Chop"
+      },
+      {
+        "type": "paragraph",
+        "text": "The old procedure describes requesting an additional driver after the original courier request becomes eligible. Verify the current trigger before using this process."
+      },
+      {
+        "type": "image",
+        "src": "assets/images/faq/FAQ5.png",
+        "alt": "Chop Chop request-extra-driver guidance"
+      },
+      {
+        "type": "notice",
+        "title": "Who should I call?",
+        "text": "Use Contact support to see the latest published partner numbers."
+      }
+    ],
+    "relatedGuides": [
+      "requesting-an-extra-courier"
+    ],
+    "searchTerms": [
+      "request more drivers",
+      "additional courier",
+      "extra rider",
+      "need two drivers",
+      "large delivery",
+      "another driver for order"
+    ],
+    "published": true
+  },
+  {
+    "id": "complete-picking-guide",
+    "slide": {
+      "src": ""
+    },
+    "icon": "book",
+    "category": "delivery-support",
+    "title": "Full picking app guide (41 slides)",
+    "slideDeck": {
+      "first": 1,
+      "last": 42,
+      "skip": [
+        2
+      ]
+    },
+    "blocks": [],
+    "relatedGuides": [],
+    "searchTerms": [
+      "all slides",
+      "full manual",
+      "complete guide",
+      "41 slides",
+      "picking documentation",
+      "long picking guide",
+      "training slides"
+    ],
+    "published": true
+  },
+  {
+    "id": "contact-support-faq",
+    "slide": {
+      "src": ""
+    },
+    "icon": "headset",
+    "category": "delivery-support",
+    "title": "How do I contact support?",
+    "blocks": [
+      {
+        "type": "paragraph",
+        "text": "Choose the support team that matches your issue and marketplace. The Contact support page lists the numbers for Just Eat, Uber Eats, Deliveroo, Chop Chop and the JS Tech Service Desk."
+      },
+      {
+        "type": "notice",
+        "title": "Extra drivers or store availability",
+        "text": "For these requests, contact the dedicated marketplace support line."
+      }
+    ],
+    "relatedGuides": [
+      "requesting-an-extra-courier",
+      "cancelling-order-by-marketplace"
+    ],
+    "supportLink": true,
+    "searchTerms": [
+      "how to contact support",
+      "support numbers",
+      "help desk",
+      "contact partner",
+      "technical support",
+      "who do I call"
+    ],
+    "published": true
+  }
+]

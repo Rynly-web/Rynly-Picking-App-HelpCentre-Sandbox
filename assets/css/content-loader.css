@@ -1,0 +1,4 @@
+.content-loading,.content-load-error{max-width:36rem;margin:2rem auto;padding:1.5rem;color:#1D4146;font-family:Arial,sans-serif;line-height:1.6}
+.content-load-error{background:#fff;border:1px solid #B7D2D7;border-radius:12px}
+.content-load-error h1{font-family:Georgia,serif;font-size:1.6rem;color:#1D4146}
+.content-load-error button{background:#285960;color:#fff;border:0;border-radius:6px;padding:.75rem 1.2rem;font:inherit;cursor:pointer}

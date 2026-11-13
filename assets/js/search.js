@@ -18,9 +18,11 @@
   // Search stays entirely on-device. No external index or API calls.
   // Titles > editorial keywords > descriptions > long article body.
   const extra = window.RYNLY_SEARCH_KEYWORDS || {};
+  const site = data.site || {};
+  const phrases = value => Array.isArray(value) ? value.filter(x=>typeof x==='string') : [];
   const normalise = value => String(value ?? '').toLowerCase()
-      .normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
-      .replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' ');
+    .normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' ');
   const stopWords = new Set([
     'a','an','and','are','as','at','be','by','can','could','do','does',
     'for','from','how','i','in','into','is','it','me','my','of','on','or',
@@ -70,7 +72,7 @@
     return word;
   }
   const tokens = value => normalise(value).split(' ')
-      .filter(word => word && !stopWords.has(word)).map(canonical);
+    .filter(word => word && !stopWords.has(word)).map(canonical);
   const unique = values => [...new Set(values)];
   function flatten(value) {
     if (value == null) return [];
@@ -88,8 +90,8 @@
     return {terms:unique(parts), phrase:parts.join(' ')};
   }
   const docs = [];
-  function add(route, title, description='', body='', weight=1) {
-    const keywords = Array.isArray(extra[route]) ? extra[route].filter(x=>typeof x==='string') : [];
+  function add(route, title, description='', body='', weight=1, additionalKeywords=[]) {
+    const keywords = [...phrases(extra[route]), ...phrases(additionalKeywords)];
     const aliases = keywords.map(phraseOf).filter(Boolean);
     const keywordField = field(keywords.join(' '));
     docs.push({
@@ -98,28 +100,28 @@
       descriptionField:field(description), bodyField:field(body)
     });
   }
-  add('', 'Help Centre', 'Help and training for the Rynly picking app', '', .25);
+  add('', 'Help Centre', 'Help and training for the Rynly picking app', '', .25, site.searchTermsHome);
   add('support', 'Contact support', 'Partner telephone numbers and Rynly support email', [
     ...(data.support || []).flatMap(item => [item.name, item.description || '', item.phone || '']),
     'Rynly support email support@rynly.com CC ondemand@sainsburys.co.uk',
     'Technical service desk, marketplace contact details'
-  ].join(' '), 1.25);
-  add('guides', 'Guided videos', 'Rynly picking app training videos and demonstrations', '', .5);
-  add('faq', 'Help centre and FAQs', 'Answers to picking app questions and troubleshooting', '', .5);
+  ].join(' '), 1.25, site.searchTermsSupport);
+  add('guides', site.home?.guidesTitle || 'Guided videos', 'Rynly picking app training videos and demonstrations', '', .5, site.searchTermsGuides);
+  add('faq', site.home?.faqTitle || 'Help centre and FAQs', 'Answers to picking app questions and troubleshooting', '', .5, site.searchTermsFaq);
   (data.guides || []).forEach(guide => {
     const route='guides/'+guide.id;
     const body=[guide.videoText,guide.topics].flatMap(flatten).join(' ');
     if (Array.isArray(guide.videos)) {
       // A group is a real page; index it, but let its specific videos rank higher.
-      add(route,guide.title,guide.description,body,.88);
+      add(route,guide.title,guide.description,body,.88,guide.searchTerms);
       guide.videos.forEach(video => add(route+'/'+video.id, video.title,
-          video.description,[video.videoText,video.topics].flatMap(flatten).join(' '),1.08));
-    } else add(route,guide.title,guide.description,body,1.08);
+        video.description,[video.videoText,video.topics,video.extraInfo].flatMap(flatten).join(' '),1.08,video.searchTerms));
+    } else add(route,guide.title,guide.description,body,1.08,guide.searchTerms);
   });
   (data.faqs || []).forEach(faq => add('faq/'+faq.id,faq.title,'',[
     flatten(faq.blocks).join(' '),
     faq.slideDeck ? 'Full 41 slide picking app guide training reference' : ''
-  ].join(' '),1.12));
+  ].join(' '),1.12,faq.searchTerms));
 
   // Match the actual destination, not the words used in the title.
   // This matters when a FAQ question and a video cover the same workflow.
@@ -194,11 +196,11 @@
       results.push({doc,score:score*doc.weight});
     }
     return results.sort((a,b)=>b.score-a.score||a.doc.title.localeCompare(b.doc.title))
-        .slice(0,3).map(result=>({
-          route:result.doc.route,
-          title:result.doc.title,
-          kind:destinationKind(result.doc.route)
-        }));
+      .slice(0,3).map(result=>({
+        route:result.doc.route,
+        title:result.doc.title,
+        kind:destinationKind(result.doc.route)
+      }));
   }
 
   let visible = [];
