@@ -6,12 +6,12 @@
     "icon": "device",
     "published": true,
     "video": {
-      "type": "none"
+      "type": "youtube"
     },
     "pdf": {
       "filename": "logging-in-getting-started.pdf"
     },
-    "videoText": "Learn where to find the main sections of the Rynly Picking App.",
+    "videoText": "CMS editing test.",
     "topics": [
       "Logging in and getting started",
       "Main dashboard and available orders",
