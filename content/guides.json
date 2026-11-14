@@ -1,6 +1,6 @@
 [
   {
-    "title": "Logging in & getting started - hello Joe!",
+    "title": "Logging in & getting started",
     "description": "Navigate the picking dashboard, deliveries, order history and help.",
     "video": {
       "type": "youtube"
@@ -195,7 +195,9 @@
     "title": "Requesting an extra courier",
     "description": "Learn how to request courier assistance for large orders.",
     "video": {
-      "type": "none"
+      "type": "youtube",
+      "id": "https://youtube.com/shorts/tR2fmFmYlaY?feature=share",
+      "orientation": "portrait"
     },
     "videoText": "How to request another courier or contact the partner team when required.",
     "pdf": {
