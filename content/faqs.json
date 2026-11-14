@@ -76,7 +76,7 @@
     "blocks": [
       {
         "type": "paragraph",
-        "text": "Batch picking lets eligible orders be picked together. Select the first order - Accept Order. Accept additional orders after to batch pick multiple orders and select Add to batch for each additional order.\n"
+        "text": "Batch picking lets eligible orders be picked together. Select the first order - Accept Order. Accept additional orders after to batch pick multiple orders and select Add to Batch for each additional order.\n"
       },
       {
         "type": "image",
