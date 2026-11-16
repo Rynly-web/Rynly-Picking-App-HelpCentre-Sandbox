@@ -131,13 +131,14 @@ content:
         type: image
         options:
           media: posters
-    - name: extraInfo
-      label: What this video covers — one bullet
-      type: text
-      description: Displays above any supporting image or PDF. Leave blank to use the site-wide default.
     - name: videoText
       label: Description below the video (optional)
       type: text
+      description: Optional text shown directly beneath a published video. Leave blank to hide it.
+    - name: extraInfo
+      label: What this video covers (optional)
+      type: text
+      description: Optional guidance shown above supporting material. Leave blank to hide this section; no default text is inserted.
     - name: pdf
       label: Supporting PDF (optional)
       type: object
@@ -330,13 +331,14 @@ content:
       type: image
       options:
         media: posters
-  - name: extraInfo
-    label: What this video covers — one bullet
-    type: text
-    description: Displays above any supporting image or PDF. Leave blank to use the site-wide default.
   - name: videoText
     label: Description below the video (optional)
     type: text
+    description: Optional text shown directly beneath a published video. Leave blank to hide it.
+  - name: extraInfo
+    label: What this video covers (optional)
+    type: text
+    description: Optional guidance shown above supporting material. Leave blank to hide this section; no default text is inserted.
   - name: pdf
     label: Supporting PDF (optional)
     type: object
@@ -706,10 +708,6 @@ content:
   - name: operationalReminderText
     label: Support reminder text
     type: text
-  - name: videoInfoPlaceholder
-    label: Default “What this video covers” bullet
-    type: text
-    description: Used on video pages where the individual bullet field is blank.
   - name: searchTermsHome
     label: Advanced — Homepage search phrases
     type: string

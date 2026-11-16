@@ -121,7 +121,7 @@
     window.RYNLY_FAQ_SECTIONS = content.sections;
     // Source files use a predictable version; the individual content JSON files
     // revalidate on each load, so an editor doesn't have to change version numbers.
-    await loadScript('assets/js/app.js?v=13');
+    await loadScript('assets/js/app.js?v=15');
     await loadScript('assets/js/search.js?v=12');
   } catch(error) {
     fail(error);

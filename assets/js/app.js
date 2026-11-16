@@ -216,9 +216,9 @@
       append(fallback, link, ".");
       card.append(fallback);
     }
-    // This optional guide text is deliberately editable in content.js.
-    // Keep it even when an embedded video becomes available.
-    if (guide.videoText) card.append(n("p", "video-description", guide.videoText));
+    // A description is optional. Whitespace alone must not create a paragraph.
+    const description = typeof guide.videoText === "string" ? guide.videoText.trim() : "";
+    if (description) card.append(n("p", "video-description", description));
     return card;
   }
   function makeFrame(src, title) {
@@ -396,7 +396,9 @@
       const figure = n("figure", "slide-figure");
       const img = n("img", "slide-image");
       img.alt = referencedImage?.alt || media?.alt || "Supporting slide";
-      img.loading = "lazy";
+      // A video page has at most one supporting image: start it early rather
+      // than delaying until it nearly scrolls into view. FAQ images stay lazy.
+      img.loading = isFaq ? "lazy" : "eager";
       img.decoding = "async";
       let attempt = 0;
       img.addEventListener("load", () => {
@@ -471,18 +473,17 @@
     // "What this video covers" on both narrow and wide screens.
     const playerCard = videoMedia(video);
     if (playerCard) app.append(append(n("div", "media-grid"), playerCard));
-    const outline = n("section", "media-card guide-outline");
-    outline.append(n("h2", "media-title", "What this video covers"));
-    const topics = n("ul", "guide-topics");
-    // Add extraInfo: "..." to this video in content.js when the final
-    // colleague-facing guidance is available. The existing topics stay in
-    // the data for search and can be restored without rewriting the pages.
-    const extraInfo = typeof video.extraInfo === "string" && video.extraInfo.trim()
-      ? video.extraInfo.trim()
-      : (site.videoInfoPlaceholder || "[Place any extra info here to be beside the training video]");
-    topics.append(n("li", "", extraInfo));
-    outline.append(topics);
-    app.append(outline);
+    // CMS fields are genuinely optional: no section and no site-wide fallback
+    // when an editor leaves "What this video covers" empty. Existing search
+    // topic phrases remain available for indexing without becoming page copy.
+    const extraInfo = typeof video.extraInfo === "string" ? video.extraInfo.trim() : "";
+    if (extraInfo) {
+      const outline = n("section", "media-card guide-outline");
+      outline.append(n("h2", "media-title", "What this video covers"));
+      // This is editable free text, not a forced single-item bullet list.
+      outline.append(n("p", "video-description", extraInfo));
+      app.append(outline);
+    }
     const supportingCard = slideMedia(video);
     if (supportingCard) app.append(supportingCard);
     const related = (video.relatedFaq || []).map(key => byId(data.faqs,key)).filter(Boolean)
@@ -538,15 +539,21 @@
     const match = src.match(/^(?:assets\/images\/faq|assets\/images\/slides|assets\/uploads|images\/FAQ|images\/faq)\/([a-zA-Z0-9_-]+\.(?:png|jpe?g|webp))$/i);
     if (!match) return [];
     const filename = match[1];
-    // Prefer the exact path specified by content.js, then try the legacy folder.
-    const candidates = [...new Set([
+    // Only legacy FAQ paths need alternate directories. For CMS uploads and
+    // slide images, trying unrelated FAQ directories creates unnecessary 404s
+    // and slows down error recovery on mobile connections.
+    const legacyFaq = /^(?:assets\/images\/faq|images\/FAQ|images\/faq)\//i.test(src)
+      || (/^assets\/images\/slides\//i.test(src) && /^FAQ\d+\./i.test(filename));
+    const candidates = legacyFaq ? [...new Set([
       src,
       "images/FAQ/" + filename,
       "assets/images/faq/" + filename,
       "images/faq/" + filename
-    ])];
-    const preferred = resolvedImagePaths.get(filename);
-    if (preferred) return [preferred, ...candidates.filter(path => path !== preferred)];
+    ])] : [src];
+    const preferred = legacyFaq ? resolvedImagePaths.get(filename) : null;
+    if (preferred && !unavailableImagePaths.has(preferred)) {
+      return [preferred, ...candidates.filter(path => path !== preferred && !unavailableImagePaths.has(path))];
+    }
     return candidates.filter(path => !unavailableImagePaths.has(path));
   }
   function blockElement(block) {
@@ -635,6 +642,7 @@
       img.alt = "Picking app guide — slide " + slide;
       img.loading = slide === first ? "eager" : "lazy";
       img.decoding = "async";
+      if (slide === first) img.fetchPriority = "high";
       // Use relative paths so this works on GitHub Pages project sites.
       img.src = "images/Picking/Slide" + slide + ".png";
       const caption = n("figcaption", "full-slide-caption", "Slide " + slide);
