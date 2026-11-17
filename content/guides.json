@@ -86,8 +86,7 @@
             "filename": "new-order-alerts.pdf"
           },
           "slide": {
-            "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/uploads/vertical-copy-of-how-to-manage-issues-in-the-admin-dashboard-retailers-rynly-guide.png",
-            "alt": "Image description test"
+            "src": "/Rynly-Picking-App-HelpCentre-Sandbox/assets/uploads/vertical-copy-of-how-to-manage-issues-in-the-admin-dashboard-retailers-rynly-guide.png"
           },
           "relatedFaq": [
             "new-order-alerts",
@@ -175,7 +174,7 @@
           "id": "missing-payments"
         }
       ],
-      "extraInfo": "test 3",
+      "extraInfo": "\\",
       "relatedFaq": [
         "new-order-alerts",
         "find-signed-in-account"
