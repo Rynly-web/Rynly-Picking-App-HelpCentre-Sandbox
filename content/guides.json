@@ -81,8 +81,7 @@
             "type": "vimeo",
             "id": "1242425189"
           },
-          "videoText": "description test 3",
-          "extraInfo": "Test for what this video covers",
+          "videoText": "How to ensure you are alerted for every new order.",
           "pdf": {
             "filename": "new-order-alerts.pdf"
           },
