@@ -13,7 +13,7 @@
       "find-signed-in-account",
       "identify-order"
     ],
-    "published": true,
+    "published": false,
     "icon": "device",
     "topics": [
       "Logging in and getting started",
@@ -78,8 +78,8 @@
           "type": "vimeo",
           "id": "1242425189"
         },
-        "extraInfo": "Test for what this video covers",
         "videoText": "description test 3",
+        "extraInfo": "Test for what this video covers",
         "pdf": {
           "filename": "new-order-alerts.pdf"
         },
@@ -234,8 +234,8 @@
         "video": {
           "type": "none"
         },
-        "extraInfo": "Learn how to assign bags, scan items into the correct bags and prepare orders for courier collection.",
         "videoText": "How to use bag scanning when it is enabled at your store.",
+        "extraInfo": "Learn how to assign bags, scan items into the correct bags and prepare orders for courier collection.",
         "pdf": {
           "filename": "bag-scanning.pdf"
         },
