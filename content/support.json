@@ -2,6 +2,12 @@
   "items": [
     {
       "published": true,
+      "name": "JS Tech Service Desk",
+      "phone": "0345 603 2638",
+      "id": "js-tech"
+    },
+    {
+      "published": true,
       "name": "Just Eat",
       "phone": "0208 736 2000",
       "description": "TESTING",
@@ -24,12 +30,6 @@
       "name": "Chop Chop",
       "phone": "0333 070 3602",
       "id": "chop-chop"
-    },
-    {
-      "published": true,
-      "name": "JS Tech Service Desk",
-      "phone": "0345 603 2638",
-      "id": "js-tech"
     }
   ]
 }
