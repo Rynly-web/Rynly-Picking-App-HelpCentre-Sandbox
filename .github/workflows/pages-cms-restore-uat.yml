@@ -1,0 +1,84 @@
+name: Restore UAT published content from production
+on:
+  workflow_dispatch:
+    inputs:
+      payload:
+        description: 'Pages CMS action payload (JSON)'
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: rynly-help-centre-content-sync
+  cancel-in-progress: false
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out writable UAT repository
+        uses: actions/checkout@v4
+        with:
+          path: uat
+          ref: main
+          token: ${{ secrets.HC_UAT_WRITE_TOKEN }}
+          persist-credentials: true
+      - name: Check action confirmation and unchanged UAT snapshot
+        working-directory: uat
+        env:
+          CMS_ACTION_PAYLOAD: ${{ inputs.payload }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node tools/validate-cms-action.cjs restore-uat "$CMS_ACTION_PAYLOAD"
+          expected="$(node tools/validate-cms-action.cjs restore-uat "$CMS_ACTION_PAYLOAD" --sha)"
+          actual="$(git rev-parse HEAD)"
+          if [[ "$actual" != "$expected" ]]; then
+            echo 'UAT changed since this CMS action was opened. Review and run Restore again.' >&2
+            exit 1
+          fi
+      - name: Check out current production content read-only
+        uses: actions/checkout@v4
+        with:
+          repository: Rynly-web/Rynly-Picking-App-HelpCentre
+          path: prod
+          ref: main
+          persist-credentials: false
+      - name: Require initialized production site
+        run: node uat/tools/check-production-ready.cjs "$GITHUB_WORKSPACE/prod"
+      - name: Restore published content without touching videos or media
+        working-directory: uat
+        shell: bash
+        run: |
+          set -euo pipefail
+          node tools/restore-uat-content.cjs "$GITHUB_WORKSPACE/prod"
+          node tools/check-content.cjs
+          git add -- content/site.json content/support.json content/faqs.json content/sections.json
+          git diff --cached --check
+          git diff --cached --name-only
+      - name: Back up UAT snapshot before restoring
+        working-directory: uat
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --cached --quiet; then
+            echo 'UAT published content already matches production. Nothing to restore.'
+            exit 0
+          fi
+          backup_branch="backup/uat-before-restore-${GITHUB_RUN_ID}"
+          git push origin "HEAD:refs/heads/$backup_branch"
+          echo "Backup branch saved: $backup_branch"
+      - name: Commit and publish the UAT restoration
+        working-directory: uat
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --cached --quiet; then
+            echo 'Nothing to commit.'
+            exit 0
+          fi
+          git config user.name 'Rynly Help Centre Publisher'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Restore published Help Centre content to UAT (video drafts preserved)'
+          git push origin HEAD:main
+          echo 'UAT restoration pushed. Verify the Sandbox GitHub Pages deployment.'

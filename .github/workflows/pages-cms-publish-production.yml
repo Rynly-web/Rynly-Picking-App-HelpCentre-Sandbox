@@ -1,0 +1,77 @@
+name: Publish Help Centre to production
+on:
+  workflow_dispatch:
+    inputs:
+      payload:
+        description: 'Pages CMS action payload (JSON)'
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: rynly-help-centre-content-sync
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out current Sandbox
+        uses: actions/checkout@v4
+        with:
+          path: uat
+          ref: main
+          persist-credentials: false
+      - name: Check action confirmation and exact UAT snapshot
+        working-directory: uat
+        env:
+          CMS_ACTION_PAYLOAD: ${{ inputs.payload }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node tools/validate-cms-action.cjs publish-production "$CMS_ACTION_PAYLOAD"
+          expected="$(node tools/validate-cms-action.cjs publish-production "$CMS_ACTION_PAYLOAD" --sha)"
+          actual="$(git rev-parse HEAD)"
+          if [[ "$actual" != "$expected" ]]; then
+            echo 'UAT changed since this CMS action was opened. Review the latest UAT website and run Publish again.' >&2
+            exit 1
+          fi
+      - name: Check out live production repository
+        uses: actions/checkout@v4
+        with:
+          repository: Rynly-web/Rynly-Picking-App-HelpCentre
+          path: prod
+          ref: main
+          token: ${{ secrets.HC_PROD_WRITE_TOKEN }}
+          persist-credentials: true
+      - name: Require initial redesigned production launch
+        run: node uat/tools/check-production-ready.cjs "$GITHUB_WORKSPACE/prod"
+      - name: Validate UAT content
+        working-directory: uat
+        run: node tools/check-content.cjs
+      - name: Prepare production from the pinned UAT snapshot
+        run: bash uat/tools/prepare-production.sh "$GITHUB_WORKSPACE/prod"
+      - name: Check publish rules and changes
+        working-directory: prod
+        shell: bash
+        run: |
+          set -euo pipefail
+          node ../uat/tools/check-production-ready.cjs .
+          git add -A
+          git diff --cached --check
+          echo 'Changed production files:'
+          git diff --cached --stat
+      - name: Commit and publish to production
+        working-directory: prod
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --cached --quiet; then
+            echo 'Production is already up to date.'
+            exit 0
+          fi
+          git config user.name 'Rynly Help Centre Publisher'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "Publish UAT Help Centre ${GITHUB_SHA} (videos hidden)"
+          git push origin HEAD:main
+          echo 'Production commit pushed. Verify the GitHub Pages deployment separately.'
