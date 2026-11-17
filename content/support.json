@@ -4,25 +4,28 @@
       "published": true,
       "name": "JS Tech Service Desk",
       "phone": "0345 603 2638",
+      "description": "General store issues, or when all marketplaces are down or need to be switched off.",
       "id": "js-tech"
     },
     {
       "published": true,
       "name": "Just Eat",
       "phone": "0208 736 2000",
-      "description": "TESTING",
+      "description": "Extra courier requests or issues with Just Eat orders.",
       "id": "just-eat"
     },
     {
       "published": true,
       "name": "Uber Eats",
       "phone": "0808 178 5518",
+      "description": "Extra courier requests or issues with Uber Eats orders.",
       "id": "uber-eats"
     },
     {
       "published": true,
       "name": "Deliveroo",
       "phone": "020 3699 9977",
+      "description": "Extra courier requests or issues with Deliveroo orders.",
       "id": "deliveroo"
     },
     {
