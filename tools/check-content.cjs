@@ -4,7 +4,13 @@
 const fs=require('node:fs'); const path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const read=name=>JSON.parse(fs.readFileSync(path.join(root,'content',name+'.json'),'utf8'));
-const [faqs,guides,support,sections,site]=['faqs','guides','support','sections','site'].map(read);
+const list=(value,name)=>{
+ if(Array.isArray(value))return value; // Backward-compatible with V15 during migration.
+ if(value&&typeof value==='object'&&Array.isArray(value.items))return value.items;
+ throw Error('Invalid CMS list '+name+': expected {"items": [...]}');
+};
+const [faqs,guides,support,sections]=['faqs','guides','support','sections'].map(name=>list(read(name),name));
+const site=read('site');
 let errors=[]; let warnings=[];
 const fail=msg=>errors.push(msg),warn=msg=>warnings.push(msg);
 if(![faqs,guides,support,sections].every(Array.isArray) || !site || typeof site!=='object')fail('Invalid JSON content types.');
@@ -12,11 +18,13 @@ const ids=(a,label)=>{
  const seen=new Set();for(const x of a){
   if(!x || !/^[a-z0-9-]+$/.test(x.id||''))fail(label+' invalid id: '+x?.id);
   if(seen.has(x.id))fail(label+' duplicate id: '+x.id);
-  seen.add(x.id);if(!x.title && label!=='support')fail(label+' missing title: '+x.id);
+  seen.add(x.id);if(!x.title && label.toLowerCase()!=='support')fail(label+' missing title: '+x.id);
  }return seen;
 };
 if(!errors.length){
  const faqIDs=ids(faqs,'FAQ'), guideIDs=ids(guides,'Guide');
+ ids(support,'Support');
+ for(const [name,items] of [['guides',guides],['faqs',faqs],['support',support],['sections',sections]])for(const item of items){if(item.published!==undefined && typeof item.published!=='boolean')fail(name+' published must be true/false: '+(item.id||item.title||item.name));}
  const videos=guides.flatMap(g=>Array.isArray(g.videos)?g.videos:[g]);
  const videoIDs=ids(videos,'Video');
  const media=(ref,pathLabel)=>{

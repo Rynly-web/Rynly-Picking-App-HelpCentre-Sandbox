@@ -14,6 +14,16 @@ const sectionsInput = path.join(root, 'assets/js/faq-sections.js');
 const configInput = path.join(root, 'assets/js/config.js');
 const output = path.join(root, 'content');
 const force = process.argv.includes('--force');
+// Protect CMS-managed JSON from an accidental legacy --force migration.
+const guidesFile=path.join(output,'guides.json');
+if(fs.existsSync(guidesFile)) {
+  const json=JSON.parse(fs.readFileSync(guidesFile,'utf8'));
+  if(json && !Array.isArray(json) && Array.isArray(json.items)){
+    console.error('CMS content is already in the new editable format. Do NOT rerun the old content.js migration.');
+    process.exit(2);
+  }
+}
+
 function loadGlobal(filename, property) {
   if (!fs.existsSync(filename)) return undefined;
   const ctx = {window:{}};

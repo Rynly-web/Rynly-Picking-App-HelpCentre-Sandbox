@@ -89,10 +89,16 @@
       return [name, await response.json()];
     }));
     const content=Object.fromEntries(entries);
-    if (!Array.isArray(content.faqs) || !Array.isArray(content.guides)
-        || !Array.isArray(content.support) || !Array.isArray(content.sections)
-        || typeof content.site !== 'object' || content.site === null) {
-      throw new Error('Invalid CMS content structure');
+    // The CMS editor stores repeatable records in {items:[...]}, allowing
+    // descriptive collapsed headings. Old array files remain readable during rollout.
+    function records(value, name) {
+      if (Array.isArray(value)) return value;
+      if (value && typeof value === 'object' && Array.isArray(value.items)) return value.items;
+      throw new Error('Invalid CMS list: ' + name);
+    }
+    for (const name of ['faqs','guides','support','sections']) content[name] = records(content[name],name);
+    if (typeof content.site !== 'object' || content.site === null || Array.isArray(content.site)) {
+      throw new Error('Invalid CMS site settings');
     }
     const unique=new Set();
     function verify(items,name) {
@@ -103,7 +109,14 @@
       }
     }
     verify(content.faqs,'faq');verify(content.guides,'guide');
-    const faqs=content.faqs.filter(f=>f.published!==false).map(normaliseFaq);
+    // Hiding an FAQ section hides its questions unless another visible
+    // section also contains them. Standalone/ungrouped FAQs remain listed.
+    const sections=content.sections.filter(s=>s.published!==false);
+    const visibleSectionIds=new Set(sections.flatMap(s=>Array.isArray(s.ids)?s.ids:[]));
+    const hiddenSectionIds=new Set(content.sections.filter(s=>s.published===false)
+      .flatMap(s=>Array.isArray(s.ids)?s.ids:[])
+      .filter(id=>!visibleSectionIds.has(id)));
+    const faqs=content.faqs.filter(f=>f.published!==false&&!hiddenSectionIds.has(f.id)).map(normaliseFaq);
     const guides=content.guides.filter(g=>g.published!==false).map(g=> {
       if (Array.isArray(g.videos)) {
         g.videos=g.videos.filter(v=>v.published!==false);
@@ -112,13 +125,14 @@
       return normaliseVideo(g);
     }).filter(g=>!Array.isArray(g.videos)||g.videos.length>0);
     guides.forEach(g=>g.videos?.forEach(normaliseVideo));
-    window.RYNLY_CONTENT = {site:content.site,faqs,guides,support:content.support};
+    window.RYNLY_CONTENT = {site:content.site,faqs,guides,
+      support:content.support.filter(s=>s.published!==false)};
     window.RYNLY_CONFIG = Object.freeze({
       siteName:content.site.siteName || 'Rynly Picking App Help Centre',
       supportEmail:content.site.supportEmail || 'support@rynly.com',
       searchEnabled:true
     });
-    window.RYNLY_FAQ_SECTIONS = content.sections;
+    window.RYNLY_FAQ_SECTIONS = sections;
     // Source files use a predictable version; the individual content JSON files
     // revalidate on each load, so an editor doesn't have to change version numbers.
     await loadScript('assets/js/app.js?v=15');

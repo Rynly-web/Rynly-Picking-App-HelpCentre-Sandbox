@@ -54,39 +54,252 @@ content:
   type: file
   path: content/guides.json
   format: json
-  list: true
   operations:
     create: false
     delete: false
   fields:
-  - name: title
-    label: Guide title
-    type: string
-    required: true
-  - name: description
-    label: Description shown in the guide list
-    type: text
-    description: Short sentence under the title on the public Help Centre.
-  - name: videos
-    label: Individual videos in this group (Common issues / Batching)
+  - name: items
+    label: Guides and video groups
     type: object
+    description: Expand a titled item to update it. The collapsed header shows its current visibility status.
     list:
       collapsible:
         collapsed: true
-        summary: '{title}'
+        summary: '{fields.title}  ·  Visible on site: {fields.published}'
     fields:
+    - name: published
+      label: Visible on the Help Centre
+      type: boolean
+      description: Turn off to remove this item from the public website. Hidden content remains in GitHub and can be
+        restored.
     - name: title
-      label: Video title
+      label: Guide title
       type: string
       required: true
     - name: description
-      label: Video description (optional)
+      label: Description shown in the guide list
       type: text
-    - name: video
-      label: Video link and orientation
+      description: Short sentence under the title on the public Help Centre.
+    - name: videos
+      label: Individual videos in this group (Common issues / Batching)
       type: object
-      description: Choose YouTube (Unlisted) or Vimeo and paste the video URL. Use portrait for vertical 
-        recordings.
+      list:
+        collapsible:
+          collapsed: true
+          summary: '{fields.title}  ·  Visible on site: {fields.published}'
+      fields:
+      - name: published
+        label: Visible on the Help Centre
+        type: boolean
+        description: Turn off to hide this individual video. If the parent is hidden, all videos in its group are
+          hidden.
+      - name: title
+        label: Video title
+        type: string
+        required: true
+      - name: description
+        label: Video description (optional)
+        type: text
+      - name: video
+        label: Video link and orientation
+        type: object
+        description: Choose YouTube (Unlisted) or Vimeo and paste the video URL. Use portrait for vertical recordings.
+        fields:
+        - name: type
+          label: Video provider
+          type: select
+          options:
+            values:
+            - name: none
+              label: No video yet
+            - name: youtube
+              label: YouTube (Unlisted)
+            - name: vimeo
+              label: Vimeo
+            - name: local
+              label: Local MP4/WebM
+        - name: id
+          label: YouTube/Vimeo link or video ID
+          type: string
+          description: Paste the full YouTube/Vimeo link, or just the video ID. An unlisted Vimeo link can include its
+            private hash.
+        - name: hash
+          label: Vimeo unlisted hash (optional)
+          type: string
+        - name: orientation
+          label: Player orientation
+          type: select
+          options:
+            values:
+            - name: landscape
+              label: Landscape 16:9
+            - name: portrait
+              label: Portrait 9:16
+        - name: src
+          label: Local video file (optional)
+          type: file
+          options:
+            media: videos
+            extensions:
+            - mp4
+            - webm
+        - name: poster
+          label: Local video poster (optional)
+          type: image
+          options:
+            media: posters
+      - name: videoText
+        label: Description below the video (optional)
+        type: text
+        description: Optional text shown directly beneath a published video. Leave blank to hide it.
+      - name: extraInfo
+        label: What this video covers (optional)
+        type: text
+        description: Optional guidance shown above supporting material. Leave blank to hide this section; no default
+          text is inserted.
+      - name: pdf
+        label: Supporting PDF (optional)
+        type: object
+        fields:
+        - name: src
+          label: PDF file
+          type: file
+          options:
+            media: pdfs
+            extensions:
+            - pdf
+        - name: filename
+          label: Suggested download filename
+          type: string
+        hidden: true
+      - name: slide
+        label: Supporting material (image or PDF)
+        type: object
+        fields:
+        - name: src
+          label: Upload or select image/PDF
+          type: file
+          description: Choose one image or PDF. This takes priority over an existing FAQ screenshot reference.
+          options:
+            media: attachments
+            extensions:
+            - png
+            - jpg
+            - jpeg
+            - webp
+            - pdf
+        - name: faqId
+          label: Or reuse an existing FAQ screenshot
+          type: select
+          description: Choose the FAQ containing the screenshot. No duplicate upload required. Leave blank when
+            uploading a file above.
+          options:
+            values:
+            - name: ''
+              label: None
+            - &id001
+              name: identify-order
+              label: How do I identify which marketplace an order came from?
+            - &id002
+              name: cancel-order
+              label: How can I cancel an order?
+            - &id003
+              name: batch-picking-faq
+              label: How can I pick multiple orders at the same time?
+            - &id004
+              name: pick-scan-pack-scan
+              label: How do I use pick scan / pack scan?
+            - &id005
+              name: stuck-order
+              label: How do I clear an old or stuck order?
+            - &id006
+              name: chop-chop-payment-failure
+              label: What should I do with a Chop Chop payment failure?
+            - &id007
+              name: take-store-offline
+              label: How do I stop on-demand orders at my store?
+            - &id008
+              name: new-order-alerts
+              label: How can I keep new-order alerts ringing?
+            - &id009
+              name: find-signed-in-account
+              label: How can I see which account is signed in on a device?
+            - &id010
+              name: extra-driver
+              label: How do I request an extra driver for a large order?
+            - &id011
+              name: complete-picking-guide
+              label: Full picking app guide (41 slides)
+            - &id012
+              name: contact-support-faq
+              label: How do I contact support?
+        - name: alt
+          label: Image description (optional)
+          type: string
+          description: Brief description for screen readers when using an uploaded image.
+        description: 'Choose one: upload/select an image or PDF, OR reuse an existing FAQ screenshot. Leave both empty for
+          no supporting material.'
+      - name: relatedFaq
+        label: Related FAQ questions
+        type: select
+        description: Choose articles that appear beneath this particular video.
+        options:
+          values: &id013
+          - *id001
+          - *id002
+          - *id003
+          - *id004
+          - *id005
+          - *id006
+          - *id007
+          - *id008
+          - *id009
+          - *id010
+          - *id011
+          - *id012
+          multiple: true
+      - name: icon
+        label: Video icon (advanced)
+        type: select
+        options:
+          values:
+          - device
+          - bag
+          - alert
+          - bell
+          - x-circle
+          - credit-card
+          - truck
+          - layers
+          - scan
+          - refresh
+          - book
+          - headset
+          - help
+      - name: topics
+        label: Advanced — searchable topics
+        type: string
+        list: true
+        description: Optional hidden search phrases; not visible to pickers.
+      - name: searchTerms
+        label: Advanced — search synonyms
+        type: string
+        list: true
+        description: Optional alternate wording to help colleagues find this page.
+      - name: id
+        label: Permanent video ID — read only
+        type: string
+        required: true
+        description: Protected; this ID is used by direct video and related-FAQ links.
+        pattern: ^[a-z0-9-]+$
+        readonly: true
+      description: Expand the relevant video to add its YouTube link, slides, information and related FAQs. Leave empty
+        for a single-video guide.
+    - name: video
+      label: Embedded video (single-video guides)
+      type: object
+      description: For single-video guides, choose YouTube, Vimeo or local video. For Common issues and Batching, edit
+        the individual videos inside “Videos in this group” instead.
       fields:
       - name: type
         label: Video provider
@@ -104,8 +317,8 @@ content:
       - name: id
         label: YouTube/Vimeo link or video ID
         type: string
-        description: Paste the full YouTube/Vimeo link, or just the video ID. An unlisted Vimeo link can 
-          include its private hash.
+        description: Paste the full YouTube/Vimeo link, or just the video ID. An unlisted Vimeo link can include its
+          private hash.
       - name: hash
         label: Vimeo unlisted hash (optional)
         type: string
@@ -138,7 +351,8 @@ content:
     - name: extraInfo
       label: What this video covers (optional)
       type: text
-      description: Optional guidance shown above supporting material. Leave blank to hide this section; no default text is inserted.
+      description: Optional guidance shown above supporting material. Leave blank to hide this section; no default text
+        is inserted.
     - name: pdf
       label: Supporting PDF (optional)
       type: object
@@ -173,80 +387,39 @@ content:
       - name: faqId
         label: Or reuse an existing FAQ screenshot
         type: select
-        description: Choose the FAQ containing the screenshot. No duplicate upload required. Leave blank when 
-          uploading a file above.
+        description: Choose the FAQ containing the screenshot. No duplicate upload required. Leave blank when uploading
+          a file above.
         options:
           values:
           - name: ''
             label: None
-          - &id001
-            name: identify-order
-            label: How do I identify which marketplace an order came from?
-          - &id002
-            name: cancel-order
-            label: How can I cancel an order?
-          - &id003
-            name: batch-picking-faq
-            label: How can I pick multiple orders at the same time?
-          - &id004
-            name: pick-scan-pack-scan
-            label: How do I use pick scan / pack scan?
-          - &id005
-            name: stuck-order
-            label: How do I clear an old or stuck order?
-          - &id006
-            name: chop-chop-payment-failure
-            label: What should I do with a Chop Chop payment failure?
-          - &id007
-            name: take-store-offline
-            label: How do I stop on-demand orders at my store?
-          - &id008
-            name: new-order-alerts
-            label: How can I keep new-order alerts ringing?
-          - &id009
-            name: find-signed-in-account
-            label: How can I see which account is signed in on a device?
-          - &id010
-            name: extra-driver
-            label: How do I request an extra driver for a large order?
-          - &id011
-            name: complete-picking-guide
-            label: Full picking app guide (41 slides)
-          - &id012
-            name: contact-support-faq
-            label: How do I contact support?
+          - *id001
+          - *id002
+          - *id003
+          - *id004
+          - *id005
+          - *id006
+          - *id007
+          - *id008
+          - *id009
+          - *id010
+          - *id011
+          - *id012
       - name: alt
         label: Image description (optional)
         type: string
         description: Brief description for screen readers when using an uploaded image.
-      description: 'Choose one: upload/select an image or PDF, OR reuse an existing FAQ screenshot. Leave both empty
-        for no supporting material.'
+      description: 'Choose one: upload/select an image or PDF, OR reuse an existing FAQ screenshot. Leave both empty for no
+        supporting material.'
     - name: relatedFaq
       label: Related FAQ questions
       type: select
-      description: Choose articles that appear beneath this particular video.
+      description: Select FAQ articles shown at the bottom of this video page.
       options:
-        values: &id013
-        - *id001
-        - *id002
-        - *id003
-        - *id004
-        - *id005
-        - *id006
-        - *id007
-        - *id008
-        - *id009
-        - *id010
-        - *id011
-        - *id012
+        values: *id013
         multiple: true
-    - name: published
-      label: Visible in the Help Centre
-      type: boolean
-      description: Turn off to hide from menus/search. JSON and uploaded files remain public in a public 
-        repository.
     - name: icon
-      label: Video icon (advanced)
+      label: Guide icon (advanced)
       type: select
       options:
         values:
@@ -264,404 +437,262 @@ content:
         - headset
         - help
     - name: topics
-      label: Advanced — searchable topics
+      label: Advanced — additional searchable topic phrases
       type: string
       list: true
-      description: Optional hidden search phrases; not visible to pickers.
+      description: Optional. These help search; they are not displayed in the guide.
     - name: searchTerms
       label: Advanced — search synonyms
       type: string
       list: true
-      description: Optional alternate wording to help colleagues find this page.
+      description: 'Optional alternative search terms (for example: close shop, closure, pause orders).'
     - name: id
-      label: Permanent video ID — read only
+      label: Permanent ID — read only
       type: string
       required: true
-      description: Protected; this ID is used by direct video and related-FAQ links.
+      description: Used in links and related FAQs. Protected to avoid broken links.
       pattern: ^[a-z0-9-]+$
       readonly: true
-    description: Expand the relevant video to add its YouTube link, slides, information and related FAQs. 
-      Leave empty for a single-video guide.
-  - name: video
-    label: Embedded video (single-video guides)
-    type: object
-    description: For single-video guides, choose YouTube, Vimeo or local video. For Common issues and 
-      Batching, edit the individual videos inside “Videos in this group” instead.
-    fields:
-    - name: type
-      label: Video provider
-      type: select
-      options:
-        values:
-        - name: none
-          label: No video yet
-        - name: youtube
-          label: YouTube (Unlisted)
-        - name: vimeo
-          label: Vimeo
-        - name: local
-          label: Local MP4/WebM
-    - name: id
-      label: YouTube/Vimeo link or video ID
-      type: string
-      description: Paste the full YouTube/Vimeo link, or just the video ID. An unlisted Vimeo link can include
-        its private hash.
-    - name: hash
-      label: Vimeo unlisted hash (optional)
-      type: string
-    - name: orientation
-      label: Player orientation
-      type: select
-      options:
-        values:
-        - name: landscape
-          label: Landscape 16:9
-        - name: portrait
-          label: Portrait 9:16
-    - name: src
-      label: Local video file (optional)
-      type: file
-      options:
-        media: videos
-        extensions:
-        - mp4
-        - webm
-    - name: poster
-      label: Local video poster (optional)
-      type: image
-      options:
-        media: posters
-  - name: videoText
-    label: Description below the video (optional)
-    type: text
-    description: Optional text shown directly beneath a published video. Leave blank to hide it.
-  - name: extraInfo
-    label: What this video covers (optional)
-    type: text
-    description: Optional guidance shown above supporting material. Leave blank to hide this section; no default text is inserted.
-  - name: pdf
-    label: Supporting PDF (optional)
-    type: object
-    fields:
-    - name: src
-      label: PDF file
-      type: file
-      options:
-        media: pdfs
-        extensions:
-        - pdf
-    - name: filename
-      label: Suggested download filename
-      type: string
-    hidden: true
-  - name: slide
-    label: Supporting material (image or PDF)
-    type: object
-    fields:
-    - name: src
-      label: Upload or select image/PDF
-      type: file
-      description: Choose one image or PDF. This takes priority over an existing FAQ screenshot reference.
-      options:
-        media: attachments
-        extensions:
-        - png
-        - jpg
-        - jpeg
-        - webp
-        - pdf
-    - name: faqId
-      label: Or reuse an existing FAQ screenshot
-      type: select
-      description: Choose the FAQ containing the screenshot. No duplicate upload required. Leave blank when 
-        uploading a file above.
-      options:
-        values:
-        - name: ''
-          label: None
-        - *id001
-        - *id002
-        - *id003
-        - *id004
-        - *id005
-        - *id006
-        - *id007
-        - *id008
-        - *id009
-        - *id010
-        - *id011
-        - *id012
-    - name: alt
-      label: Image description (optional)
-      type: string
-      description: Brief description for screen readers when using an uploaded image.
-    description: 'Choose one: upload/select an image or PDF, OR reuse an existing FAQ screenshot. Leave both empty
-      for no supporting material.'
-  - name: relatedFaq
-    label: Related FAQ questions
-    type: select
-    description: Select FAQ articles shown at the bottom of this video page.
-    options:
-      values: *id013
-      multiple: true
-  - name: published
-    label: Visible on the Help Centre
-    type: boolean
-    description: Turn off to hide from menus/search. JSON and uploaded files remain public in a public 
-      repository.
-  - name: icon
-    label: Guide icon (advanced)
-    type: select
-    options:
-      values:
-      - device
-      - bag
-      - alert
-      - bell
-      - x-circle
-      - credit-card
-      - truck
-      - layers
-      - scan
-      - refresh
-      - book
-      - headset
-      - help
-  - name: topics
-    label: Advanced — additional searchable topic phrases
-    type: string
-    list: true
-    description: Optional. These help search; they are not displayed in the guide.
-  - name: searchTerms
-    label: Advanced — search synonyms
-    type: string
-    list: true
-    description: 'Optional alternative search terms (for example: close shop, closure, pause orders).'
-  - name: id
-    label: Permanent ID — read only
-    type: string
-    required: true
-    description: Used in links and related FAQs. Protected to avoid broken links.
-    pattern: ^[a-z0-9-]+$
-    readonly: true
 - name: faqs
   label: Help centre articles
   type: file
   path: content/faqs.json
   format: json
-  list: true
   operations:
     create: false
     delete: false
   fields:
-  - name: title
-    label: Question shown on the website
-    type: string
-    required: true
-  - name: blocks
-    label: Answer content — text, screenshots and links
-    type: block
+  - name: items
+    label: FAQ articles
+    type: object
+    description: Expand a titled item to update it. The collapsed header shows its current visibility status.
     list:
       collapsible:
         collapsed: true
-    blockKey: type
-    blocks:
-    - name: paragraph
-      label: Paragraph
-      fields:
-      - name: text
-        label: Paragraph text
-        type: text
-    - name: heading
-      label: Subheading
-      fields:
-      - name: text
-        label: Heading text
-        type: string
-    - name: list
-      label: Bullet list
-      fields:
-      - name: items
-        label: Bullet points
-        type: string
-        list: true
-    - name: notice
-      label: Important note
-      fields:
-      - name: title
-        label: Note heading
-        type: string
-      - name: text
-        label: Note text
-        type: text
-    - name: image
-      label: FAQ screenshot / slide
+        summary: '{fields.title}  ·  Visible on site: {fields.published}'
+    fields:
+    - name: published
+      label: Visible on the Help Centre
+      type: boolean
+      description: Turn off to remove this item from the public website. Hidden content remains in GitHub and can be
+        restored.
+    - name: title
+      label: Question shown on the website
+      type: string
+      required: true
+    - name: blocks
+      label: Answer content — text, screenshots and links
+      type: block
+      list:
+        collapsible:
+          collapsed: true
+      blockKey: type
+      blocks:
+      - name: paragraph
+        label: Paragraph
+        fields:
+        - name: text
+          label: Paragraph text
+          type: text
+      - name: heading
+        label: Subheading
+        fields:
+        - name: text
+          label: Heading text
+          type: string
+      - name: list
+        label: Bullet list
+        fields:
+        - name: items
+          label: Bullet points
+          type: string
+          list: true
+      - name: notice
+        label: Important note
+        fields:
+        - name: title
+          label: Note heading
+          type: string
+        - name: text
+          label: Note text
+          type: text
+      - name: image
+        label: FAQ screenshot / slide
+        fields:
+        - name: src
+          label: Screenshot
+          type: image
+          options:
+            media: faq-images
+        - name: alt
+          label: Accessible description
+          type: string
+      - name: link
+        label: External website link
+        fields:
+        - name: label
+          label: Link text
+          type: string
+        - name: url
+          label: HTTPS URL
+          type: string
+      description: Add, edit or reorder the blocks that make up the FAQ answer.
+    - name: slide
+      label: Supporting slide (optional)
+      type: object
       fields:
       - name: src
-        label: Screenshot
-        type: image
+        label: Slide image or PDF
+        type: file
+        description: Upload one image/PDF, or leave empty to use a FAQ screenshot.
         options:
-          media: faq-images
+          media: attachments
+          extensions:
+          - png
+          - jpg
+          - jpeg
+          - webp
+          - pdf
+      - name: faqId
+        label: Reuse screenshot from FAQ
+        type: select
+        description: Choose an existing FAQ screenshot instead of uploading the same file twice.
+        options:
+          values:
+          - name: ''
+            label: None
+          - *id001
+          - *id002
+          - *id003
+          - *id004
+          - *id005
+          - *id006
+          - *id007
+          - *id008
+          - *id009
+          - *id010
+          - *id011
+          - *id012
       - name: alt
-        label: Accessible description
+        label: Image description (optional)
         type: string
-    - name: link
-      label: External website link
-      fields:
-      - name: label
-        label: Link text
-        type: string
-      - name: url
-        label: HTTPS URL
-        type: string
-    description: Add, edit or reorder the blocks that make up the FAQ answer.
-  - name: slide
-    label: Supporting slide (optional)
-    type: object
-    fields:
-    - name: src
-      label: Slide image or PDF
-      type: file
-      description: Upload one image/PDF, or leave empty to use a FAQ screenshot.
-      options:
-        media: attachments
-        extensions:
-        - png
-        - jpg
-        - jpeg
-        - webp
-        - pdf
-    - name: faqId
-      label: Reuse screenshot from FAQ
+    - name: relatedGuides
+      label: Related guided videos
       type: select
-      description: Choose an existing FAQ screenshot instead of uploading the same file twice.
+      description: Choose the video pages linked beneath this FAQ.
       options:
         values:
-        - name: ''
-          label: None
-        - *id001
-        - *id002
-        - *id003
-        - *id004
-        - *id005
-        - *id006
-        - *id007
-        - *id008
-        - *id009
-        - *id010
-        - *id011
-        - *id012
-    - name: alt
-      label: Image description (optional)
+        - name: logging-in-getting-started
+          label: Logging in & getting started
+        - name: picking-completing-an-order
+          label: Pick an order
+        - name: new-order-alerts-video
+          label: How to troubleshoot new order alerts
+        - name: cancelling-order-by-marketplace
+          label: How to cancel an order — by marketplace
+        - name: missing-payments
+          label: Missing payments
+        - name: requesting-an-extra-courier
+          label: Requesting an extra courier
+        - name: bag-scanning-video
+          label: Bag scanning
+        - name: batch-picking-video
+          label: Batch picking
+        - name: substitutions-deep-dive
+          label: Substitutions
+        - name: in-store-barcode-scanning
+          label: In-store barcode scanning & packing an order
+        multiple: true
+    - name: supportLink
+      label: Show link to partner support numbers
+      type: boolean
+    - name: icon
+      label: FAQ icon (advanced)
+      type: select
+      options:
+        values:
+        - tag
+        - x-circle
+        - layers
+        - scan
+        - clock
+        - credit-card
+        - power
+        - bell
+        - user
+        - truck
+        - book
+        - headset
+        - help
+    - name: searchTerms
+      label: Advanced — search synonyms
       type: string
-  - name: relatedGuides
-    label: Related guided videos
-    type: select
-    description: Choose the video pages linked beneath this FAQ.
-    options:
-      values:
-      - name: logging-in-getting-started
-        label: Logging in & getting started
-      - name: picking-completing-an-order
-        label: Pick an order
-      - name: new-order-alerts-video
-        label: How to troubleshoot new order alerts
-      - name: cancelling-order-by-marketplace
-        label: How to cancel an order — by marketplace
-      - name: missing-payments
-        label: Missing payments
-      - name: requesting-an-extra-courier
-        label: Requesting an extra courier
-      - name: bag-scanning-video
-        label: Bag scanning
-      - name: batch-picking-video
-        label: Batch picking
-      - name: substitutions-deep-dive
-        label: Substitutions
-      - name: in-store-barcode-scanning
-        label: In-store barcode scanning & packing an order
-      multiple: true
-  - name: supportLink
-    label: Show link to partner support numbers
-    type: boolean
-  - name: published
-    label: Visible on the Help Centre
-    type: boolean
-    description: Hides this FAQ from menus/search, not from public GitHub history.
-  - name: icon
-    label: FAQ icon (advanced)
-    type: select
-    options:
-      values:
-      - tag
-      - x-circle
-      - layers
-      - scan
-      - clock
-      - credit-card
-      - power
-      - bell
-      - user
-      - truck
-      - book
-      - headset
-      - help
-  - name: searchTerms
-    label: Advanced — search synonyms
-    type: string
-    list: true
-    description: 'Optional hidden alternative phrases (for example: clousure, close store).'
-  - name: id
-    label: Permanent FAQ ID — read only
-    type: string
-    required: true
-    description: Protected because related videos, search results and bookmarked links use it.
-    pattern: ^[a-z0-9-]+$
-    readonly: true
-  - name: category
-    label: Previous category — read only
-    type: string
-    readonly: true
-  - name: slideDeck
-    label: Full guide slide numbering — read only
-    type: object
-    readonly: true
-    fields:
-    - name: first
-      label: First slide
-      type: number
-    - name: last
-      label: Last slide
-      type: number
-    - name: skip
-      label: Skipped slide numbers
-      type: number
       list: true
+      description: 'Optional hidden alternative phrases (for example: clousure, close store).'
+    - name: id
+      label: Permanent FAQ ID — read only
+      type: string
+      required: true
+      description: Protected because related videos, search results and bookmarked links use it.
+      pattern: ^[a-z0-9-]+$
+      readonly: true
+    - name: category
+      label: Previous category — read only
+      type: string
+      readonly: true
+    - name: slideDeck
+      label: Full guide slide numbering — read only
+      type: object
+      readonly: true
+      fields:
+      - name: first
+        label: First slide
+        type: number
+      - name: last
+        label: Last slide
+        type: number
+      - name: skip
+        label: Skipped slide numbers
+        type: number
+        list: true
 - name: support
   label: Partner contact numbers
   type: file
   path: content/support.json
   format: json
-  list: true
   operations:
     create: false
     delete: false
   fields:
-  - name: name
-    label: Partner/team name
-    type: string
-    required: true
-  - name: phone
-    label: Support telephone number
-    type: string
-  - name: description
-    label: When colleagues should contact this team
-    type: text
-  - name: id
-    label: Permanent contact ID — read only
-    type: string
-    required: true
-    readonly: true
+  - name: items
+    label: Partner contacts
+    type: object
+    description: Expand a titled item to update it. The collapsed header shows its current visibility status.
+    list:
+      collapsible:
+        collapsed: true
+        summary: '{fields.name}  ·  Visible on site: {fields.published}'
+    fields:
+    - name: published
+      label: Visible on the Help Centre
+      type: boolean
+      description: Turn off to remove this item from the public website. Hidden content remains in GitHub and can be
+        restored.
+    - name: name
+      label: Partner/team name
+      type: string
+      required: true
+    - name: phone
+      label: Support telephone number
+      type: string
+    - name: description
+      label: When colleagues should contact this team
+      type: text
+    - name: id
+      label: Permanent contact ID — read only
+      type: string
+      required: true
+      readonly: true
 - name: site
   label: Home page and support email
   type: file
@@ -729,22 +760,35 @@ content:
   type: file
   path: content/sections.json
   format: json
-  list: true
   operations:
     create: false
     delete: false
   fields:
-  - name: title
-    label: FAQ group heading
-    type: string
-    required: true
-  - name: ids
-    label: FAQs included in this group
-    type: select
-    description: Arrange FAQ IDs in order. New FAQs not in any section appear under More questions.
-    options:
-      values: *id013
-      multiple: true
+  - name: items
+    label: FAQ sections
+    type: object
+    description: Expand a titled item to update it. The collapsed header shows its current visibility status.
+    list:
+      collapsible:
+        collapsed: true
+        summary: '{fields.title}  ·  Visible on site: {fields.published}'
+    fields:
+    - name: published
+      label: Visible on the Help Centre
+      type: boolean
+      description: Turn off to hide this section and its questions (except questions also in another visible section).
+        This is not a privacy control.
+    - name: title
+      label: FAQ group heading
+      type: string
+      required: true
+    - name: ids
+      label: FAQs included in this group
+      type: select
+      description: Arrange FAQ IDs in order. New FAQs not in any section appear under More questions.
+      options:
+        values: *id013
+        multiple: true
 settings:
   hide: true
   content:
