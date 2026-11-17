@@ -6,6 +6,7 @@
   'use strict';
   const routes = ['site', 'support', 'guides', 'faqs', 'sections'];
   const prefix = 'content/';
+  // Optional WebP sidecars are looked up by original path; original images stay available for zoom.
   const loading = document.getElementById('app');
   const safeId = value => typeof value === 'string' && /^[a-z0-9-]+$/.test(value);
 
@@ -15,7 +16,7 @@
     if (typeof raw !== 'string') return raw;
     const value = raw.trim();
     if (!value || /^https?:\/\//i.test(value)) return value;
-    const unprefixed = value.replace(/^\/+/, '').replace(/^Rynly-Picking-App-HelpCentre-Sandbox\//i,'');
+    const unprefixed = value.replace(/^\/+/, '').replace(/^Rynly-Picking-App-HelpCentre(?:-Sandbox|-CMS)?\//i,'');
     if (/^(?:assets\/(?:images|pdf|videos|uploads)\/|images\/(?:FAQ|Picking)\/)/.test(unprefixed)
         && !unprefixed.split('/').includes('..') && !/[?#]/.test(unprefixed)) {
       return unprefixed;
@@ -83,12 +84,16 @@
     });
   }
   try {
+    const variantsPromise = fetch('assets/image-variants.json', {cache:'force-cache',credentials:'same-origin'})
+      .then(response => response.ok ? response.json() : {}).catch(() => ({}));
     const entries = await Promise.all(routes.map(async name => {
       const response = await fetch(prefix + name + '.json', {cache:'no-cache',credentials:'same-origin'});
       if (!response.ok) throw new Error(name+'.json returned '+response.status);
       return [name, await response.json()];
     }));
     const content=Object.fromEntries(entries);
+    const variants = await variantsPromise;
+    window.RYNLY_IMAGE_VARIANTS = variants && typeof variants === 'object' && !Array.isArray(variants) ? variants : {};
     // The CMS editor stores repeatable records in {items:[...]}, allowing
     // descriptive collapsed headings. Old array files remain readable during rollout.
     function records(value, name) {
@@ -96,6 +101,7 @@
       if (value && typeof value === 'object' && Array.isArray(value.items)) return value.items;
       throw new Error('Invalid CMS list: ' + name);
     }
+    const supportSettings = content.support && !Array.isArray(content.support) ? content.support : {};
     for (const name of ['faqs','guides','support','sections']) content[name] = records(content[name],name);
     if (typeof content.site !== 'object' || content.site === null || Array.isArray(content.site)) {
       throw new Error('Invalid CMS site settings');
@@ -117,7 +123,8 @@
       .flatMap(s=>Array.isArray(s.ids)?s.ids:[])
       .filter(id=>!visibleSectionIds.has(id)));
     const faqs=content.faqs.filter(f=>f.published!==false&&!hiddenSectionIds.has(f.id)).map(normaliseFaq);
-    const guides=content.guides.filter(g=>g.published!==false).map(g=> {
+    const guidesAllowed = content.site.home?.showGuides !== false;
+    const guides=(guidesAllowed ? content.guides : []).filter(g=>g.published!==false).map(g=> {
       if (Array.isArray(g.videos)) {
         g.videos=g.videos.filter(v=>v.published!==false);
         verify(g.videos,'video');
@@ -125,17 +132,17 @@
       return normaliseVideo(g);
     }).filter(g=>!Array.isArray(g.videos)||g.videos.length>0);
     guides.forEach(g=>g.videos?.forEach(normaliseVideo));
-    window.RYNLY_CONTENT = {site:content.site,faqs,guides,
+    window.RYNLY_CONTENT = {site:content.site,faqs,guides,supportSettings,
       support:content.support.filter(s=>s.published!==false)};
     window.RYNLY_CONFIG = Object.freeze({
       siteName:content.site.siteName || 'Rynly Picking App Help Centre',
-      supportEmail:content.site.supportEmail || 'support@rynly.com',
+      supportEmail:supportSettings.supportEmail || content.site.supportEmail || 'support@rynly.com',
       searchEnabled:true
     });
     window.RYNLY_FAQ_SECTIONS = sections;
     // Source files use a predictable version; the individual content JSON files
     // revalidate on each load, so an editor doesn't have to change version numbers.
-    await loadScript('assets/js/app.js?v=15');
+    await loadScript('assets/js/app.js?v=17');
     await loadScript('assets/js/search.js?v=12');
   } catch(error) {
     fail(error);

@@ -1,17 +1,14 @@
 {
   "siteName": "Rynly Picking App Help Centre",
-  "supportEmail": "support@rynly.com",
-  "supportEmailNote": "For unresolved technical issues when other support options have been exhausted.\n\nPlease CC ondemand@sainsburys.co.uk when contacting support via email.",
   "videoInfoPlaceholder": "[Place any extra info here to be beside the training video]",
-  "operationalReminderTitle": "Operational reminder",
-  "operationalReminderText": "For extra drivers or taking a store offline, use the dedicated marketplace support contacts and approved procedures; Rynly support cannot take the store offline.",
   "home": {
     "contactTitle": "Contact support",
     "contactSubtitle": "Partner support numbers",
     "guidesTitle": "Guided videos",
     "guidesSubtitle": "Build confidence using the picking app",
     "faqTitle": "Help centre and FAQs",
-    "faqSubtitle": "Answers and managing issues"
+    "faqSubtitle": "Answers and managing issues",
+    "showGuides": true
   },
   "searchTermsHome": [
     "start",

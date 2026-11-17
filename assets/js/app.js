@@ -7,6 +7,9 @@
   const data = window.RYNLY_CONTENT;
   const config = window.RYNLY_CONFIG;
   const site = data.site || {};
+  const supportSettings = data.supportSettings || {};
+  const guidesVisible = site.home?.showGuides !== false;
+  const imageVariants = window.RYNLY_IMAGE_VARIANTS || {};
   const mediaSettings = window.RYNLY_MEDIA_SETTINGS || {};
   const faqSections = window.RYNLY_FAQ_SECTIONS || [];
   // Cache resolved FAQ image paths within the session so navigation does not
@@ -112,7 +115,7 @@
     const cards = n("div", "feature-list");
     const features = [
       {route:"support",style:"feature-contact",icon:"headset",title:site.home?.contactTitle || "Contact support",desc:site.home?.contactSubtitle || "Partner support numbers"},
-      {route:"guides",style:"feature-guides",icon:"book",title:site.home?.guidesTitle || "Guided videos",desc:site.home?.guidesSubtitle || "Build confidence using the picking app"},
+      ...(guidesVisible ? [{route:"guides",style:"feature-guides",icon:"book",title:site.home?.guidesTitle || "Guided videos",desc:site.home?.guidesSubtitle || "Build confidence using the picking app"}] : []),
       {route:"faq",style:"feature-faq",icon:"help",title:site.home?.faqTitle || "Help centre and FAQs",desc:site.home?.faqSubtitle || "Answers and managing issues"}
     ];
     features.forEach(item => {
@@ -145,9 +148,9 @@
     append(emailRow, svg("mail"), n("span", "support-email-address", config.supportEmail));
     append(email,
       emailRow,
-      n("p", "support-email-note", site.supportEmailNote || "Please CC ondemand@sainsburys.co.uk when contacting support."));
+      n("p", "support-email-note", supportSettings.supportEmailNote || site.supportEmailNote || "Please CC ondemand@sainsburys.co.uk when contacting support."));
     app.append(email);
-    append(app, notice(site.operationalReminderTitle || "Operational reminder", site.operationalReminderText || "For extra drivers or taking a store offline, use the dedicated marketplace support contacts and approved procedures; Rynly support cannot take the store offline."));
+    append(app, notice(supportSettings.operationalReminderTitle || site.operationalReminderTitle || "Operational reminder", supportSettings.operationalReminderText || site.operationalReminderText || "For extra drivers or taking a store offline, use the dedicated marketplace support contacts and approved procedures; Rynly support cannot take the store offline."));
     app.append(append(n("div", "after-content"), homeLink()));
   }
   function renderGuides() {
@@ -342,13 +345,33 @@
     close.focus();
     paint();
   }
+  // Smaller WebP previews are optional. All original PNG/JPEG files stay intact,
+  // and tapping an image still opens its full-resolution original for zoom.
+  function setImageSource(img, path) {
+    const source = img.parentElement?.querySelector('source[data-optimized]');
+    const webp = Object.prototype.hasOwnProperty.call(imageVariants, path) ? imageVariants[path] : '';
+    if (source) {
+      if (webp && /^((?:assets|images)\/)[a-zA-Z0-9_./-]+\.webp$/i.test(webp) && !webp.includes('..')) {
+        source.srcset = webp;
+      } else source.removeAttribute('srcset');
+    }
+    img.dataset.originalPath = path;
+    img.src = path;
+  }
   function zoomableImage(img, label) {
     const button = n("button", "zoomable-image");
     button.type = "button";
     button.setAttribute("aria-label", "Enlarge image: " + (label || "Instruction screenshot"));
-    append(button, img, n("span", "zoom-indicator", "Tap to enlarge"));
+    const picture = n('picture');
+    const source = n('source');
+    source.type = 'image/webp';
+    source.dataset.optimized = 'true';
+    picture.append(source, img);
+    append(button, picture, n("span", "zoom-indicator", "Tap to enlarge"));
+    // Deck images may have been assigned a path before the picture existed.
+    if (img.dataset.originalPath) setImageSource(img, img.dataset.originalPath);
     button.addEventListener("click", () => {
-      if (img.complete && img.naturalWidth > 0) openImageViewer(img.currentSrc || img.src, img.alt, button);
+      if (img.complete && img.naturalWidth > 0) openImageViewer(img.dataset.originalPath || img.src, img.alt, button);
     });
     return button;
   }
@@ -409,7 +432,7 @@
         unavailableImagePaths.add(imageCandidates[attempt]);
         attempt++;
         if (attempt < imageCandidates.length) {
-          img.src = imageCandidates[attempt];
+          setImageSource(img, imageCandidates[attempt]);
         } else if (!isFaq) {
           // The referenced slide is missing. Don't show an empty media box
           // on the public training page; it will return once the image exists.
@@ -426,7 +449,7 @@
         }
       });
       figure.append(zoomableImage(img, img.alt));
-      img.src = imageCandidates[0];
+      setImageSource(img, imageCandidates[0]);
       card.append(figure);
     } else {
       card.append(resourcePlaceholder());
@@ -593,7 +616,7 @@
           unavailableImagePaths.add(sources[candidateIndex]);
           candidateIndex++;
           if (candidateIndex < sources.length) {
-            image.src = sources[candidateIndex];
+            setImageSource(image, sources[candidateIndex]);
             return;
           }
           // If neither directory contains the screenshot, make the missing
@@ -605,7 +628,7 @@
           figure.replaceChildren(fallback);
         });
         if (sources.length) {
-          image.src = sources[0];
+          setImageSource(image, sources[0]);
           figure.append(zoomableImage(image, image.alt));
         } else {
           const fallback = n("div", "figure-placeholder");
@@ -644,7 +667,7 @@
       img.decoding = "async";
       if (slide === first) img.fetchPriority = "high";
       // Use relative paths so this works on GitHub Pages project sites.
-      img.src = "images/Picking/Slide" + slide + ".png";
+      setImageSource(img, "images/Picking/Slide" + slide + ".png");
       const caption = n("figcaption", "full-slide-caption", "Slide " + slide);
       img.addEventListener("error", () => {
         const unavailable = n("div", "full-slide-unavailable",
@@ -711,6 +734,7 @@
     if (!safe) renderNotFound();
     else if (parts.length === 0) renderHome();
     else if (parts.length === 1 && parts[0] === "support") renderSupport();
+    else if (parts[0] === "guides" && !guidesVisible) renderNotFound();
     else if (parts.length === 1 && parts[0] === "guides") renderGuides();
     else if (parts.length === 2 && parts[0] === "guides") renderGuide(parts[1]);
     else if (parts.length === 3 && parts[0] === "guides") renderGuide(parts[1], parts[2]);

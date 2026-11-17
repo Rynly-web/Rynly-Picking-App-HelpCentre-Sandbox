@@ -656,7 +656,7 @@ content:
         type: number
         list: true
 - name: support
-  label: Partner contact numbers
+  label: Support contacts & Rynly email
   type: file
   path: content/support.json
   format: json
@@ -693,8 +693,21 @@ content:
       type: string
       required: true
       readonly: true
+  - name: supportEmail
+    label: Rynly support email
+    type: string
+    description: For unresolved technical issues after other support options have been exhausted.
+  - name: supportEmailNote
+    label: Email guidance and CC instruction
+    type: text
+  - name: operationalReminderTitle
+    label: Operational reminder heading
+    type: string
+  - name: operationalReminderText
+    label: Operational reminder text
+    type: text
 - name: site
-  label: Home page and support email
+  label: Homepage & search settings
   type: file
   path: content/site.json
   format: json
@@ -715,6 +728,10 @@ content:
     - name: contactSubtitle
       label: Contact support subtitle
       type: string
+    - name: showGuides
+      label: Show Guided videos section
+      type: boolean
+      description: Disable to hide the Guided videos homepage card, video pages and video search results. UAT and production can have different values.
     - name: guidesTitle
       label: Videos heading
       type: string
@@ -727,18 +744,6 @@ content:
     - name: faqSubtitle
       label: FAQ subtitle
       type: string
-  - name: supportEmail
-    label: Rynly support email
-    type: string
-  - name: supportEmailNote
-    label: Email CC instruction
-    type: text
-  - name: operationalReminderTitle
-    label: Support reminder heading
-    type: string
-  - name: operationalReminderText
-    label: Support reminder text
-    type: text
   - name: searchTermsHome
     label: Advanced — Homepage search phrases
     type: string

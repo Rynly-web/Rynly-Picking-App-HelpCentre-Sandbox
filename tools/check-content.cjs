@@ -41,8 +41,8 @@ if(!errors.length){
  }
  for(const f of faqs){
    (f.relatedGuides||[]).forEach(id=>{if(!videoIDs.has(id))fail('FAQ '+f.id+' links to missing video '+id)});
-   if(!Array.isArray(f.blocks))fail('FAQ '+f.id+' blocks must be an array');
-   for(const b of f.blocks||[]){
+   if(!Array.isArray(f.blocks) && !f.slideDeck && f.blocks !== undefined)fail('FAQ '+f.id+' blocks must be an array');
+   for(const b of (Array.isArray(f.blocks) ? f.blocks : [])){
     if(!['paragraph','heading','notice','list','link','image'].includes(b.type))fail('FAQ '+f.id+' invalid block '+b.type);
     if(b.type==='image')media(b.src,'Image '+f.id);
     if(b.type==='link'&&b.url&&!b.url.startsWith('https://'))fail('FAQ '+f.id+' external URL must use https');
@@ -55,7 +55,9 @@ if(!errors.length){
   if(seenSections.has(id))warn('FAQ '+id+' appears in multiple groups');seenSections.add(id);
  }));
  faqs.filter(f=>!seenSections.has(f.id)).forEach(f=>warn('FAQ '+f.id+' is not in a section (will appear under More questions).'));
- if(!site.supportEmail)warn('Support email is empty');
+ const supportData=read('support');
+ const supportEmail=supportData && !Array.isArray(supportData) ? supportData.supportEmail : null;
+ if(!supportEmail&&!site.supportEmail)warn('Support email is empty');
 }
 for(const w of warnings)console.log('WARN '+w);
 for(const e of errors)console.error('ERROR '+e);

@@ -103,10 +103,12 @@
   add('', 'Help Centre', 'Help and training for the Rynly picking app', '', .25, site.searchTermsHome);
   add('support', 'Contact support', 'Partner telephone numbers and Rynly support email', [
     ...(data.support || []).flatMap(item => [item.name, item.description || '', item.phone || '']),
-    'Rynly support email support@rynly.com CC ondemand@sainsburys.co.uk',
+    'Rynly support email ' + (data.supportSettings?.supportEmail || site.supportEmail || 'support@rynly.com'),
+    data.supportSettings?.supportEmailNote || site.supportEmailNote || 'CC ondemand@sainsburys.co.uk',
     'Technical service desk, marketplace contact details'
   ].join(' '), 1.25, site.searchTermsSupport);
-  add('guides', site.home?.guidesTitle || 'Guided videos', 'Rynly picking app training videos and demonstrations', '', .5, site.searchTermsGuides);
+  if (site.home?.showGuides !== false)
+    add('guides', site.home?.guidesTitle || 'Guided videos', 'Rynly picking app training videos and demonstrations', '', .5, site.searchTermsGuides);
   add('faq', site.home?.faqTitle || 'Help centre and FAQs', 'Answers to picking app questions and troubleshooting', '', .5, site.searchTermsFaq);
   (data.guides || []).forEach(guide => {
     const route='guides/'+guide.id;
