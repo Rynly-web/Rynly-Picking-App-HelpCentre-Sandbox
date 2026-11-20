@@ -36,18 +36,21 @@
     },
     {
       "published": true,
-      "title": "Pick an order",
-      "description": "Accept an order, pick the items and complete the picking process.",
+      "title": "Accept an Order",
+      "description": "Accept and start picking an order.",
       "video": {
-        "type": "none"
+        "type": "youtube",
+        "id": "https://youtube.com/shorts/zSDpP4Xoh60?feature=share",
+        "orientation": "portrait"
       },
-      "videoText": "A walkthrough of picking an order, including the steps before completion.",
+      "videoText": "A short tutorial video demonstrating how to accept an order and begin the picking process.",
       "pdf": {
         "filename": "picking-an-order.pdf"
       },
       "relatedFaq": [
-        "identify-order",
-        "stuck-order"
+        "batch-picking-faq",
+        "pick-scan-pack-scan",
+        "cancel-order"
       ],
       "icon": "bag",
       "topics": [
