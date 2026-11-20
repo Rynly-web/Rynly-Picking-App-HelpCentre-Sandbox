@@ -310,17 +310,20 @@
     {
       "published": true,
       "title": "Substitutions",
-      "description": "Handle replacements and unavailable items across marketplaces.",
+      "description": "How to substitute an item.",
       "video": {
-        "type": "none"
+        "type": "youtube",
+        "id": "https://youtube.com/shorts/WjPMaKq2-1c?feature=share",
+        "orientation": "portrait"
       },
-      "videoText": "How to handle substitutions and unavailability during picking.",
+      "videoText": "A short tutorial video demonstrating how to substitute an out-of-stock item with an alternative product.",
       "pdf": {
         "filename": "substitutions.pdf"
       },
       "relatedFaq": [
         "pick-scan-pack-scan",
-        "identify-order"
+        "cancel-order",
+        "batch-picking-faq"
       ],
       "icon": "refresh",
       "topics": [
