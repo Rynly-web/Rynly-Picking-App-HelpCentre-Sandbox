@@ -111,11 +111,13 @@ content:
     - name: id
       label: Existing guide ID (locked)
       type: string
+      hidden: true
       readonly: true
       description: Existing IDs are protected. For a new item, use the automatically generated ID below.
     - name: autoId
       label: Automatically generated ID (locked)
       type: uuid
+      hidden: true
       description: Generated for new items and cannot be edited. Existing entries continue using their original ID.
       options:
         editable: false
@@ -144,11 +146,13 @@ content:
       - name: id
         label: Existing video ID (locked)
         type: string
+        hidden: true
         readonly: true
         description: Existing IDs are protected. For a new item, use the automatically generated ID below.
       - name: autoId
         label: Automatically generated ID (locked)
         type: uuid
+        hidden: true
         description: Generated for new items and cannot be edited. Existing entries continue using their original ID.
         options:
           editable: false
@@ -525,11 +529,13 @@ content:
     - name: id
       label: Existing faq ID (locked)
       type: string
+      hidden: true
       readonly: true
       description: Existing IDs are protected. For a new item, use the automatically generated ID below.
     - name: autoId
       label: Automatically generated ID (locked)
       type: uuid
+      hidden: true
       description: Generated for new items and cannot be edited. Existing entries continue using their original ID.
       options:
         editable: false
@@ -732,11 +738,13 @@ content:
     - name: id
       label: Existing contact ID (locked)
       type: string
+      hidden: true
       readonly: true
       description: Existing IDs are protected. For a new item, use the automatically generated ID below.
     - name: autoId
       label: Automatically generated ID (locked)
       type: uuid
+      hidden: true
       description: Generated for new items and cannot be edited. Existing entries continue using their original ID.
       options:
         editable: false
