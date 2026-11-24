@@ -108,6 +108,12 @@ content:
       label: Guide title
       type: string
       required: true
+    - name: id
+      label: Permanent guide ID (required for new guides)
+      type: string
+      required: true
+      description: "New guide: enter a unique lowercase ID with hyphens, for example receiving-a-new-order. Do not change the ID of an existing guide because links depend on it."
+      pattern: ^[a-z0-9-]+$
     - name: description
       label: Description shown in the guide list
       type: text
@@ -129,6 +135,12 @@ content:
         label: Video title
         type: string
         required: true
+      - name: id
+        label: Permanent video ID (required for new videos)
+        type: string
+        required: true
+        description: "New video: enter a unique lowercase ID with hyphens, for example checking-order-alerts. For an existing video, do not change its ID; links and related FAQs depend on it."
+        pattern: ^[a-z0-9-]+$
       - name: description
         label: Video description (optional)
         type: text
@@ -318,13 +330,6 @@ content:
         type: string
         list: true
         description: Optional alternate wording to help colleagues find this page.
-      - name: id
-        label: Permanent video ID — read only
-        type: string
-        required: true
-        description: Protected; this ID is used by direct video and related-FAQ links.
-        pattern: ^[a-z0-9-]+$
-        readonly: true
       description: Expand the relevant video to add its YouTube link, slides, information and related FAQs. Leave empty
         for a single-video guide.
     - name: video
@@ -478,13 +483,6 @@ content:
       type: string
       list: true
       description: 'Optional alternative search terms (for example: close shop, closure, pause orders).'
-    - name: id
-      label: Permanent ID — read only
-      type: string
-      required: true
-      description: Used in links and related FAQs. Protected to avoid broken links.
-      pattern: ^[a-z0-9-]+$
-      readonly: true
 - name: faqs
   label: Help centre articles
   type: file
@@ -512,6 +510,12 @@ content:
       label: Question shown on the website
       type: string
       required: true
+    - name: id
+      label: Permanent FAQ ID (required for new FAQs)
+      type: string
+      required: true
+      description: "New FAQ: enter a unique lowercase ID with hyphens, for example rescan-bag-label. Do not change existing FAQ IDs because links and related guides depend on them."
+      pattern: ^[a-z0-9-]+$
     - name: blocks
       label: Answer content — text, screenshots and links
       type: block
@@ -661,13 +665,6 @@ content:
       type: string
       list: true
       description: 'Optional hidden alternative phrases (for example: clousure, close store).'
-    - name: id
-      label: Permanent FAQ ID — read only
-      type: string
-      required: true
-      description: Protected because related videos, search results and bookmarked links use it.
-      pattern: ^[a-z0-9-]+$
-      readonly: true
     - name: category
       label: Previous category — read only
       type: string
@@ -714,17 +711,18 @@ content:
       label: Partner/team name
       type: string
       required: true
+    - name: id
+      label: Permanent contact ID (required for new contacts)
+      type: string
+      required: true
+      description: "New contact: enter a unique lowercase ID with hyphens, for example service-desk. Do not change existing contact IDs because page links may depend on them."
+      pattern: ^[a-z0-9-]+$
     - name: phone
       label: Support telephone number
       type: string
     - name: description
       label: When colleagues should contact this team
       type: text
-    - name: id
-      label: Permanent contact ID — read only
-      type: string
-      required: true
-      readonly: true
   - name: supportEmail
     label: Rynly support email
     type: string
