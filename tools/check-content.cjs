@@ -11,6 +11,12 @@ const list=(value,name)=>{
 };
 const [faqs,guides,support,sections]=['faqs','guides','support','sections'].map(name=>list(read(name),name));
 const site=read('site');
+// V20: Support auto-generated, non-editable UUIDs for newly created CMS items.
+function resolveLockedId(item){
+ if(item && typeof item==='object' && !item.id && typeof item.autoId==='string')item.id=item.autoId;
+}
+[faqs,guides,support].forEach(items=>items.forEach(resolveLockedId));
+guides.forEach(guide=>(Array.isArray(guide.videos)?guide.videos:[]).forEach(resolveLockedId));
 let errors=[]; let warnings=[];
 const fail=msg=>errors.push(msg),warn=msg=>warnings.push(msg);
 if(![faqs,guides,support,sections].every(Array.isArray) || !site || typeof site!=='object')fail('Invalid JSON content types.');

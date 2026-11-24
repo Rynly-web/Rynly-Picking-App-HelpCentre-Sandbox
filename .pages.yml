@@ -109,11 +109,17 @@ content:
       type: string
       required: true
     - name: id
-      label: Permanent guide ID (required for new guides)
+      label: Existing guide ID (locked)
       type: string
-      required: true
-      description: "New guide: enter a unique lowercase ID with hyphens, for example receiving-a-new-order. Do not change the ID of an existing guide because links depend on it."
-      pattern: ^[a-z0-9-]+$
+      readonly: true
+      description: Existing IDs are protected. For a new item, use the automatically generated ID below.
+    - name: autoId
+      label: Automatically generated ID (locked)
+      type: uuid
+      description: Generated for new items and cannot be edited. Existing entries continue using their original ID.
+      options:
+        editable: false
+        generate: false
     - name: description
       label: Description shown in the guide list
       type: text
@@ -136,11 +142,17 @@ content:
         type: string
         required: true
       - name: id
-        label: Permanent video ID (required for new videos)
+        label: Existing video ID (locked)
         type: string
-        required: true
-        description: "New video: enter a unique lowercase ID with hyphens, for example checking-order-alerts. For an existing video, do not change its ID; links and related FAQs depend on it."
-        pattern: ^[a-z0-9-]+$
+        readonly: true
+        description: Existing IDs are protected. For a new item, use the automatically generated ID below.
+      - name: autoId
+        label: Automatically generated ID (locked)
+        type: uuid
+        description: Generated for new items and cannot be edited. Existing entries continue using their original ID.
+        options:
+          editable: false
+          generate: false
       - name: description
         label: Video description (optional)
         type: text
@@ -511,11 +523,17 @@ content:
       type: string
       required: true
     - name: id
-      label: Permanent FAQ ID (required for new FAQs)
+      label: Existing faq ID (locked)
       type: string
-      required: true
-      description: "New FAQ: enter a unique lowercase ID with hyphens, for example rescan-bag-label. Do not change existing FAQ IDs because links and related guides depend on them."
-      pattern: ^[a-z0-9-]+$
+      readonly: true
+      description: Existing IDs are protected. For a new item, use the automatically generated ID below.
+    - name: autoId
+      label: Automatically generated ID (locked)
+      type: uuid
+      description: Generated for new items and cannot be edited. Existing entries continue using their original ID.
+      options:
+        editable: false
+        generate: false
     - name: blocks
       label: Answer content — text, screenshots and links
       type: block
@@ -712,11 +730,17 @@ content:
       type: string
       required: true
     - name: id
-      label: Permanent contact ID (required for new contacts)
+      label: Existing contact ID (locked)
       type: string
-      required: true
-      description: "New contact: enter a unique lowercase ID with hyphens, for example service-desk. Do not change existing contact IDs because page links may depend on them."
-      pattern: ^[a-z0-9-]+$
+      readonly: true
+      description: Existing IDs are protected. For a new item, use the automatically generated ID below.
+    - name: autoId
+      label: Automatically generated ID (locked)
+      type: uuid
+      description: Generated for new items and cannot be edited. Existing entries continue using their original ID.
+      options:
+        editable: false
+        generate: false
     - name: phone
       label: Support telephone number
       type: string

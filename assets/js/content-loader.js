@@ -103,6 +103,14 @@
     }
     const supportSettings = content.support && !Array.isArray(content.support) ? content.support : {};
     for (const name of ['faqs','guides','support','sections']) content[name] = records(content[name],name);
+    // V20: Old human-readable IDs are preserved; new CMS records have a locked UUID.
+    function resolveLockedId(entry) {
+      if (entry && typeof entry === 'object' && !entry.id && typeof entry.autoId === 'string') entry.id = entry.autoId;
+    }
+    for (const name of ['faqs','guides','support']) content[name].forEach(resolveLockedId);
+    content.guides.forEach(guide => {
+      if (Array.isArray(guide.videos)) guide.videos.forEach(resolveLockedId);
+    });
     if (typeof content.site !== 'object' || content.site === null || Array.isArray(content.site)) {
       throw new Error('Invalid CMS site settings');
     }
