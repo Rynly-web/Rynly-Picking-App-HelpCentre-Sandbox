@@ -63,6 +63,17 @@
             "id": "https://youtube.com/shorts/LfK5OT1FTec",
             "orientation": "portrait"
           }
+        },
+        {
+          "published": true,
+          "title": "How to Substitute an Item",
+          "autoId": "d3955e4d-0f2e-4de3-8be1-7b3c589679bd",
+          "description": "A short tutorial video demonstrating how to replace an unavailable item with a suitable substitute during order picking.",
+          "video": {
+            "type": "youtube",
+            "id": "https://youtube.com/shorts/WjPMaKq2-1c",
+            "orientation": "portrait"
+          }
         }
       ],
       "video": {
