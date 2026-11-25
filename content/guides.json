@@ -63,6 +63,17 @@
             "Picking multiple items",
             "Pick an item"
           ]
+        },
+        {
+          "published": true,
+          "title": "Accept and Pick an Order",
+          "autoId": "8b537e1b-0535-47fc-81dd-cee3136d9ba2",
+          "description": "A short tutorial video demonstrating how to accept an order and start picking immediately.",
+          "video": {
+            "type": "youtube",
+            "id": "https://youtube.com/shorts/zSDpP4Xoh60",
+            "orientation": "portrait"
+          }
         }
       ],
       "video": {
