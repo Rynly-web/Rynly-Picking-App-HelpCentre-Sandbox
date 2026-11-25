@@ -37,33 +37,11 @@
     },
     {
       "published": true,
-      "title": "Accept an Order",
+      "title": "How to Pick an Order",
       "id": "picking-completing-an-order",
       "autoId": "59875879-d9b9-4386-9f21-09e4170126c4",
       "description": "Accept and start picking an order.",
       "videos": [
-        {
-          "published": true,
-          "title": "Picking Items with Multiple Quantities",
-          "autoId": "94dd5804-fb3d-4621-abe1-6382aca9a34d",
-          "description": "A short tutorial video demonstrating how to pick items when an order contains multiple quantities of the same product.",
-          "video": {
-            "type": "youtube",
-            "id": "https://youtube.com/shorts/LfK5OT1FTec",
-            "orientation": "portrait"
-          },
-          "relatedFaq": [
-            "batch-picking-faq",
-            "pick-scan-pack-scan"
-          ],
-          "icon": "bag",
-          "topics": [
-            "Picking multiple quantities",
-            "Scanning multiple quantities",
-            "Picking multiple items",
-            "Pick an item"
-          ]
-        },
         {
           "published": true,
           "title": "Accept and Pick an Order",
@@ -72,6 +50,17 @@
           "video": {
             "type": "youtube",
             "id": "https://youtube.com/shorts/zSDpP4Xoh60",
+            "orientation": "portrait"
+          }
+        },
+        {
+          "published": true,
+          "title": "Picking Items with Multiple Quantities",
+          "autoId": "0145c28d-5f7d-4c2a-b0e0-523de240d9c2",
+          "description": "A short tutorial video demonstrating how to pick items when an order contains multiple quantities of the same product.",
+          "video": {
+            "type": "youtube",
+            "id": "https://youtube.com/shorts/LfK5OT1FTec",
             "orientation": "portrait"
           }
         }
