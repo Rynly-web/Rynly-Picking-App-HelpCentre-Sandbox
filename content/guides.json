@@ -77,13 +77,23 @@
         },
         {
           "published": true,
-          "title": "Complete Order Picking Guide",
-          "autoId": "13134dac-84aa-46de-9ddd-87691b616c32",
+          "title": "How to Remove and Refund an Item",
+          "autoId": "6e079232-4fb8-4000-8d74-276b873c2c16",
+          "description": "A short tutorial video demonstrating how to remove an out-of-stock item from an order, automatically triggering a refund for the customer.",
+          "video": {
+            "type": "youtube",
+            "id": "https://youtube.com/shorts/XgEGXgnVy44?feature=share",
+            "orientation": "portrait"
+          }
+        },
+        {
+          "published": true,
+          "title": "Order Picking: Full Process",
+          "autoId": "4b9b118f-09ef-44d2-8913-8136d24efe5e",
           "description": "A complete step-by-step walkthrough of the Rynly order picking process, covering everything from accepting an order to completing the pick.",
           "video": {
             "type": "youtube",
-            "id": "https://youtube.com/shorts/SRGRkOqecXg?feature=share",
-            "orientation": "portrait"
+            "id": "https://youtube.com/shorts/SRGRkOqecXg"
           }
         }
       ],
