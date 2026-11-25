@@ -141,12 +141,13 @@
           "title": "How to troubleshoot new order alerts",
           "id": "new-order-alerts-video",
           "autoId": "510d3c4a-3992-4d5d-aba4-cb2ad6473417",
-          "description": "Check the device and app when new-order notifications are not sounding.",
+          "description": "A short tutorial video demonstrating how to enable audio alerts in the Rynly picking app so you can hear important order notifications.",
           "video": {
-            "type": "vimeo",
-            "id": "1242425189"
+            "type": "youtube",
+            "id": "https://youtube.com/shorts/COeHz3t1qHU?feature=share",
+            "orientation": "portrait"
           },
-          "videoText": "How to ensure you are alerted for every new order.",
+          "videoText": "Keep the app open or running in the background.",
           "pdf": {
             "filename": "new-order-alerts.pdf"
           },
