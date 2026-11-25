@@ -74,6 +74,17 @@
             "id": "https://youtube.com/shorts/WjPMaKq2-1c",
             "orientation": "portrait"
           }
+        },
+        {
+          "published": true,
+          "title": "Complete Order Picking Guide",
+          "autoId": "13134dac-84aa-46de-9ddd-87691b616c32",
+          "description": "A complete step-by-step walkthrough of the Rynly order picking process, covering everything from accepting an order to completing the pick.",
+          "video": {
+            "type": "youtube",
+            "id": "https://youtube.com/shorts/SRGRkOqecXg?feature=share",
+            "orientation": "portrait"
+          }
         }
       ],
       "video": {
