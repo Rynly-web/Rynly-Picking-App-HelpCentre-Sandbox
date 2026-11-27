@@ -827,6 +827,10 @@ content:
   - name: siteName
     label: Site name
     type: string
+  - name: videoPlaybackGuidance
+    label: Video playback guidance (all videos)
+    type: text
+    description: "Shared note below every video, not individual tutorial instructions. Edit once to update all videos. Use the words 'open the video directly' to insert the clickable link; otherwise a direct link is added automatically. Blank leaves only the link."
   - name: home
     label: Home cards
     type: object

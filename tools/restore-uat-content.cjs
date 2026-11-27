@@ -16,6 +16,8 @@ for (const key of ['guidesTitle','guidesSubtitle']) {
   if (Object.hasOwn(uatSite.home,key)) prodSite.home[key]=uatSite.home[key];
 }
 if (Object.hasOwn(uatSite,'searchTermsGuides')) prodSite.searchTermsGuides=uatSite.searchTermsGuides;
+// V23: keep the shared playback note with the UAT video drafts.
+if (Object.hasOwn(uatSite,'videoPlaybackGuidance')) prodSite.videoPlaybackGuidance=uatSite.videoPlaybackGuidance;
 const replacements={site:prodSite};
 for (const name of ['faqs','sections','support']) {
   const data=parse(prod,name);

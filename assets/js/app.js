@@ -272,12 +272,24 @@
         });
       }
       card.append(append(frame, player));
-      const fallback = n("p", "video-fallback", "If playback is blocked on your device, ");
-      const link = n("a", "", "open the video directly");
+      // V23: one shared, plain-text playback note for all video players.
+      const guidance = typeof site.videoPlaybackGuidance === "string"
+        ? site.videoPlaybackGuidance.trim()
+        : "If playback is blocked on your device, open the video directly.";
+      const fallback = n("p", "video-fallback");
+      fallback.style.whiteSpace = "pre-line";
+      const match = /open the video directly/i.exec(guidance);
+      const link = n("a", "", match ? match[0] : "Open the video directly");
       link.href = openUrl;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
-      append(fallback, link, ".");
+      if (match) {
+        append(fallback, guidance.slice(0, match.index), link,
+          guidance.slice(match.index + match[0].length));
+      } else {
+        if (guidance) append(fallback, guidance, "\n");
+        append(fallback, link, ".");
+      }
       card.append(fallback);
     }
     // A description is optional. Whitespace alone must not create a paragraph.
