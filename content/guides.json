@@ -93,7 +93,8 @@
           "description": "A complete step-by-step walkthrough of the Rynly order picking process, covering everything from accepting an order to completing the pick.",
           "video": {
             "type": "youtube",
-            "id": "https://youtube.com/shorts/SRGRkOqecXg"
+            "id": "https://youtube.com/shorts/SRGRkOqecXg",
+            "orientation": "portrait"
           }
         }
       ],
