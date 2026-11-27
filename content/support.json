@@ -3,37 +3,42 @@
     {
       "published": true,
       "name": "JS Tech Service Desk",
+      "id": "js-tech",
+      "autoId": "84769dfe-2098-4584-b1fc-104a668ef750",
       "phone": "0345 603 2638",
-      "description": "General store issues, or when all marketplaces are down or need to be switched off.",
-      "id": "js-tech"
+      "description": "General store issues, or when all marketplaces are down or need to be switched off."
     },
     {
       "published": true,
       "name": "Just Eat",
+      "id": "just-eat",
+      "autoId": "ecfd3044-2ec2-4785-95fc-114929e803d4",
       "phone": "0208 736 2000",
-      "description": "Extra courier requests or issues with Just Eat orders.",
-      "id": "just-eat"
+      "description": "Extra courier requests or issues with Just Eat orders."
     },
     {
       "published": true,
       "name": "Uber Eats",
+      "id": "uber-eats",
+      "autoId": "f14748c7-0538-49d9-bb3d-f6889a314a67",
       "phone": "0808 178 5518",
-      "description": "Extra courier requests or issues with Uber Eats orders.",
-      "id": "uber-eats"
+      "description": "Extra courier requests or issues with Uber Eats orders."
     },
     {
       "published": true,
       "name": "Deliveroo",
+      "id": "deliveroo",
+      "autoId": "2868abb7-6475-48b4-9630-f5c9983c3e23",
       "phone": "020 3699 9977",
-      "description": "Extra courier requests or issues with Deliveroo orders.",
-      "id": "deliveroo"
+      "description": "Extra courier requests or issues with Deliveroo orders."
     },
     {
       "published": true,
       "name": "Chop Chop",
+      "id": "chop-chop",
+      "autoId": "bb5603fe-f1df-4edd-8ea1-aa61c2d5f543",
       "phone": "0333 070 3602",
-      "description": "Extra courier requests or issues with Chop Chop orders.",
-      "id": "chop-chop"
+      "description": "Extra courier requests or issues with Chop Chop orders."
     }
   ],
   "supportEmail": "support@rynly.com",
@@ -43,7 +48,7 @@
   "supportPageTitle": "Contact support",
   "sectionOrder": [
     "contacts",
-    "email",
-    "reminder"
+    "reminder",
+    "email"
   ]
 }
