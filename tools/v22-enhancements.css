@@ -1,0 +1,25 @@
+/* V22: support section order, editorial media notes and accessible loading states. */
+.support-section-stack { display: grid; gap: 16px; }
+.support-section-stack > * { margin: 0; min-width: 0; }
+.footer-exit { font: inherit; color: inherit; border: 0; background: transparent; padding: 7px 0; cursor: pointer; text-align: left; }
+.footer-exit:hover { text-decoration: underline; }
+.footer-exit:focus-visible { outline: 2px solid #357680; outline-offset: 4px; }
+.footer-exit-status { margin: 0; padding: 12px 16px; text-align: center; color: #285960; font-size: 13px; background: #D7E4E6; }
+.footer-exit-status[hidden], .image-load-status[hidden] { display: none !important; }
+.media-explanation { white-space: pre-line; margin: 12px 0; overflow-wrap: anywhere; }
+.media-bullets { margin: 10px 0 14px; padding-inline-start: 24px; line-height: 1.55; }
+.media-bullets li + li { margin-top: 6px; }
+.faq-image-block { margin: 16px 0; }
+.faq-related-video-block { margin-top: 20px; }
+.image-load-status { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; font: 13px/1.4 Arial, sans-serif; color: #285960; padding: 16px; }
+.image-load-spinner { width: 22px; height: 22px; border: 2px solid #B7D2D7; border-top-color: #357680; border-radius: 50%; animation: rynly-image-spin .85s linear infinite; }
+@keyframes rynly-image-spin { to { transform: rotate(360deg); } }
+.zoomable-image.image-is-loading { min-height: 120px; background: #F1F5F5; border: 1px solid #D7E4E6; cursor: default; }
+.zoomable-image.image-is-loading picture { display: block; min-height: 120px; }
+.zoomable-image.image-is-loading img { opacity: 0; }
+.zoomable-image.image-is-loading .image-load-status { position: absolute; inset: 0; }
+.zoomable-image.image-is-loading .zoom-indicator, .zoomable-image.image-load-failed .zoom-indicator { visibility: hidden; }
+.zoomable-image.image-load-failed img { visibility: hidden; }
+.lightbox-stage.image-is-loading .image-load-status, .lightbox-stage.image-load-failed .image-load-status { position: absolute; inset: 0; color: #F9F4ED; }
+.lightbox-stage.image-is-loading img, .lightbox-stage.image-load-failed img { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .image-load-spinner { animation: none; } }

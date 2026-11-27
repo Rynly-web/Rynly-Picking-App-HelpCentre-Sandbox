@@ -39,5 +39,11 @@
   "supportEmail": "support@rynly.com",
   "supportEmailNote": "For unresolved technical issues when other support options have been exhausted.\n\nPlease CC ondemand@sainsburys.co.uk when contacting support via email.",
   "operationalReminderTitle": "Operational reminder",
-  "operationalReminderText": "For extra drivers or taking a store offline, use the dedicated marketplace support contacts and approved procedures; Rynly support cannot take the store offline."
+  "operationalReminderText": "For extra drivers or taking a store offline, use the dedicated marketplace support contacts and approved procedures; Rynly support cannot take the store offline.",
+  "supportPageTitle": "Contact support",
+  "sectionOrder": [
+    "contacts",
+    "email",
+    "reminder"
+  ]
 }

@@ -129,8 +129,61 @@
     });
     app.append(cards);
   }
+  // V22 enhancements: optional editorial text, image states and footer exit.
+  const cleanText = value => typeof value === "string" ? value.trim() : "";
+  function mediaText(parent, value) {
+    const text = cleanText(value);
+    if (text) parent.append(n("p", "media-explanation", text));
+  }
+  function mediaBullets(parent, values) {
+    const points = Array.isArray(values) ? values.map(cleanText).filter(Boolean) : [];
+    if (!points.length) return;
+    const list = n("ul", "media-bullets");
+    points.forEach(point => list.append(n("li", "", point)));
+    parent.append(list);
+  }
+  function imageLoadingState(container, img) {
+    const indicator = n("span", "image-load-status");
+    indicator.setAttribute("role", "status");
+    const spinner = n("span", "image-load-spinner");
+    spinner.setAttribute("aria-hidden", "true");
+    indicator.append(spinner, n("span", "", "Loading image…"));
+    container.append(indicator);
+    const done = () => {container.classList.remove("image-is-loading", "image-load-failed"); container.removeAttribute("aria-busy"); indicator.hidden = true;};
+    const pending = () => {container.classList.remove("image-load-failed"); container.classList.add("image-is-loading"); container.setAttribute("aria-busy", "true"); indicator.hidden = false;};
+    pending();
+    img.addEventListener("load", done);
+    img.addEventListener("error", () => {
+      // Earlier handlers may have selected another source. Let that request finish.
+      if (!img.complete) return;
+      done();
+      if (container.isConnected) { indicator.replaceChildren(n("span", "", "Image unavailable")); indicator.hidden = false; container.classList.add("image-load-failed"); }
+    });
+    if (img.complete && img.naturalWidth > 0) done();
+  }
+  function installFooterExit() {
+    const footer = document.querySelector(".site-footer");
+    const brand = footer?.querySelector(".footer-brand");
+    if (!brand) return;
+    const button = n("button", "footer-brand footer-exit");
+    button.type = "button";
+    button.setAttribute("aria-label", "Return to Rynly Picking App");
+    button.append(...brand.childNodes);
+    brand.replaceWith(button);
+    const status = n("p", "footer-exit-status");
+    status.setAttribute("role", "status");
+    status.hidden = true;
+    footer.insertAdjacentElement("afterend", status);
+    button.addEventListener("click", () => {
+      // Native Custom Tab/WebView closure is controlled by the host app.
+      // Do not blindly navigate history (hash routes are internal pages).
+      try { window.close(); } catch (_) { /* browser may disallow closure */ }
+      status.textContent = "Use the browser’s close (×) button to return to the Rynly Picking App.";
+      status.hidden = false;
+    });
+  }
   function renderSupport() {
-    append(app, back("", "Help Centre"), n("h1", "sr-only", "Contact support"));
+    append(app, back("", "Help Centre"), head(null, cleanText(supportSettings.supportPageTitle) || "Contact support"));
     const grid = n("div", "support-grid");
     data.support.forEach(item => {
       const card = n("section", "support-card");
@@ -140,7 +193,7 @@
         append(n("div", "support-actions"), n("span", "support-phone", item.phone)));
       grid.append(card);
     });
-    app.append(grid);
+
     const email = n("section", "media-card after-content");
     email.append(n("h2", "media-title", "Rynly support email"));
     // Display the support email as plain text: no mailto link or arrow.
@@ -149,8 +202,16 @@
     append(email,
       emailRow,
       n("p", "support-email-note", supportSettings.supportEmailNote || site.supportEmailNote || "Please CC ondemand@sainsburys.co.uk when contacting support."));
-    app.append(email);
-    append(app, notice(supportSettings.operationalReminderTitle || site.operationalReminderTitle || "Operational reminder", supportSettings.operationalReminderText || site.operationalReminderText || "For extra drivers or taking a store offline, use the dedicated marketplace support contacts and approved procedures; Rynly support cannot take the store offline."));
+
+    const reminder = notice(supportSettings.operationalReminderTitle || site.operationalReminderTitle || "Operational reminder", supportSettings.operationalReminderText || site.operationalReminderText || "For extra drivers or taking a store offline, use the dedicated marketplace support contacts and approved procedures; Rynly support cannot take the store offline.");
+    const sections = {contacts: grid, email, reminder};
+    const requested = Array.isArray(supportSettings.sectionOrder) ? supportSettings.sectionOrder : [];
+    const order = [...new Set([...requested, "contacts", "email", "reminder"])];
+    const stack = n("div", "support-section-stack");
+    for (const key of order) {
+      if (typeof key === "string" && Object.prototype.hasOwnProperty.call(sections, key)) stack.append(sections[key]);
+    }
+    app.append(stack);
     app.append(append(n("div", "after-content"), homeLink()));
   }
   function renderGuides() {
@@ -254,11 +315,12 @@
     append(header, title, zoomOut, zoomIn, close);
     const stage = n("div", "lightbox-stage");
     const img = n("img", "lightbox-image");
-    img.src = source;
     img.alt = alt || "Enlarged instructional image";
     img.draggable = false;
     const hint = n("span", "lightbox-hint", "Pinch or use + / − to zoom");
     stage.append(img, hint);
+    imageLoadingState(stage, img);
+    img.src = source;
     dialog.append(header, stage);
     document.body.append(dialog);
     activeLightbox = dialog;
@@ -367,7 +429,16 @@
     source.type = 'image/webp';
     source.dataset.optimized = 'true';
     picture.append(source, img);
+    img.addEventListener("error", event => {
+      if (source.hasAttribute("srcset") && img.dataset.originalPath &&
+          img.currentSrc && img.currentSrc.endsWith(source.getAttribute("srcset"))) {
+        event.stopImmediatePropagation();
+        source.removeAttribute("srcset");
+        img.src = img.dataset.originalPath;
+      }
+    }, true);
     append(button, picture, n("span", "zoom-indicator", "Tap to enlarge"));
+    imageLoadingState(button, img);
     // Deck images may have been assigned a path before the picture existed.
     if (img.dataset.originalPath) setImageSource(img, img.dataset.originalPath);
     button.addEventListener("click", () => {
@@ -387,7 +458,7 @@
     const slideSource = typeof item.slide?.src === "string" ? item.slide.src.trim() : "";
     const chosenFaqId = typeof item.slide?.faqId === "string" ? item.slide.faqId : "";
     const legacyPdfSource = typeof item.pdf?.src === "string" ? item.pdf.src.trim() : "";
-    const faqId = !isFaq && !slideSource
+    const faqId = !slideSource
       ? (chosenFaqId || (!legacyPdfSource ? settings.supportingFaqImage : ""))
       : "";
     const media = isFaq ? item.slide : slideSource ? item.slide
@@ -405,7 +476,8 @@
       ? faqImageCandidates(referencedImage.src)
       : (slideImage ? [slideImage] : faqImageCandidates(raw));
     const isImage = imageCandidates.length > 0;
-    if (!isFaq && !pdf && !isImage) return null;
+    if (!pdf && !isImage) return null;
+    if (isFaq) mediaText(card, media?.textAbove);
     card.setAttribute("aria-label", isFaq || isImage ? "Supporting slide" : "PDF slides");
     if (pdf) {
       const link = n("a", "resource-link");
@@ -433,14 +505,6 @@
         attempt++;
         if (attempt < imageCandidates.length) {
           setImageSource(img, imageCandidates[attempt]);
-        } else if (!isFaq) {
-          // The referenced slide is missing. Don't show an empty media box
-          // on the public training page; it will return once the image exists.
-          const mediaContainer = card.parentElement;
-          card.remove();
-          if (mediaContainer?.classList.contains("media-grid") && !mediaContainer.childElementCount) {
-            mediaContainer.remove();
-          }
         } else {
           const fallback = n("div", "figure-placeholder");
           append(fallback, svg("file"), n("strong", "", "Supporting slide unavailable"),
@@ -451,8 +515,10 @@
       figure.append(zoomableImage(img, img.alt));
       setImageSource(img, imageCandidates[0]);
       card.append(figure);
-    } else {
-      card.append(resourcePlaceholder());
+    }
+    if (isFaq) {
+      mediaText(card, media?.textBelow);
+      mediaBullets(card, media?.bullets);
     }
     return card;
   }
@@ -601,7 +667,9 @@
         return wrapper;
       }
       case "image": {
+        const group = n("div", "faq-image-block");
         const figure = n("figure", "figure");
+        mediaText(group, block.textAbove);
         const image = n("img", "article-image");
         image.alt = block.alt || "Instruction screenshot";
         image.loading = "lazy";
@@ -635,7 +703,10 @@
           append(fallback, svg("file"), n("strong", "", "Screenshot unavailable"));
           figure.append(fallback);
         }
-        return figure;
+        group.append(figure);
+        mediaText(group, block.textBelow);
+        mediaBullets(group, block.bullets);
+        return group;
       }
       default: return null;
     }
@@ -709,13 +780,19 @@
     const hasArticleImages = (faq.blocks || []).some(block => block.type === "image");
     // Do not show a second 'Supporting slide coming soon' when the article
     // already contains a screenshot/slide. A configured PDF/image still shows.
-    if (faq.id !== "contact-support-faq" && (!hasArticleImages || faq.slide?.src)) {
-      app.append(slideMedia(faq, true));
+    if (faq.id !== "contact-support-faq" && (!hasArticleImages || faq.slide?.src || faq.slide?.faqId)) {
+      append(app, slideMedia(faq, true));
     }
     const relatedGuides = (faq.relatedGuides || [])
       .map(key => videosById.get(key)).filter(Boolean)
       .map(item => ({route:item.route,title:item.video.title}));
-    append(app, relatedSection("Related videos", relatedGuides));
+    if (relatedGuides.length) {
+      const related = n("div", "faq-related-video-block");
+      mediaText(related, faq.relatedVideosIntro);
+      append(related, relatedSection("Related videos", relatedGuides));
+      mediaText(related, faq.relatedVideosOutro);
+      app.append(related);
+    }
     app.append(append(n("div", "after-content"), homeLink()));
   }
   function renderNotFound() {
@@ -754,6 +831,7 @@
       app.focus({preventScroll:true});
     }
   }
+  installFooterExit();
   window.addEventListener("hashchange",route);
   window.addEventListener("pageshow", event => {
     if (event.persisted) route();

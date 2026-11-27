@@ -541,7 +541,7 @@ content:
         editable: false
         generate: false
     - name: blocks
-      label: Answer content — text, screenshots and links
+      label: Article content — add and reorder blocks
       type: block
       list:
         collapsible:
@@ -549,7 +549,7 @@ content:
       blockKey: type
       blocks:
       - name: paragraph
-        label: Paragraph
+        label: Text / instructions
         fields:
         - name: text
           label: Paragraph text
@@ -577,16 +577,26 @@ content:
           label: Note text
           type: text
       - name: image
-        label: FAQ screenshot / slide
+        label: Screenshot / image
         fields:
+        - name: textAbove
+          label: Text above image (optional)
+          type: text
         - name: src
-          label: Screenshot
+          label: Image
           type: image
           options:
             media: faq-images
         - name: alt
-          label: Accessible description
+          label: Accessibility description (screen readers, optional)
           type: string
+        - name: textBelow
+          label: Text below image (optional)
+          type: text
+        - name: bullets
+          label: Bullet points below image (optional)
+          type: string
+          list: true
       - name: link
         label: External website link
         fields:
@@ -596,15 +606,15 @@ content:
         - name: url
           label: HTTPS URL
           type: string
-      description: Add, edit or reorder the blocks that make up the FAQ answer.
+      description: Add blocks in reading order. Drag to move them. Use a screenshot block for an image with optional instructions.
     - name: slide
-      label: Supporting slide (optional)
+      label: Additional supporting material (optional)
       type: object
       fields:
       - name: src
         label: Slide image or PDF
         type: file
-        description: Upload one image/PDF, or leave empty to use a FAQ screenshot.
+        description: Only add an extra resource if needed. Leave empty if the article blocks already contain the screenshots.
         options:
           media: attachments
           extensions:
@@ -634,8 +644,21 @@ content:
           - *id011
           - *id012
       - name: alt
-        label: Image description (optional)
+        label: Accessibility description (optional)
         type: string
+      - name: textAbove
+        label: Text above supporting material (optional)
+        type: text
+      - name: textBelow
+        label: Text below supporting material (optional)
+        type: text
+      - name: bullets
+        label: Bullet points below supporting material (optional)
+        type: string
+        list: true
+    - name: relatedVideosIntro
+      label: Text above related videos (optional)
+      type: text
     - name: relatedGuides
       label: Related guided videos
       type: select
@@ -663,8 +686,11 @@ content:
         - name: in-store-barcode-scanning
           label: In-store barcode scanning & packing an order
         multiple: true
+    - name: relatedVideosOutro
+      label: Text below related videos (optional)
+      type: text
     - name: supportLink
-      label: Show link to partner support numbers
+      label: Show link to contact support
       type: boolean
     - name: icon
       label: FAQ icon (advanced)
@@ -693,10 +719,12 @@ content:
       label: Previous category — read only
       type: string
       readonly: true
+      hidden: true
     - name: slideDeck
       label: Full guide slide numbering — read only
       type: object
       readonly: true
+      hidden: true
       fields:
       - name: first
         label: First slide
@@ -717,6 +745,25 @@ content:
     create: false
     delete: false
   fields:
+  # V22 support page and FAQ editor
+  - name: supportPageTitle
+    label: Support page title
+    type: string
+    description: Heading on the Contact support page. Leave blank to use Contact support.
+  - name: sectionOrder
+    label: Support page section order
+    type: select
+    description: Drag the three sections into the desired website order. Each section appears once; missing sections are appended automatically.
+    list:
+      max: 3
+    options:
+      values:
+      - name: contacts
+        label: Partner support contacts
+      - name: email
+        label: Rynly support email
+      - name: reminder
+        label: Operational reminder
   - name: items
     label: Partner contacts
     type: object

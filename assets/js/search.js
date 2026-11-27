@@ -80,7 +80,7 @@
     if (Array.isArray(value)) return value.flatMap(flatten);
     if (typeof value === 'object') return [
       'title','description','videoText','topics','blocks','text','items',
-      'label','alt','name','phone','intro','subtitle'
+      'label','alt','name','phone','intro','subtitle','textAbove','textBelow','bullets'
     ].flatMap(key => flatten(value[key]));
     return [];
   }
@@ -101,10 +101,12 @@
     });
   }
   add('', 'Help Centre', 'Help and training for the Rynly picking app', '', .25, site.searchTermsHome);
-  add('support', 'Contact support', 'Partner telephone numbers and Rynly support email', [
+  add('support', data.supportSettings?.supportPageTitle?.trim() || 'Contact support', 'Partner telephone numbers and Rynly support email', [
     ...(data.support || []).flatMap(item => [item.name, item.description || '', item.phone || '']),
     'Rynly support email ' + (data.supportSettings?.supportEmail || site.supportEmail || 'support@rynly.com'),
     data.supportSettings?.supportEmailNote || site.supportEmailNote || 'CC ondemand@sainsburys.co.uk',
+    data.supportSettings?.operationalReminderTitle || '',
+    data.supportSettings?.operationalReminderText || '',
     'Technical service desk, marketplace contact details'
   ].join(' '), 1.25, site.searchTermsSupport);
   if (site.home?.showGuides !== false)
@@ -122,6 +124,7 @@
   });
   (data.faqs || []).forEach(faq => add('faq/'+faq.id,faq.title,'',[
     flatten(faq.blocks).join(' '),
+    flatten([faq.slide?.textAbove, faq.slide?.textBelow, faq.slide?.bullets, ...(site.home?.showGuides !== false ? [faq.relatedVideosIntro, faq.relatedVideosOutro] : [])]).join(' '),
     faq.slideDeck ? 'Full 41 slide picking app guide training reference' : ''
   ].join(' '),1.12,faq.searchTerms));
 
